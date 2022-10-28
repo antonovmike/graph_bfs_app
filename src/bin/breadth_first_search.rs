@@ -23,3 +23,5 @@ pub fn breadth_first_search(graph: Graph, start_point: Node, end_point: Edge) {
 
     // Each Node checked, goal isn't met
 }
+
+fn main() {}
