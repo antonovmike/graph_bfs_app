@@ -11,6 +11,6 @@ impl Graph {
     }
 }
 
-pub fn breadth_first_search() {
+pub fn breadth_first_search(gr: Graph) {
     // todo
 }
