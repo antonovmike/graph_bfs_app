@@ -14,6 +14,12 @@ impl Graph {
     }
 }
 
-pub fn breadth_first_search(gr: Graph) {
-    // todo
+pub fn breadth_first_search(graph: Graph, start_point: Node, end_point: Edge) {
+    // Visited nodes?
+
+    // Neighbors?
+
+    // Reached goal
+
+    // Each Node checked, goal isn't met
 }
