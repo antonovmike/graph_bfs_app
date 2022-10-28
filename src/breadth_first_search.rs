@@ -1,12 +1,15 @@
 // BREADTH FIRST SEARCH
 
 pub struct Graph {
-    pub nodes: Vec<u32>,
-    pub edges: Vec<(u32, u32)>,
+    pub nodes: Vec<Node>,
+    pub edges: Vec<Edge>,
 }
 
+pub struct Node(u32);
+pub struct Edge(u32, u32);
+
 impl Graph {
-    pub fn new(node: Vec<u32>, edge: Vec<(u32, u32)>) -> Self {
+    pub fn new(node: Vec<Node>, edge: Vec<Edge>) -> Self {
         Graph { nodes: node, edges: edge }
     }
 }
