@@ -16,7 +16,7 @@ impl Graph {
     }
 }
 
-pub fn breadth_first_search(graph: Graph, start_point: Node, end_point: Edge) {
+pub fn breadth_first_search(graph: Graph, start_point: Node, end_point: Node, goal: Node) {
     // Visited nodes?
     let mut visited_nodes: HashSet<Node> = HashSet::new();
     // visited_nodes insert?
