@@ -30,7 +30,18 @@ pub fn add_edge<N, E>(graph: Graph<N, E>, to_add: E) -> Graph<N, E> {
     new_vec.edges.push(to_add);
     new_vec
 }
-pub fn rem_edge<N, E>(graph: Graph<N, E>, to_remove: E) {}
+pub fn rem_edge<N, E>(graph: Graph<N, E>, to_remove: E) -> Graph<N, E> 
+where
+    E: PartialEq
+{
+    let mut edges = graph.edges;
+    edges.retain(|value| *value != to_remove);
+    let new_vec = Graph {
+        nodes: graph.nodes,
+        edges: edges,
+    };
+    new_vec
+}
 
 // SERDE INTO TRIVIAL GRAPH FORMAT
 
