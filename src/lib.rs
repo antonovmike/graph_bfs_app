@@ -1,5 +1,7 @@
 #![allow(unused)]
 use std::collections::HashSet;
+use std::cmp::Eq;
+use std::ops::Index;
 
 // TEST
 pub fn test(first: u8, second: u8) -> u8 {
@@ -12,7 +14,23 @@ pub fn add_node<N, E>(graph: Graph<N, E>, to_add: N) -> Graph<N, E> {
     new_vec.nodes.push(to_add);
     new_vec
 }
-pub fn rem_node<N, E>(graph: Graph<N, E>, to_remove: Node<N>) {}
+pub fn rem_node<N, E>(graph: Graph<N, E>, to_remove: N) -> Graph<N, E> 
+where
+    N: PartialEq
+{
+    // let mut old_vec = graph;
+    let mut nodes = graph.nodes;
+    // if let Some(index) = nodes.iter().position(|value| *value == to_remove) {
+    //     nodes.swap_remove(index);
+    // }
+    nodes.retain(|value| *value != to_remove);
+    // new_vec
+    let new_vec = Graph {
+        nodes: nodes,
+        edges: graph.edges,
+    };
+    new_vec
+}
 
 // ADD AND REMOVE DIRECTED EDGES
 pub fn add_edge<N, E>(graph: Graph<N, E>, to_add: Node<E>) {}
@@ -21,20 +39,13 @@ pub fn rem_edge<N, E>(graph: Graph<N, E>, to_remove: Node<E>) {}
 // SERDE INTO TRIVIAL GRAPH FORMAT
 
 // BREADTH FIRST SEARCH
-
-// pub struct Graph<N, E> {
-//     pub nodes: Node<N>,
-//     pub edges: Edge<E>,
-// }
-// pub struct Graph<N, E> {
-//     pub nodes: Vec<Node<N>>,
-//     pub edges: Vec<Edge<E>>,
-// }
+#[derive(Clone)]
 pub struct Graph<N, E> {
     pub nodes: Vec<N>,
     pub edges: Vec<E>,
 }
 
+#[derive(PartialEq)]
 pub struct Node<N>(N);
 pub struct Edge<E>(E, E);
 
