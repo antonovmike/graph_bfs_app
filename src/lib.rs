@@ -7,7 +7,11 @@ pub fn test(first: u8, second: u8) -> u8 {
 }
 
 // ADD AND REMOVE NODES
-pub fn add_node<N, E>(graph: Graph<N, E>, to_add: Node<N>) {}
+pub fn add_node<N, E>(graph: Graph<N, E>, to_add: N) -> Graph<N, E> {
+    let mut new_vec = graph;
+    new_vec.nodes.push(to_add);
+    new_vec
+}
 pub fn rem_node<N, E>(graph: Graph<N, E>, to_remove: Node<N>) {}
 
 // ADD AND REMOVE DIRECTED EDGES

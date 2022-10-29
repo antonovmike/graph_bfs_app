@@ -10,4 +10,6 @@ fn main() {
         nodes: vec![1, 2],
         edges: vec![(1, 2)],
     };
+    let gr_1: Graph<u8, (u8, u8)> = add_node(gr_0, 3);
+    println!("{:?}", gr_1.nodes);
 }
