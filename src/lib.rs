@@ -18,16 +18,24 @@ pub fn rem_edge<N, E>(graph: Graph<N, E>, to_remove: Node<E>) {}
 
 // BREADTH FIRST SEARCH
 
+// pub struct Graph<N, E> {
+//     pub nodes: Node<N>,
+//     pub edges: Edge<E>,
+// }
+// pub struct Graph<N, E> {
+//     pub nodes: Vec<Node<N>>,
+//     pub edges: Vec<Edge<E>>,
+// }
 pub struct Graph<N, E> {
-    pub nodes: Node<N>,
-    pub edges: Edge<E>,
+    pub nodes: Vec<N>,
+    pub edges: Vec<E>,
 }
 
 pub struct Node<N>(N);
 pub struct Edge<E>(E, E);
 
 impl<N, E> Graph<N, E> {
-    pub fn new(nodes: Node<N>, edges: Edge<E>) -> Self {
+    pub fn new(nodes: Vec<N>, edges: Vec<E>) -> Self {
         Graph { nodes: nodes, edges: edges }
     }
 }
