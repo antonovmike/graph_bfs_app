@@ -3,12 +3,14 @@ use std::collections::HashSet;
 use std::cmp::Eq;
 use std::ops::Index;
 
-// ADD AND REMOVE NODES
+// --> ADD AND REMOVE NODES
+
 pub fn add_node<N, E>(graph: Graph<N, E>, to_add: N) -> Graph<N, E> {
     let mut new_vec = graph;
     new_vec.nodes.push(to_add);
     new_vec
 }
+
 pub fn rem_node<N, E>(graph: Graph<N, E>, to_remove: N) -> Graph<N, E> 
 where
     N: PartialEq
@@ -22,9 +24,26 @@ where
     new_vec
 }
 
-// ADD AND REMOVE DIRECTED EDGES
-pub fn add_edge<N, E>(graph: Graph<N, E>, to_add: Node<E>) {}
-pub fn rem_edge<N, E>(graph: Graph<N, E>, to_remove: Node<E>) {}
+// --> ADD AND REMOVE DIRECTED EDGES
+
+pub fn add_edge<N, E>(graph: Graph<N, E>, to_add: E) -> Graph<N, E> {
+    let mut new_vec = graph;
+    new_vec.edges.push(to_add);
+    new_vec
+}
+
+pub fn rem_edge<N, E>(graph: Graph<N, E>, to_remove: E) -> Graph<N, E> 
+where
+    E: PartialEq
+{
+    let mut edges = graph.edges;
+    edges.retain(|value| *value != to_remove);
+    let new_vec = Graph {
+        nodes: graph.nodes,
+        edges: edges,
+    };
+    new_vec
+}
 
 // SERDE INTO TRIVIAL GRAPH FORMAT
 
