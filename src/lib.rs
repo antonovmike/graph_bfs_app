@@ -1,7 +1,5 @@
 #![allow(unused)]
 use std::collections::HashSet;
-use std::cmp::Eq;
-use std::ops::Index;
 
 // --> ADD AND REMOVE NODES
 
