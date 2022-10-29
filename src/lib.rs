@@ -1,12 +1,19 @@
-// TEST
+use std::collections::HashSet;
 
+// TEST
 pub fn test(first: usize, second: usize) -> usize {
     first + second
 }
 
-// BREADTH FIRST SEARCH
+// ADD AND REMOVE NODES
+pub fn add_rem_node() {}
 
-use std::collections::HashSet;
+// ADD AND REMOVE DIRECTED EDGES
+pub fn add_rem_edge() {}
+
+// SERDE INTO TRIVIAL GRAPH FORMAT
+
+// BREADTH FIRST SEARCH
 
 pub struct Graph {
     pub nodes: Vec<Node>,
@@ -22,7 +29,7 @@ impl Graph {
     }
 }
 
-pub fn breadth_first_search(graph: Graph, start_point: Node, end_point: Node, goal: Node) {
+pub fn breadth_first_search(graph: Graph, start_node: Node, end_node: Node, goal: Node) -> Vec<u32> {
     // Visited nodes?
     let mut visited_nodes: HashSet<Node> = HashSet::new();
     // visited_nodes insert?
@@ -32,6 +39,8 @@ pub fn breadth_first_search(graph: Graph, start_point: Node, end_point: Node, go
     // Reached goal
 
     // Each Node checked, goal isn't met
+
+    vec![1, 2, 3]
 }
 
 fn main() {}
