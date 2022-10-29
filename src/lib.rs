@@ -13,13 +13,8 @@ pub fn rem_node<N, E>(graph: Graph<N, E>, to_remove: N) -> Graph<N, E>
 where
     N: PartialEq
 {
-    // let mut old_vec = graph;
     let mut nodes = graph.nodes;
-    // if let Some(index) = nodes.iter().position(|value| *value == to_remove) {
-    //     nodes.swap_remove(index);
-    // }
     nodes.retain(|value| *value != to_remove);
-    // new_vec
     let new_vec = Graph {
         nodes: nodes,
         edges: graph.edges,
