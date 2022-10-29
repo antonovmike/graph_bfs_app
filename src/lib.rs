@@ -24,12 +24,14 @@ where
     new_vec
 }
 
-// ADD AND REMOVE DIRECTED EDGES
+// --> ADD AND REMOVE DIRECTED EDGES
+
 pub fn add_edge<N, E>(graph: Graph<N, E>, to_add: E) -> Graph<N, E> {
     let mut new_vec = graph;
     new_vec.edges.push(to_add);
     new_vec
 }
+
 pub fn rem_edge<N, E>(graph: Graph<N, E>, to_remove: E) -> Graph<N, E> 
 where
     E: PartialEq
