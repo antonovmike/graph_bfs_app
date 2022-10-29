@@ -52,7 +52,7 @@ pub struct Graph<N, E> {
     pub edges: Vec<E>,
 }
 
-#[derive(PartialEq)]
+#[derive(Eq, Hash, PartialEq)]
 pub struct Node<N>(N);
 pub struct Edge<E>(E, E);
 
@@ -64,9 +64,11 @@ impl<N, E> Graph<N, E> {
 
 pub fn breadth_first_search<N, E>(graph: Graph<N, E>, start_node: Node<N>, end_node: Node<N>, goal: Node<N>) -> Vec<u32> {
     // Visited nodes?
-    let mut visited_nodes: HashSet<Node<N>> = HashSet::new();
+    let mut visited_nodes: HashSet<N> = HashSet::new();
     // visited_nodes insert?
+    let mut history: Vec<Node<N>> = Vec::new();
 
+    // visited_nodes.insert(start_node);
     // Neighbors?
 
     // Reached goal

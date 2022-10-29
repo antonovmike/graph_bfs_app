@@ -5,6 +5,7 @@ use graph_bfs_app::rem_edge;
 use graph_bfs_app::add_edge;
 
 fn main() {
+    // --> CREATE NEW GRAPH
     let some_nodes: Vec<u8> = vec![1, 2, 3, 4];
     let some_edges: Vec<(u8, u8)> = vec![(1, 2), (3, 4)];
     let gr_0: Graph<u8, (u8, u8)> = Graph::new(some_nodes, some_edges);
@@ -23,4 +24,7 @@ fn main() {
     let gr_4: Graph<u8, (u8, u8)> = rem_edge(gr_3, (2, 3));
     println!("One edge added: {:?}", gr_4.edges);
 
+    // SERDE INTO TRIVIAL GRAPH FORMAT
+
+    // BREADTH FIRST SEARCH
 }
