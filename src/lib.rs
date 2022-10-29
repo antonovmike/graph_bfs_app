@@ -1,15 +1,18 @@
+#![allow(unused)]
 use std::collections::HashSet;
 
 // TEST
-pub fn test(first: usize, second: usize) -> usize {
+pub fn test(first: u8, second: u8) -> u8 {
     first + second
 }
 
 // ADD AND REMOVE NODES
-pub fn add_rem_node() {}
+pub fn add_node(graph: Graph, to_add: Node) {}
+pub fn rem_node(graph: Graph, to_remove: Node) {}
 
 // ADD AND REMOVE DIRECTED EDGES
-pub fn add_rem_edge() {}
+pub fn add_edge(graph: Graph, to_add: Edge) {}
+pub fn rem_edge(graph: Graph, to_remove: Edge) {}
 
 // SERDE INTO TRIVIAL GRAPH FORMAT
 
