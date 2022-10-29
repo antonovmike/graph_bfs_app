@@ -1,5 +1,6 @@
 #![allow(unused)]
 use std::collections::HashSet;
+use std::collections::VecDeque;
 
 // --> ADD AND REMOVE NODES
 
@@ -62,13 +63,17 @@ impl<N, E> Graph<N, E> {
     }
 }
 
-pub fn breadth_first_search<N, E>(graph: Graph<N, E>, start_node: Node<N>, end_node: Node<N>, goal: Node<N>) -> Vec<u32> {
+pub fn breadth_first_search<N, E>(graph: Graph<N, E>, start_node: N, end_node: N, goal: N) -> Vec<u32> {
     // Visited nodes?
-    let mut visited_nodes: HashSet<N> = HashSet::new();
+    // let mut visited_nodes: HashSet<N> = HashSet::new();
+    let mut visited_nodes: Vec<bool> = vec![false; graph.nodes.len()];
+    visited_nodes[0] = true;
     // visited_nodes insert?
     let mut history: Vec<Node<N>> = Vec::new();
+    // Sequence?
+    let mut queue: VecDeque<N> = VecDeque::new();
+    queue.push_back(start_node);
 
-    // visited_nodes.insert(start_node);
     // Neighbors?
 
     // Reached goal
