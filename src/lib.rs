@@ -3,11 +3,6 @@ use std::collections::HashSet;
 use std::cmp::Eq;
 use std::ops::Index;
 
-// TEST
-pub fn test(first: u8, second: u8) -> u8 {
-    first + second
-}
-
 // ADD AND REMOVE NODES
 pub fn add_node<N, E>(graph: Graph<N, E>, to_add: N) -> Graph<N, E> {
     let mut new_vec = graph;
