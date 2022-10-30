@@ -66,6 +66,11 @@ impl<N, E> Graph<N, E> {
     }
 }
 
+// Use a list that stores nodes that need to be browsed.
+// In one iteration of the algorythm:
+// - if the list is not empty, the node is extracted from the list
+// - the extracted node is visited (processed)
+// - all of the children are placed into the list
 pub fn breadth_first_search<N, E>(
     graph: Graph<N, E>, start_node: N, end_node: N, goal: N
 ) -> String 
