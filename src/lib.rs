@@ -1,41 +1,101 @@
 #![allow(unused)]
-use std::collections::HashSet;
+use std::collections::{HashSet, VecDeque};
+
+type NodeType = Vec<i32>;
+type GraphType = Vec<NodeType>;
+struct Queue<T> {
+    pub items: VecDeque<T>,
+}
+impl<T> Queue<T> {
+    pub fn new() -> Queue<T> {
+        Queue {
+            items: VecDeque::new(),
+        }
+    }
+
+    pub fn enqueue(&mut self, v: T) {
+        self.items.push_back(v)
+    }
+
+    pub fn dequeue(&mut self) -> T {
+        self.items
+            .pop_front()
+            .expect("Cannot dequeue from empty queue.")
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.items.len() == 0
+    }
+}
+
+#[derive(Clone)]
+pub struct Graph {
+    pub nodes: Vec<Node>,
+    pub edges: Vec<Edge>,
+}
+
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
+pub struct Node(pub i32);
+
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
+pub struct Edge(pub i32, pub i32);
+
+impl Graph {
+    pub fn new(nodes: Vec<Node>, edges: Vec<Edge>) -> Self {
+        Graph { nodes, edges }
+    }
+}
+
+impl From<i32> for Node {
+    fn from(item: i32) -> Self {
+        Node(item)
+    }
+}
+
+impl Node {
+    pub fn value(&self) -> i32 {
+        self.0
+    }
+
+    pub fn neighbors(&self, graph: &Graph) -> Vec<Node> {
+        graph
+            .nodes
+            .iter()
+            .filter(|e| e.0 == self.0)
+            .map(|e| e.0.into())
+            .collect()
+    }
+}
 
 // --> ADD AND REMOVE NODES
 
-pub fn add_node<N, E>(graph: Graph<N, E>, to_add: N) -> Graph<N, E> {
+pub fn add_node(graph: Graph, to_add: Node) -> Graph {
     let mut new_vec = graph;
     new_vec.nodes.push(to_add);
     new_vec
 }
 
-pub fn rem_node<N, E>(graph: Graph<N, E>, to_remove: N) -> Graph<N, E> 
-where
-    N: PartialEq
-{
+pub fn rem_node(graph: Graph, to_remove: Node) -> Graph {
     let mut nodes = graph.nodes;
-    nodes.retain(|value| *value != to_remove);
-    let new_vec = Graph {
+    nodes.retain(|value: &Node | *value != to_remove);
+    let new_vec: Graph = Graph {
         nodes: nodes,
         edges: graph.edges,
     };
     new_vec
 }
 
-// --> ADD AND REMOVE DIRECTED EDGES
+// --> ADD AND REMOVE EDGES
 
-pub fn add_edge<N, E>(graph: Graph<N, E>, to_add: E) -> Graph<N, E> {
+pub fn add_edge(graph: Graph, to_add: Edge) -> Graph {
     let mut new_vec = graph;
     new_vec.edges.push(to_add);
     new_vec
 }
 
-pub fn rem_edge<N, E>(graph: Graph<N, E>, to_remove: E) -> Graph<N, E> 
-where
-    E: PartialEq
-{
-    let mut edges = graph.edges;
-    edges.retain(|value| *value != to_remove);
+pub fn rem_edge(graph: Graph, to_remove: Edge) -> Graph {
+    let mut edges: Vec<Edge> = graph.edges;
+    edges.retain(|value: &Edge | *value != to_remove);
     let new_vec = Graph {
         nodes: graph.nodes,
         edges: edges,
@@ -46,34 +106,50 @@ where
 // SERDE INTO TRIVIAL GRAPH FORMAT
 
 // BREADTH FIRST SEARCH
-#[derive(Clone)]
-pub struct Graph<N, E> {
-    pub nodes: Vec<N>,
-    pub edges: Vec<E>,
-}
+// Use a list that stores nodes that need to be browsed.
+// In one iteration of the algorythm:
+// - if the list is not empty, the node is extracted from the list
+// - the extracted node is visited (processed)
+// - all of the children are placed into the list
+pub fn bfs(graph: GraphType, start_node: i32, end_node: i32) -> Option<Vec<Option<i32>>> {
+    let mut queue = Queue::new();
+    queue.enqueue(start_node);
 
-#[derive(PartialEq)]
-pub struct Node<N>(N);
-pub struct Edge<E>(E, E);
+    let mut visisted_nodes = vec![false; graph.len()];
+    visisted_nodes[0] = true;
 
-impl<N, E> Graph<N, E> {
-    pub fn new(nodes: Vec<N>, edges: Vec<E>) -> Self {
-        Graph { nodes: nodes, edges: edges }
+    let mut prev: Vec<Option<i32>> = vec![None; graph.len()];
+
+    // 'allows to break out of outer loop from within
+    'outer: while !queue.is_empty() {
+        let current_node = queue.dequeue();
+        for v in graph[current_node as usize].iter() {
+            if *v == end_node {
+                prev[*v as usize] = Some(current_node);
+                break 'outer;
+            }
+
+            if !visisted_nodes[*v as usize] {
+                queue.enqueue(*v);
+                visisted_nodes[*v as usize] = true;
+                prev[*v as usize] = Some(current_node);
+            }
+        }
     }
-}
 
-pub fn breadth_first_search<N, E>(graph: Graph<N, E>, start_node: Node<N>, end_node: Node<N>, goal: Node<N>) -> Vec<u32> {
-    // Visited nodes?
-    let mut visited_nodes: HashSet<Node<N>> = HashSet::new();
-    // visited_nodes insert?
+    let mut path = Vec::new();
+    let mut at = Some(end_node);
+    while at != None {
+        path.push(at);
+        at = prev[at.unwrap_or(0) as usize];
+    }
 
-    // Neighbors?
+    path.reverse();
 
-    // Reached goal
-
-    // Each Node checked, goal isn't met
-
-    vec![1, 2, 3]
+    return match path[0] {
+        Some(x) if x == start_node => Some(path),
+        _ => None,
+    };
 }
 
 fn main() {}
