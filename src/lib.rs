@@ -145,7 +145,7 @@ pub fn bfs(graph: GraphType, start_node: i32, end_node: i32) -> Option<Vec<Optio
     }
 
     path.reverse();
-
+    
     return match path[0] {
         Some(x) if x == start_node => Some(path),
         _ => None,

@@ -23,10 +23,11 @@ fn main() {
 
     // --> ADD AND REMOVE DIRECTED EDGES
     let two_three = Edge(2, 3);
+    // let three_two = Edge(3, 2);
     let gr_3 = add_edge(gr_2, two_three.clone());
     println!("One edge added: \t{:?}", gr_3.edges);
     let gr_4 = rem_edge(gr_3, two_three);
-    println!("One edge added: \t{:?}", gr_4.edges);
+    println!("One edge removed: \t{:?}", gr_4.edges);
 
     // SERDE INTO TRIVIAL GRAPH FORMAT
 
