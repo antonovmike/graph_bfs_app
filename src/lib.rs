@@ -111,45 +111,71 @@ pub fn rem_edge(graph: Graph, to_remove: Edge) -> Graph {
 // - if the list is not empty, the node is extracted from the list
 // - the extracted node is visited (processed)
 // - all of the children are placed into the list
-pub fn bfs(graph: GraphType, start_node: i32, end_node: i32) -> Option<Vec<Option<i32>>> {
-    let mut queue = Queue::new();
-    queue.enqueue(start_node);
+// pub fn bfs(graph: GraphType, start_node: i32, end_node: i32) -> Option<Vec<Option<i32>>> {
+//     let mut queue = Queue::new();
+//     queue.enqueue(start_node);
 
-    let mut visisted_nodes = vec![false; graph.len()];
-    visisted_nodes[0] = true;
+//     let mut visisted_nodes = vec![false; graph.len()];
+//     visisted_nodes[0] = true;
 
-    let mut prev: Vec<Option<i32>> = vec![None; graph.len()];
+//     let mut prev: Vec<Option<i32>> = vec![None; graph.len()];
 
-    // 'allows to break out of outer loop from within
-    'outer: while !queue.is_empty() {
-        let current_node = queue.dequeue();
-        for v in graph[current_node as usize].iter() {
-            if *v == end_node {
-                prev[*v as usize] = Some(current_node);
-                break 'outer;
-            }
+//     // 'allows to break out of outer loop from within
+//     'outer: while !queue.is_empty() {
+//         let current_node = queue.dequeue();
+//         for v in graph[current_node as usize].iter() {
+//             if *v == end_node {
+//                 prev[*v as usize] = Some(current_node);
+//                 break 'outer;
+//             }
 
-            if !visisted_nodes[*v as usize] {
-                queue.enqueue(*v);
-                visisted_nodes[*v as usize] = true;
-                prev[*v as usize] = Some(current_node);
+//             if !visisted_nodes[*v as usize] {
+//                 queue.enqueue(*v);
+//                 visisted_nodes[*v as usize] = true;
+//                 prev[*v as usize] = Some(current_node);
+//             }
+//         }
+//     }
+
+//     let mut path = Vec::new();
+//     let mut at = Some(end_node);
+//     while at != None {
+//         path.push(at);
+//         at = prev[at.unwrap_or(0) as usize];
+//     }
+
+//     path.reverse();
+    
+//     return match path[0] {
+//         Some(x) if x == start_node => Some(path),
+//         _ => None,
+//     };
+// }
+
+fn main() {}
+
+pub fn bfs(graph: &Graph, root: Node, target: Node) -> Option<Vec<i32>> {
+    let mut visited: HashSet<Node> = HashSet::new();
+    let mut history: Vec<i32> = Vec::new();
+    let mut queue = VecDeque::new();
+
+    visited.insert(root);
+    queue.push_back(root);
+    while let Some(currentnode) = queue.pop_front() {
+        history.push(currentnode.value());
+
+        if currentnode == target {
+            println!("Goal is found: {:?}", history);
+            return Some(history);
+        }
+
+        for neighbor in currentnode.neighbors(graph) {
+            if !visited.contains(&neighbor) {
+                visited.insert(neighbor);
+                queue.push_back(neighbor);
             }
         }
     }
 
-    let mut path = Vec::new();
-    let mut at = Some(end_node);
-    while at != None {
-        path.push(at);
-        at = prev[at.unwrap_or(0) as usize];
-    }
-
-    path.reverse();
-    
-    return match path[0] {
-        Some(x) if x == start_node => Some(path),
-        _ => None,
-    };
+    None
 }
-
-fn main() {}
