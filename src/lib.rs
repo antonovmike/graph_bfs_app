@@ -120,7 +120,6 @@ pub fn rem_edge(graph: Graph, to_remove: Edge) -> Graph {
 
 //     let mut prev: Vec<Option<i32>> = vec![None; graph.len()];
 
-//     // 'allows to break out of outer loop from within
 //     'outer: while !queue.is_empty() {
 //         let current_node = queue.dequeue();
 //         for v in graph[current_node as usize].iter() {
@@ -155,6 +154,7 @@ pub fn rem_edge(graph: Graph, to_remove: Edge) -> Graph {
 fn main() {}
 
 pub fn bfs(graph: &Graph, root: Node, target: Node) -> Option<Vec<i32>> {
+    println!("root {:?} target {:?}", root, target);
     let mut visited: HashSet<Node> = HashSet::new();
     let mut history: Vec<i32> = Vec::new();
     let mut queue = VecDeque::new();

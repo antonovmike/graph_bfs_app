@@ -34,7 +34,7 @@ fn main() {
     // BREADTH FIRST SEARCH
     // let gr_vector: Vec<Vec<i32>> = vec![vec![1, 2], vec![3, 4], vec![2, 4]];
     // let found = bfs(gr_vector, 0, 2);
-    let found = bfs(&gr_4, Node(0), Node(2));
+    let found = bfs(&gr_4, Node(1), Node(2));
     // println!("BFS: \t\t\t{:?}", found.as_ref().unwrap());
     println!("BFS: \t\t\t{:?}", found);
 }
