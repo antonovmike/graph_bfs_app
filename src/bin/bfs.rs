@@ -3,7 +3,7 @@ use graph_bfs_app::rem_node;
 use graph_bfs_app::add_node;
 use graph_bfs_app::rem_edge;
 use graph_bfs_app::add_edge;
-// use graph_bfs_app::bfs;
+use graph_bfs_app::bfs;
 use graph_bfs_app::{Node, Edge};
 
 fn main() {

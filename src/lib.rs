@@ -1,5 +1,5 @@
 #![allow(unused)]
-use std::collections::{HashSet, VecDeque};
+use std::{collections::{HashSet, VecDeque}, hash::Hash};
 
 // type NodeType = Vec<i32>;
 // type GraphType = Vec<NodeType>;
@@ -35,7 +35,7 @@ pub struct Graph<T> {
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
-pub struct Node<T>(pub T);
+pub struct Node<T> (pub T);
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub struct Edge(pub i32, pub i32);
@@ -59,7 +59,7 @@ impl<T> Node<T> {
     }
 
     pub fn neighbors(&self, graph: &Graph<T>) -> Vec<Node<T>> 
-    where T: PartialEq + Copy
+    where T: PartialEq + Copy + Hash
     {
         graph
             .nodes
@@ -158,29 +158,30 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 
 fn main() {}
 
-// pub fn bfs(graph: &Graph, root: Node, target: Node) -> Option<Vec<i32>> {
-//     println!("root {:?} target {:?}", root, target);
-//     let mut visited: HashSet<Node> = HashSet::new();
-//     let mut history: Vec<i32> = Vec::new();
-//     let mut queue = VecDeque::new();
+pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<T>> 
+where T: PartialEq + Copy + Hash {
+    // println!("root {:?} target {:?}", root, target);
+    let mut visited: HashSet<Node<T>> = HashSet::new();
+    let mut history: Vec<T> = Vec::new();
+    let mut queue = VecDeque::new();
 
-//     visited.insert(root);
-//     queue.push_back(root);
-//     while let Some(currentnode) = queue.pop_front() {
-//         history.push(currentnode.value());
+    visited.insert(root);
+    queue.push_back(root);
+    while let Some(currentnode) = queue.pop_front() {
+        history.push(currentnode.value());
 
-//         if currentnode == target {
-//             println!("Goal is found: {:?}", history);
-//             return Some(history);
-//         }
+        if currentnode == target {
+            println!("Goal is found: {:?}", history);
+            return Some(history);
+        }
 
-//         for neighbor in currentnode.neighbors(graph) {
-//             if !visited.contains(&neighbor) {
-//                 visited.insert(neighbor);
-//                 queue.push_back(neighbor);
-//             }
-//         }
-//     }
+        for neighbor in currentnode.neighbors(graph) {
+            if !visited.contains(&neighbor) {
+                visited.insert(neighbor);
+                queue.push_back(neighbor);
+            }
+        }
+    }
 
-//     None
-// }
+    None
+}
