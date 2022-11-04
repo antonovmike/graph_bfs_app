@@ -1,32 +1,32 @@
 #![allow(unused)]
 use std::collections::{HashSet, VecDeque};
 
-type NodeType = Vec<i32>;
-type GraphType = Vec<NodeType>;
-struct Queue<T> {
-    pub items: VecDeque<T>,
-}
-impl<T> Queue<T> {
-    pub fn new() -> Queue<T> {
-        Queue {
-            items: VecDeque::new(),
-        }
-    }
+// type NodeType = Vec<i32>;
+// type GraphType = Vec<NodeType>;
+// struct Queue<T> {
+//     pub items: VecDeque<T>,
+// }
+// impl<T> Queue<T> {
+//     pub fn new() -> Queue<T> {
+//         Queue {
+//             items: VecDeque::new(),
+//         }
+//     }
 
-    pub fn enqueue(&mut self, v: T) {
-        self.items.push_back(v)
-    }
+//     pub fn enqueue(&mut self, v: T) {
+//         self.items.push_back(v)
+//     }
 
-    pub fn dequeue(&mut self) -> T {
-        self.items
-            .pop_front()
-            .expect("Cannot dequeue from empty queue.")
-    }
+//     pub fn dequeue(&mut self) -> T {
+//         self.items
+//             .pop_front()
+//             .expect("Cannot dequeue from empty queue.")
+//     }
 
-    pub fn is_empty(&self) -> bool {
-        self.items.len() == 0
-    }
-}
+//     pub fn is_empty(&self) -> bool {
+//         self.items.len() == 0
+//     }
+// }
 
 #[derive(Clone)]
 pub struct Graph<T> {
