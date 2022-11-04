@@ -159,7 +159,7 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 fn main() {}
 
 pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<T>> 
-where T: PartialEq + Copy + Hash {
+where T: PartialEq + Copy + Hash + Eq {
     // println!("root {:?} target {:?}", root, target);
     let mut visited: HashSet<Node<T>> = HashSet::new();
     let mut history: Vec<T> = Vec::new();
@@ -171,7 +171,7 @@ where T: PartialEq + Copy + Hash {
         history.push(currentnode.value());
 
         if currentnode == target {
-            println!("Goal is found: {:?}", history);
+            // println!("Goal is found: {:?}", history);
             return Some(history);
         }
 
