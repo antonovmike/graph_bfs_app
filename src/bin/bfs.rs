@@ -3,12 +3,12 @@ use graph_bfs_app::rem_node;
 use graph_bfs_app::add_node;
 use graph_bfs_app::rem_edge;
 use graph_bfs_app::add_edge;
-use graph_bfs_app::bfs;
+// use graph_bfs_app::bfs;
 use graph_bfs_app::{Node, Edge};
 
 fn main() {
     // --> CREATE NEW GRAPH
-    let some_nodes: Vec<Node> = vec![Node(1), Node(2), Node(3), Node(4)];
+    let some_nodes: Vec<Node<i32>> = vec![Node(1), Node(2), Node(3), Node(4)];
     let some_edges: Vec<Edge> = vec![Edge(1, 2), Edge(3, 4)];
     let gr_0 = Graph::new(some_nodes, some_edges);
     println!("Graph new nodes: \t{:?}", gr_0.nodes);
@@ -34,7 +34,7 @@ fn main() {
     // BREADTH FIRST SEARCH
     // let gr_vector: Vec<Vec<i32>> = vec![vec![1, 2], vec![3, 4], vec![2, 4]];
     // let found = bfs(gr_vector, 0, 2);
-    let found = bfs(&gr_4, Node(1), Node(2));
+    // let found = bfs(&gr_4, Node(1), Node(2));
     // println!("BFS: \t\t\t{:?}", found.as_ref().unwrap());
-    println!("BFS: \t\t\t{:?}", found);
+    // println!("BFS: \t\t\t{:?}", found);
 }

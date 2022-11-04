@@ -29,35 +29,38 @@ impl<T> Queue<T> {
 }
 
 #[derive(Clone)]
-pub struct Graph {
-    pub nodes: Vec<Node>,
+pub struct Graph<T> {
+    pub nodes: Vec<Node<T>>,
     pub edges: Vec<Edge>,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
-pub struct Node(pub i32);
+pub struct Node<T>(pub T);
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub struct Edge(pub i32, pub i32);
 
-impl Graph {
-    pub fn new(nodes: Vec<Node>, edges: Vec<Edge>) -> Self {
+impl<T> Graph<T> {
+    pub fn new(nodes: Vec<Node<T>>, edges: Vec<Edge>) -> Self {
         Graph { nodes, edges }
     }
 }
 
-impl From<i32> for Node {
-    fn from(item: i32) -> Self {
+impl<T> From<T> for Node<T> {
+    fn from(item: T) -> Self {
         Node(item)
     }
 }
 
-impl Node {
-    pub fn value(&self) -> i32 {
+impl<T> Node<T> {
+    pub fn value(&self) -> T 
+    where T: Copy{
         self.0
     }
 
-    pub fn neighbors(&self, graph: &Graph) -> Vec<Node> {
+    pub fn neighbors(&self, graph: &Graph<T>) -> Vec<Node<T>> 
+    where T: PartialEq + Copy
+    {
         graph
             .nodes
             .iter()
@@ -69,16 +72,18 @@ impl Node {
 
 // --> ADD AND REMOVE NODES
 
-pub fn add_node(graph: Graph, to_add: Node) -> Graph {
+pub fn add_node<T>(graph: Graph<T>, to_add: Node<T>) -> Graph<T> {
     let mut new_vec = graph;
     new_vec.nodes.push(to_add);
     new_vec
 }
 
-pub fn rem_node(graph: Graph, to_remove: Node) -> Graph {
+pub fn rem_node<T>(graph: Graph<T>, to_remove: Node<T>) -> Graph<T> 
+where T: PartialEq
+{
     let mut nodes = graph.nodes;
-    nodes.retain(|value: &Node | *value != to_remove);
-    let new_vec: Graph = Graph {
+    nodes.retain(|value: &Node<T> | *value != to_remove);
+    let new_vec: Graph<T> = Graph {
         nodes: nodes,
         edges: graph.edges,
     };
@@ -87,13 +92,13 @@ pub fn rem_node(graph: Graph, to_remove: Node) -> Graph {
 
 // --> ADD AND REMOVE EDGES
 
-pub fn add_edge(graph: Graph, to_add: Edge) -> Graph {
+pub fn add_edge<T>(graph: Graph<T>, to_add: Edge) -> Graph<T> {
     let mut new_vec = graph;
     new_vec.edges.push(to_add);
     new_vec
 }
 
-pub fn rem_edge(graph: Graph, to_remove: Edge) -> Graph {
+pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
     let mut edges: Vec<Edge> = graph.edges;
     edges.retain(|value: &Edge | *value != to_remove);
     let new_vec = Graph {
@@ -153,29 +158,29 @@ pub fn rem_edge(graph: Graph, to_remove: Edge) -> Graph {
 
 fn main() {}
 
-pub fn bfs(graph: &Graph, root: Node, target: Node) -> Option<Vec<i32>> {
-    println!("root {:?} target {:?}", root, target);
-    let mut visited: HashSet<Node> = HashSet::new();
-    let mut history: Vec<i32> = Vec::new();
-    let mut queue = VecDeque::new();
+// pub fn bfs(graph: &Graph, root: Node, target: Node) -> Option<Vec<i32>> {
+//     println!("root {:?} target {:?}", root, target);
+//     let mut visited: HashSet<Node> = HashSet::new();
+//     let mut history: Vec<i32> = Vec::new();
+//     let mut queue = VecDeque::new();
 
-    visited.insert(root);
-    queue.push_back(root);
-    while let Some(currentnode) = queue.pop_front() {
-        history.push(currentnode.value());
+//     visited.insert(root);
+//     queue.push_back(root);
+//     while let Some(currentnode) = queue.pop_front() {
+//         history.push(currentnode.value());
 
-        if currentnode == target {
-            println!("Goal is found: {:?}", history);
-            return Some(history);
-        }
+//         if currentnode == target {
+//             println!("Goal is found: {:?}", history);
+//             return Some(history);
+//         }
 
-        for neighbor in currentnode.neighbors(graph) {
-            if !visited.contains(&neighbor) {
-                visited.insert(neighbor);
-                queue.push_back(neighbor);
-            }
-        }
-    }
+//         for neighbor in currentnode.neighbors(graph) {
+//             if !visited.contains(&neighbor) {
+//                 visited.insert(neighbor);
+//                 queue.push_back(neighbor);
+//             }
+//         }
+//     }
 
-    None
-}
+//     None
+// }
