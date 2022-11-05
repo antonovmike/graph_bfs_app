@@ -1,6 +1,6 @@
 #![allow(unused)]
 use std::{collections::{HashMap, HashSet, VecDeque}, hash::Hash, fmt::{Display, Debug}};
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::value};
 use std::fmt;
 
 #[derive(Clone)]
@@ -83,7 +83,8 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
     new_vec
 }
 
-// SERDE INTO TRIVIAL GRAPH FORMAT
+
+// --> SERDE INTO TRIVIAL GRAPH FORMAT
 /*
 1 First node
 2 Second node
@@ -105,6 +106,8 @@ pub struct GraphStructure {
 
 pub fn serial_triv<T>(graph: &Graph<T>) 
 where T: Copy + Display + ToString + std::fmt::Debug {
+    let mut result: HashMap<usize, String> = HashMap::new();
+
     let file = std::fs::OpenOptions::new()
         .write(true)
         .create(true)
@@ -113,36 +116,25 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 
     let gr_lenght = graph.nodes.len();
     for i in 0..gr_lenght {
-        format!("{:?}", graph.nodes[i]);
+        let value: String = format!("{:?}", graph.nodes[i]);
+        let serialized = serde_yaml::to_string(&i)
+            .unwrap().clone().into_bytes();
+        let serialized: Vec<u8> = serialized
+            .into_iter()
+            .take_while(|&x| x != 0)
+            .collect::<Vec<u8>>();
+        
+        let serde_data = String::from_utf8(serialized).expect("Invalid utf8 message");
+
+        result.insert(i, serde_data);
     }
-    let node_1 = format!("{:?}", graph.nodes[0]);
-    let node_2 = format!("{:?}", graph.nodes[1]);
-    let edge_1 = format!("{:?}", graph.edges[0]);
-    
-    let a = GraphStructure {
-        first_node: node_1,
-        second_node: node_2,
-        edge: edge_1,
-    };
 
-    let mut serialised_graph: HashMap<usize, String> = HashMap::new();
-
-    let serialized = serde_yaml::to_string(&a)
-        .unwrap()
-        .clone()
-        .into_bytes();
-    let serde_content = serialized
-        .into_iter()
-        .take_while(|&x| x != 0)
-        .collect::<Vec<_>>();
-    let serde_data = String::from_utf8(serde_content).expect("Invalid utf8 message");
-    serialised_graph.insert(9, serde_data);
-
-    serde_yaml::to_writer(file, &serialised_graph).unwrap();
+    serde_yaml::to_writer(file, &result).unwrap();
 }
 pub fn deserial_triv() {}
 
-// BREADTH FIRST SEARCH
+
+// --> BREADTH FIRST SEARCH
 // Use a list that stores nodes that need to be browsed.
 // In one iteration of the algorythm:
 // - if the list is not empty, the node is extracted from the list
