@@ -156,6 +156,10 @@ where T: Copy + Display + ToString + std::fmt::Debug {
         .open("serial_graph.yml")
         .expect("Couldn't open file");
 
+    let gr_lenght = graph.nodes.len();
+    for i in 0..gr_lenght {
+        gen_to_string(graph.nodes[i]);
+    }
     let node_1 = gen_to_string(graph.nodes[0]);
     let node_2 = gen_to_string(graph.nodes[1]);
     let edge = graph.edges[0];
