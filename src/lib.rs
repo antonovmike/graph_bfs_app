@@ -1,6 +1,7 @@
 #![allow(unused)]
-use std::{collections::{HashMap, HashSet, VecDeque}, hash::Hash};
+use std::{collections::{HashMap, HashSet, VecDeque}, hash::Hash, fmt::Display};
 use serde::{Deserialize, Serialize};
+use std::fmt;
 
 // type NodeType = Vec<i32>;
 // type GraphType = Vec<NodeType>;
@@ -116,22 +117,37 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 #
 1 2 Edge between the two
 */
+// impl<T> fmt::Display for Node<T> {
+//     #[inline]
+//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+//         fmt::Display::fmt(&*self, f)
+//     }
+// }
+impl<T> fmt::Display for Node<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self)
+    }
+}
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GraphStructure {
     pub first_node: String,
     pub second_node: String,
     pub edge: String,
 }
-pub fn serial_triv() {
+pub fn serial_triv<T>(graph: &Graph<T>) 
+where T: Copy + Display {
     let file = std::fs::OpenOptions::new()
         .write(true)
         .create(true)
         .open("serial_graph.yml")
         .expect("Couldn't open file");
 
+    let node_1 = graph.nodes[0];
+    let node_2 = graph.nodes[1];
+    let edge = graph.edges[0];
     let a = GraphStructure {
-        first_node: "first_node".to_string(),
-        second_node: "second_node".to_string(),
+        first_node: node_1.to_string(),
+        second_node: node_2.to_string(),
         edge: "edge".to_string(),
     };
 

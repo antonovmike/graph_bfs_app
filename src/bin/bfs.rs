@@ -34,7 +34,7 @@ fn main() {
 
     // --> SERDE INTO TRIVIAL GRAPH FORMAT
     // ...
-    serial_triv();
+    serial_triv(&gr_5);
 
     // --> BREADTH FIRST SEARCH
     // let gr_vector: Vec<Vec<i32>> = vec![vec![1, 2], vec![3, 4], vec![2, 4]];
