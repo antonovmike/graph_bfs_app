@@ -1,5 +1,8 @@
 #![allow(unused)]
-use std::{collections::{BTreeMap, HashMap, HashSet, VecDeque}, hash::Hash, fmt::{Display, Debug}};
+use std::{
+    collections::{BTreeMap, HashMap, HashSet, VecDeque}, 
+    hash::Hash, fmt::{Display, Debug}
+};
 use serde::{Deserialize, Serialize, de::value};
 use std::fmt;
 
@@ -92,12 +95,12 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 1 2 Edge between the two
 */
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct GraphStructure {
-    pub first_node: String,
-    pub second_node: String,
-    pub edge: String,
-}
+// #[derive(Debug, Serialize, Deserialize)]
+// pub struct GraphStructure {
+//     pub first_node: String,
+//     pub second_node: String,
+//     pub edge: String,
+// }
 // fn node_to_string<T>(mut node: Node<T>) -> String
 // where T: std::fmt::Display + std::fmt::Debug
 // {
