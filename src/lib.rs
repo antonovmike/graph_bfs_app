@@ -117,7 +117,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     let gr_lenght = graph.nodes.len();
     for i in 0..gr_lenght {
         let value: String = format!("{:?}", graph.nodes[i]);
-        let serialized = serde_yaml::to_string(&i)
+        let serialized = serde_yaml::to_string(&value)
             .unwrap().clone().into_bytes();
         let serialized: Vec<u8> = serialized
             .into_iter()
