@@ -1,11 +1,9 @@
-use graph_bfs_app::Graph;
-use graph_bfs_app::rem_node;
-use graph_bfs_app::add_node;
-use graph_bfs_app::rem_edge;
-use graph_bfs_app::add_edge;
-use graph_bfs_app::bfs;
-use graph_bfs_app::serial_triv;
-use graph_bfs_app::{Node, Edge};
+use graph_bfs_app::{Graph, Node, Edge};
+use graph_bfs_app::{
+    rem_node, add_node, 
+    rem_edge, add_edge, 
+    bfs, serial_triv
+};
 
 fn main() {
     // --> CREATE NEW GRAPH
