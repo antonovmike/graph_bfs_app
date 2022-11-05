@@ -4,6 +4,7 @@ use graph_bfs_app::add_node;
 use graph_bfs_app::rem_edge;
 use graph_bfs_app::add_edge;
 use graph_bfs_app::bfs;
+use graph_bfs_app::serial_triv;
 use graph_bfs_app::{Node, Edge};
 
 fn main() {
@@ -33,6 +34,7 @@ fn main() {
 
     // --> SERDE INTO TRIVIAL GRAPH FORMAT
     // ...
+    serial_triv(&gr_5);
 
     // --> BREADTH FIRST SEARCH
     let found = bfs(&gr_5, Node(0), Node(2));

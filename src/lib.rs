@@ -1,5 +1,6 @@
 #![allow(unused)]
-use std::{collections::{HashSet, VecDeque}, hash::Hash};
+use std::{collections::{HashMap, HashSet, VecDeque}, hash::Hash, fmt::Display};
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone)]
 pub struct Graph<T> {
@@ -81,14 +82,71 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
     new_vec
 }
 
-// --> SERDE INTO TRIVIAL GRAPH FORMAT
-// ...
+// SERDE INTO TRIVIAL GRAPH FORMAT
+/*
+1 First node
+2 Second node
+#
+1 2 Edge between the two
+*/
 
-// --> BREADTH FIRST SEARCH
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GraphStructure {
+    pub first_node: String,
+    pub second_node: String,
+    pub edge: String,
+}
+
+pub fn serial_triv<T>(graph: &Graph<T>) 
+where T: Copy + Display + ToString + std::fmt::Debug {
+    let file = std::fs::OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("serial_graph.yml")
+        .expect("Couldn't open file");
+
+    let gr_lenght = graph.nodes.len();
+    for i in 0..gr_lenght {
+        format!("{:?}", graph.nodes[i]);
+    }
+    let node_1 = format!("{:?}", graph.nodes[0]);
+    let node_2 = format!("{:?}", graph.nodes[1]);
+    let edge_1 = format!("{:?}", graph.edges[0]);
+    
+    let a = GraphStructure {
+        first_node: node_1,
+        second_node: node_2,
+        edge: edge_1,
+    };
+
+    let mut serialised_graph: HashMap<usize, String> = HashMap::new();
+
+    let serialized = serde_yaml::to_string(&a)
+        .unwrap()
+        .clone()
+        .into_bytes();
+    let serde_content = serialized
+        .into_iter()
+        .take_while(|&x| x != 0)
+        .collect::<Vec<_>>();
+    let serde_data = String::from_utf8(serde_content).expect("Invalid utf8 message");
+    serialised_graph.insert(9, serde_data);
+
+    serde_yaml::to_writer(file, &serialised_graph).unwrap();
+}
+pub fn deserial_triv() {}
+
+// BREADTH FIRST SEARCH
+/* 
+Use a list that stores nodes that need to be browsed.
+In one iteration of the algorythm:
+- if the list is not empty, the node is extracted from the list
+- the extracted node is visited (processed)
+- all of the children are placed into the list
+*/
 
 pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<T>> 
 where T: PartialEq + Copy + Hash + Eq {
-    // println!("root {:?} target {:?}", root, target);
     let mut visited: HashSet<Node<T>> = HashSet::new();
     let mut history: Vec<T> = Vec::new();
     let mut queue = VecDeque::new();
@@ -99,7 +157,6 @@ where T: PartialEq + Copy + Hash + Eq {
         history.push(currentnode.value());
 
         if currentnode == target {
-            // println!("Goal is found: {:?}", history);
             return Some(history);
         }
 
