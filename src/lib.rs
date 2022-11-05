@@ -116,25 +116,41 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 #
 1 2 Edge between the two
 */
-#[allow(non_snake_case)]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GraphStructure {
     pub first_node: String,
     pub second_node: String,
     pub edge: String,
 }
-fn serial_triv() {
+pub fn serial_triv() {
     let file = std::fs::OpenOptions::new()
         .write(true)
         .create(true)
         .open("serial_graph.yml")
         .expect("Couldn't open file");
 
-    let mut serialised_graph = HashMap::new();
+    let a = GraphStructure {
+        first_node: "first_node".to_string(),
+        second_node: "second_node".to_string(),
+        edge: "edge".to_string(),
+    };
+
+    let mut serialised_graph: HashMap<usize, String> = HashMap::new();
+
+    let serialized = serde_yaml::to_string(&a)
+        .unwrap()
+        .clone()
+        .into_bytes();
+    let serde_content = serialized
+        .into_iter()
+        .take_while(|&x| x != 0)
+        .collect::<Vec<_>>();
+    let serde_data = String::from_utf8(serde_content).expect("Invalid utf8 message");
+    serialised_graph.insert(9, serde_data);
 
     serde_yaml::to_writer(file, &serialised_graph).unwrap();
 }
-fn deserial_triv() {}
+pub fn deserial_triv() {}
 
 // BREADTH FIRST SEARCH
 // Use a list that stores nodes that need to be browsed.
