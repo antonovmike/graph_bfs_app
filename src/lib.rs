@@ -142,11 +142,11 @@ pub struct GraphStructure {
     pub second_node: String,
     pub edge: String,
 }
-fn gen_to_string<T>(mut node: Node<T>) -> String
-where T: std::fmt::Display + std::fmt::Debug
-{
-    format!("{:?}", node)
-}
+// fn node_to_string<T>(mut node: Node<T>) -> String
+// where T: std::fmt::Display + std::fmt::Debug
+// {
+//     format!("{:?}", node)
+// }
 
 pub fn serial_triv<T>(graph: &Graph<T>) 
 where T: Copy + Display + ToString + std::fmt::Debug {
@@ -158,15 +158,16 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 
     let gr_lenght = graph.nodes.len();
     for i in 0..gr_lenght {
-        gen_to_string(graph.nodes[i]);
+        format!("{:?}", graph.nodes[i]);
     }
-    let node_1 = gen_to_string(graph.nodes[0]);
-    let node_2 = gen_to_string(graph.nodes[1]);
-    let edge = graph.edges[0];
+    let node_1 = format!("{:?}", graph.nodes[0]);
+    let node_2 = format!("{:?}", graph.nodes[1]);
+    let edge_1 = format!("{:?}", graph.edges[0]);
+    
     let a = GraphStructure {
         first_node: node_1,
         second_node: node_2,
-        edge: "test".to_string(),
+        edge: edge_1,
     };
 
     let mut serialised_graph: HashMap<usize, String> = HashMap::new();
