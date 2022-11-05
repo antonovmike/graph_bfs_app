@@ -161,8 +161,8 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     let edge = graph.edges[0];
     let a = GraphStructure {
         first_node: node_1,
-        second_node: node_2.to_string(),
-        edge: "edge".to_string(),
+        second_node: node_2,
+        edge: "test".to_string(),
     };
 
     let mut serialised_graph: HashMap<usize, String> = HashMap::new();
