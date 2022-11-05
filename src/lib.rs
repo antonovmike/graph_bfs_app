@@ -1,5 +1,5 @@
 #![allow(unused)]
-use std::{collections::{HashMap, HashSet, VecDeque}, hash::Hash, fmt::{Display, Debug}};
+use std::{collections::{BTreeMap, HashMap, HashSet, VecDeque}, hash::Hash, fmt::{Display, Debug}};
 use serde::{Deserialize, Serialize, de::value};
 use std::fmt;
 
@@ -106,7 +106,7 @@ pub struct GraphStructure {
 
 pub fn serial_triv<T>(graph: &Graph<T>) 
 where T: Copy + Display + ToString + std::fmt::Debug {
-    let mut result: HashMap<usize, String> = HashMap::new();
+    let mut result: BTreeMap<usize, String> = BTreeMap::new();
 
     let file = std::fs::OpenOptions::new()
         .write(true)

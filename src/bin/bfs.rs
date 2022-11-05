@@ -29,6 +29,8 @@ fn main() {
     println!("One edge removed: \t{:?}", gr_4.edges);
 
     let gr_5 = add_edge(gr_4, two_three.clone());
+    println!("gr_5.edges: \t\t{:?}", gr_5.edges);
+    println!("gr_5.edges: \t\t{:?}", gr_5.nodes);
 
     // --> SERDE INTO TRIVIAL GRAPH FORMAT
     // ...
