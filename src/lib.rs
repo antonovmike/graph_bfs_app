@@ -1,5 +1,6 @@
 #![allow(unused)]
-use std::{collections::{HashSet, VecDeque}, hash::Hash};
+use std::{collections::{HashMap, HashSet, VecDeque}, hash::Hash};
+use serde::{Deserialize, Serialize};
 
 // type NodeType = Vec<i32>;
 // type GraphType = Vec<NodeType>;
@@ -109,6 +110,31 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 }
 
 // SERDE INTO TRIVIAL GRAPH FORMAT
+/*
+1 First node
+2 Second node
+#
+1 2 Edge between the two
+*/
+#[allow(non_snake_case)]
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GraphStructure {
+    pub first_node: String,
+    pub second_node: String,
+    pub edge: String,
+}
+fn serial_triv() {
+    let file = std::fs::OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("serial_graph.yml")
+        .expect("Couldn't open file");
+
+    let mut serialised_graph = HashMap::new();
+
+    serde_yaml::to_writer(file, &serialised_graph).unwrap();
+}
+fn deserial_triv() {}
 
 // BREADTH FIRST SEARCH
 // Use a list that stores nodes that need to be browsed.
@@ -116,6 +142,35 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 // - if the list is not empty, the node is extracted from the list
 // - the extracted node is visited (processed)
 // - all of the children are placed into the list
+
+pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<T>> 
+where T: PartialEq + Copy + Hash + Eq {
+    // println!("root {:?} target {:?}", root, target);
+    let mut visited: HashSet<Node<T>> = HashSet::new();
+    let mut history: Vec<T> = Vec::new();
+    let mut queue = VecDeque::new();
+
+    visited.insert(root);
+    queue.push_back(root);
+    while let Some(currentnode) = queue.pop_front() {
+        history.push(currentnode.value());
+
+        if currentnode == target {
+            // println!("Goal is found: {:?}", history);
+            return Some(history);
+        }
+
+        for neighbor in currentnode.neighbors(graph) {
+            if !visited.contains(&neighbor) {
+                visited.insert(neighbor);
+                queue.push_back(neighbor);
+            }
+        }
+    }
+
+    None
+}
+
 // pub fn bfs(graph: GraphType, start_node: i32, end_node: i32) -> Option<Vec<Option<i32>>> {
 //     let mut queue = Queue::new();
 //     queue.enqueue(start_node);
@@ -157,31 +212,3 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 // }
 
 fn main() {}
-
-pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<T>> 
-where T: PartialEq + Copy + Hash + Eq {
-    // println!("root {:?} target {:?}", root, target);
-    let mut visited: HashSet<Node<T>> = HashSet::new();
-    let mut history: Vec<T> = Vec::new();
-    let mut queue = VecDeque::new();
-
-    visited.insert(root);
-    queue.push_back(root);
-    while let Some(currentnode) = queue.pop_front() {
-        history.push(currentnode.value());
-
-        if currentnode == target {
-            // println!("Goal is found: {:?}", history);
-            return Some(history);
-        }
-
-        for neighbor in currentnode.neighbors(graph) {
-            if !visited.contains(&neighbor) {
-                visited.insert(neighbor);
-                queue.push_back(neighbor);
-            }
-        }
-    }
-
-    None
-}
