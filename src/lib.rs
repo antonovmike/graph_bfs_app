@@ -1,34 +1,7 @@
 #![allow(unused)]
-use std::{collections::{HashMap, HashSet, VecDeque}, hash::Hash, fmt::Display};
+use std::{collections::{HashMap, HashSet, VecDeque}, hash::Hash, fmt::{Display, Debug}};
 use serde::{Deserialize, Serialize};
 use std::fmt;
-
-// type NodeType = Vec<i32>;
-// type GraphType = Vec<NodeType>;
-// struct Queue<T> {
-//     pub items: VecDeque<T>,
-// }
-// impl<T> Queue<T> {
-//     pub fn new() -> Queue<T> {
-//         Queue {
-//             items: VecDeque::new(),
-//         }
-//     }
-
-//     pub fn enqueue(&mut self, v: T) {
-//         self.items.push_back(v)
-//     }
-
-//     pub fn dequeue(&mut self) -> T {
-//         self.items
-//             .pop_front()
-//             .expect("Cannot dequeue from empty queue.")
-//     }
-
-//     pub fn is_empty(&self) -> bool {
-//         self.items.len() == 0
-//     }
-// }
 
 #[derive(Clone)]
 pub struct Graph<T> {
@@ -117,25 +90,7 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 #
 1 2 Edge between the two
 */
-// impl<T> fmt::Display for Node<T> {
-//     #[inline]
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         fmt::Display::fmt(&*self, f)
-//         write!(f, "{}", self)
-//     }
-// }
-// impl<T> fmt::Display for Node<T> 
-// where T: Iterator {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         writeln!(f, "Found!")?;
-// // : <T as Iterator>::Item
-//         for i in self.0.filter() {
-//             writeln!(f, "- {}", )?;
-//         }
 
-//         write!(f, "Done!")
-//     }
-// }
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GraphStructure {
     pub first_node: String,
@@ -195,8 +150,8 @@ pub fn deserial_triv() {}
 // - all of the children are placed into the list
 
 pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<T>> 
-where T: PartialEq + Copy + Hash + Eq {
-    // println!("root {:?} target {:?}", root, target);
+where T: PartialEq + Copy + Hash + Eq + Debug {
+    println!("root: {:?}; target: {:?}", root, target);
     let mut visited: HashSet<Node<T>> = HashSet::new();
     let mut history: Vec<T> = Vec::new();
     let mut queue = VecDeque::new();
@@ -207,7 +162,7 @@ where T: PartialEq + Copy + Hash + Eq {
         history.push(currentnode.value());
 
         if currentnode == target {
-            // println!("Goal is found: {:?}", history);
+            println!("Goal is found: {:?}", history);
             return Some(history);
         }
 
