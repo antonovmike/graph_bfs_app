@@ -117,14 +117,10 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 #
 1 2 Edge between the two
 */
-// impl<T> fmt::Display for Node<T> {
-//     #[inline]
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         fmt::Display::fmt(&*self, f)
-//     }
-// }
 impl<T> fmt::Display for Node<T> {
+    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+//         fmt::Display::fmt(&*self, f)
         write!(f, "{}", self)
     }
 }
