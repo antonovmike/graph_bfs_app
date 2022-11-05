@@ -117,32 +117,50 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 #
 1 2 Edge between the two
 */
-impl<T> fmt::Display for Node<T> {
-    #[inline]
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+// impl<T> fmt::Display for Node<T> {
+//     #[inline]
+//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 //         fmt::Display::fmt(&*self, f)
-        write!(f, "{}", self)
-    }
-}
+//         write!(f, "{}", self)
+//     }
+// }
+// impl<T> fmt::Display for Node<T> 
+// where T: Iterator {
+//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+//         writeln!(f, "Found!")?;
+// // : <T as Iterator>::Item
+//         for i in self.0.filter() {
+//             writeln!(f, "- {}", )?;
+//         }
+
+//         write!(f, "Done!")
+//     }
+// }
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GraphStructure {
     pub first_node: String,
     pub second_node: String,
     pub edge: String,
 }
+fn gen_to_string<T>(mut node: Node<T>) -> String
+where T: std::fmt::Display + std::fmt::Debug
+{
+    format!("{:?}", node)
+}
+
 pub fn serial_triv<T>(graph: &Graph<T>) 
-where T: Copy + Display {
+where T: Copy + Display + ToString + std::fmt::Debug {
     let file = std::fs::OpenOptions::new()
         .write(true)
         .create(true)
         .open("serial_graph.yml")
         .expect("Couldn't open file");
 
-    let node_1 = graph.nodes[0];
-    let node_2 = graph.nodes[1];
+    let node_1 = gen_to_string(graph.nodes[0]);
+    let node_2 = gen_to_string(graph.nodes[1]);
     let edge = graph.edges[0];
     let a = GraphStructure {
-        first_node: node_1.to_string(),
+        first_node: node_1,
         second_node: node_2.to_string(),
         edge: "edge".to_string(),
     };
