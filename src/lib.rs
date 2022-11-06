@@ -102,6 +102,7 @@ pub struct GraphStructure {
     pub second_node: String,
     pub edge: String,
 }
+
 fn node_to_string<T>(graph: &Graph<T>, i: usize) -> GraphStructure
 where T: std::fmt::Display + std::fmt::Debug
 {
@@ -126,9 +127,6 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     let gr_lenght = graph.edges.len();
     for i in 0..gr_lenght {
         let key = format!("Edge {}", i);
-        // let first_node  = format!("{:?}", graph.edges[i].0);
-        // let second_node = format!("{:?}", graph.edges[i].1);
-        // let value_raw   = format!("{:?}", graph.edges[i]);
         let serialized = serde_yaml::to_string(&node_to_string(graph, i))
             .unwrap().clone().into_bytes();
         let serialized: Vec<u8> = serialized
@@ -143,7 +141,13 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 
     serde_yaml::to_writer(file, &result).unwrap();
 }
-pub fn deserial_triv() {}
+
+pub fn deserial_triv() {
+    let file = std::fs::OpenOptions::new()
+        .read(true)
+        .open("serial_graph.yml")
+        .expect("Couldn't open file");
+}
 
 
 // --> BREADTH FIRST SEARCH

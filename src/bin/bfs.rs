@@ -33,8 +33,8 @@ fn main() {
     println!("gr_5.edges: \t\t{:?}", gr_5.nodes);
 
     // --> SERDE INTO TRIVIAL GRAPH FORMAT
-    // ...
     serial_triv(&gr_5);
+    // deserial_triv();
 
     // --> BREADTH FIRST SEARCH
     // let gr_vector: Vec<Vec<i32>> = vec![vec![1, 2], vec![3, 4], vec![2, 4]];
