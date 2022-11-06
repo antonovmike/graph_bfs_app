@@ -96,17 +96,22 @@ where T: PartialEq {
 1 2 Edge between the two
 */
 
-// #[derive(Debug, Serialize, Deserialize)]
-// pub struct GraphStructure {
-//     pub first_node: String,
-//     pub second_node: String,
-//     pub edge: String,
-// }
-// fn node_to_string<T>(mut node: Node<T>) -> String
-// where T: std::fmt::Display + std::fmt::Debug
-// {
-//     format!("{:?}", node)
-// }
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GraphStructure {
+    pub first_node: String,
+    pub second_node: String,
+    pub edge: String,
+}
+fn node_to_string<T>(graph: &Graph<T>, i: usize) -> GraphStructure
+where T: std::fmt::Display + std::fmt::Debug
+{
+    let triivial_graph = GraphStructure {
+        first_node: format!("{:?}", graph.edges[i].0),
+        second_node: format!("{:?}", graph.edges[i].1),
+        edge: format!("{:?}", graph.edges[i]),
+    };
+    triivial_graph
+}
 
 pub fn serial_triv<T>(graph: &Graph<T>) 
 where T: Copy + Display + ToString + std::fmt::Debug {
@@ -121,8 +126,10 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     let gr_lenght = graph.edges.len();
     for i in 0..gr_lenght {
         let key = format!("Edge {}", i);
-        let value_raw: String = format!("{:?}", graph.nodes[i]);
-        let serialized = serde_yaml::to_string(&value_raw)
+        // let first_node  = format!("{:?}", graph.edges[i].0);
+        // let second_node = format!("{:?}", graph.edges[i].1);
+        // let value_raw   = format!("{:?}", graph.edges[i]);
+        let serialized = serde_yaml::to_string(&node_to_string(graph, i))
             .unwrap().clone().into_bytes();
         let serialized: Vec<u8> = serialized
             .into_iter()
