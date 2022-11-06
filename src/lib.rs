@@ -3,21 +3,22 @@ use std::{
     collections::{BTreeMap, HashSet, VecDeque}, 
     hash::Hash, fmt::{Display, Debug}
 };
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone)]
 pub struct Graph<T> {
     pub nodes: Vec<Node<T>>,
-    pub edges: Vec<Edge>,
+    pub edges: Vec<Edge<T>>,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub struct Node<T> (pub T);
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
-pub struct Edge(pub i32, pub i32);
+pub struct Edge<T>(pub Node<T>, pub Node<T>);
 
 impl<T> Graph<T> {
-    pub fn new(nodes: Vec<Node<T>>, edges: Vec<Edge>) -> Self {
+    pub fn new(nodes: Vec<Node<T>>, edges: Vec<Edge<T>>) -> Self {
         Graph { nodes, edges }
     }
 }
@@ -68,15 +69,16 @@ where T: PartialEq
 
 // --> ADD AND REMOVE EDGES
 
-pub fn add_edge<T>(graph: Graph<T>, to_add: Edge) -> Graph<T> {
+pub fn add_edge<T>(graph: Graph<T>, to_add: Edge<T>) -> Graph<T> {
     let mut new_vec = graph;
     new_vec.edges.push(to_add);
     new_vec
 }
 
-pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
-    let mut edges: Vec<Edge> = graph.edges;
-    edges.retain(|value: &Edge | *value != to_remove);
+pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge<T>) -> Graph<T> 
+where T: PartialEq {
+    let mut edges: Vec<Edge<T>> = graph.edges;
+    edges.retain(|value: &Edge<T> | *value != to_remove);
     let new_vec = Graph {
         nodes: graph.nodes,
         edges: edges,
@@ -93,9 +95,27 @@ pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
 1 2 Edge between the two
 */
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GraphStructure {
+    pub first_node: String,
+    pub second_node: String,
+    pub edge: String,
+}
+
+fn node_to_string<T>(graph: &Graph<T>, i: usize) -> GraphStructure
+where T: std::fmt::Display + std::fmt::Debug
+{
+    let triivial_graph = GraphStructure {
+        first_node: format!("{:?}", graph.edges[i].0),
+        second_node: format!("{:?}", graph.edges[i].1),
+        edge: format!("{:?}", graph.edges[i]),
+    };
+    triivial_graph
+}
+
 pub fn serial_triv<T>(graph: &Graph<T>) 
 where T: Copy + Display + ToString + std::fmt::Debug {
-    let mut result: BTreeMap<usize, String> = BTreeMap::new();
+    let mut result: BTreeMap<String, String> = BTreeMap::new();
 
     let file = std::fs::OpenOptions::new()
         .write(true)
@@ -103,24 +123,34 @@ where T: Copy + Display + ToString + std::fmt::Debug {
         .open("serial_graph.yml")
         .expect("Couldn't open file");
 
-    let gr_lenght = graph.nodes.len();
+    let gr_lenght = graph.edges.len();
     for i in 0..gr_lenght {
-        let value: String = format!("{:?}", graph.nodes[i]);
-        let serialized = serde_yaml::to_string(&value)
+        let key = format!("Edge {}", i);
+        let serialized = serde_yaml::to_string(&node_to_string(graph, i))
             .unwrap().clone().into_bytes();
         let serialized: Vec<u8> = serialized
             .into_iter()
             .take_while(|&x| x != 0)
             .collect::<Vec<u8>>();
         
-        let serde_data = String::from_utf8(serialized).expect("Invalid utf8 message");
+        let value_serialized = String::from_utf8(serialized).expect("Invalid utf8 message");
 
-        result.insert(i, serde_data);
+        result.insert(key, value_serialized);
     }
 
     serde_yaml::to_writer(file, &result).unwrap();
 }
-pub fn deserial_triv() {}
+
+pub fn deserial_triv<T>() 
+where T: Copy + Display + ToString + std::fmt::Debug {
+    let file = std::fs::OpenOptions::new()
+        .read(true)
+        .open("serial_graph.yml")
+        .expect("Couldn't open file");
+
+    let deserialized: Result<GraphStructure, serde_yaml::Error> = serde_yaml::from_reader(file);
+    println!("FILE {:?}", deserialized)
+}
 
 
 // --> BREADTH FIRST SEARCH
