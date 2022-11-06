@@ -1,8 +1,9 @@
 use graph_bfs_app::{Graph, Node, Edge};
 use graph_bfs_app::{
-    rem_node, add_node, 
-    rem_edge, add_edge, 
-    bfs, serial_triv, deserial_triv
+    add_node, rem_node, 
+    add_edge, rem_edge, 
+    serial_triv, deserial_triv, 
+    bfs
 };
 
 fn main() {
