@@ -9,17 +9,17 @@ use std::fmt;
 #[derive(Clone)]
 pub struct Graph<T> {
     pub nodes: Vec<Node<T>>,
-    pub edges: Vec<Edge>,
+    pub edges: Vec<Edge<T>>,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub struct Node<T> (pub T);
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
-pub struct Edge(pub i32, pub i32);
+pub struct Edge<T>(pub Node<T>, pub Node<T>);
 
 impl<T> Graph<T> {
-    pub fn new(nodes: Vec<Node<T>>, edges: Vec<Edge>) -> Self {
+    pub fn new(nodes: Vec<Node<T>>, edges: Vec<Edge<T>>) -> Self {
         Graph { nodes, edges }
     }
 }
@@ -70,15 +70,16 @@ where T: PartialEq
 
 // --> ADD AND REMOVE EDGES
 
-pub fn add_edge<T>(graph: Graph<T>, to_add: Edge) -> Graph<T> {
+pub fn add_edge<T>(graph: Graph<T>, to_add: Edge<T>) -> Graph<T> {
     let mut new_vec = graph;
     new_vec.edges.push(to_add);
     new_vec
 }
 
-pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge) -> Graph<T> {
-    let mut edges: Vec<Edge> = graph.edges;
-    edges.retain(|value: &Edge | *value != to_remove);
+pub fn rem_edge<T>(graph: Graph<T>, to_remove: Edge<T>) -> Graph<T> 
+where T: PartialEq {
+    let mut edges: Vec<Edge<T>> = graph.edges;
+    edges.retain(|value: &Edge<T> | *value != to_remove);
     let new_vec = Graph {
         nodes: graph.nodes,
         edges: edges,
@@ -117,7 +118,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
         .open("serial_graph.yml")
         .expect("Couldn't open file");
 
-    let gr_lenght = graph.nodes.len();
+    let gr_lenght = graph.edges.len();
     for i in 0..gr_lenght {
         let value: String = format!("{:?}", graph.nodes[i]);
         let serialized = serde_yaml::to_string(&value)
