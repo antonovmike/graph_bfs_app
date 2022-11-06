@@ -121,17 +121,17 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     let gr_lenght = graph.edges.len();
     for i in 0..gr_lenght {
         let key = format!("Edge {}", i);
-        let value: String = format!("{:?}", graph.nodes[i]);
-        let serialized = serde_yaml::to_string(&value)
+        let value_raw: String = format!("{:?}", graph.nodes[i]);
+        let serialized = serde_yaml::to_string(&value_raw)
             .unwrap().clone().into_bytes();
         let serialized: Vec<u8> = serialized
             .into_iter()
             .take_while(|&x| x != 0)
             .collect::<Vec<u8>>();
         
-        let serde_data = String::from_utf8(serialized).expect("Invalid utf8 message");
+        let value_serialized = String::from_utf8(serialized).expect("Invalid utf8 message");
 
-        result.insert(key, serde_data);
+        result.insert(key, value_serialized);
     }
 
     serde_yaml::to_writer(file, &result).unwrap();
