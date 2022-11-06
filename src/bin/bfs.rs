@@ -2,7 +2,7 @@ use graph_bfs_app::{Graph, Node, Edge};
 use graph_bfs_app::{
     rem_node, add_node, 
     rem_edge, add_edge, 
-    bfs, serial_triv
+    bfs, serial_triv, deserial_triv
 };
 
 fn main() {
@@ -34,7 +34,7 @@ fn main() {
 
     // --> SERDE INTO TRIVIAL GRAPH FORMAT
     serial_triv(&gr_5);
-    // deserial_triv();
+    deserial_triv::<i32>();
 
     // --> BREADTH FIRST SEARCH
     // let gr_vector: Vec<Vec<i32>> = vec![vec![1, 2], vec![3, 4], vec![2, 4]];

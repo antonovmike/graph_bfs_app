@@ -142,11 +142,15 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     serde_yaml::to_writer(file, &result).unwrap();
 }
 
-pub fn deserial_triv() {
+pub fn deserial_triv<T>() 
+where T: Copy + Display + ToString + std::fmt::Debug {
     let file = std::fs::OpenOptions::new()
         .read(true)
         .open("serial_graph.yml")
         .expect("Couldn't open file");
+
+    let deserialized: Result<GraphStructure, serde_yaml::Error> = serde_yaml::from_reader(file);
+    println!("FILE {:?}", deserialized)
 }
 
 
