@@ -110,7 +110,7 @@ where T: PartialEq {
 
 pub fn serial_triv<T>(graph: &Graph<T>) 
 where T: Copy + Display + ToString + std::fmt::Debug {
-    let mut result: BTreeMap<usize, String> = BTreeMap::new();
+    let mut result: BTreeMap<String, String> = BTreeMap::new();
 
     let file = std::fs::OpenOptions::new()
         .write(true)
@@ -120,6 +120,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 
     let gr_lenght = graph.edges.len();
     for i in 0..gr_lenght {
+        let key = format!("Edge {}", i);
         let value: String = format!("{:?}", graph.nodes[i]);
         let serialized = serde_yaml::to_string(&value)
             .unwrap().clone().into_bytes();
@@ -130,7 +131,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
         
         let serde_data = String::from_utf8(serialized).expect("Invalid utf8 message");
 
-        result.insert(i, serde_data);
+        result.insert(key, serde_data);
     }
 
     serde_yaml::to_writer(file, &result).unwrap();
