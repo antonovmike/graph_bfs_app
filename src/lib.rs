@@ -32,13 +32,12 @@ impl<T> From<T> for Node<T> {
 
 impl<T> Node<T> {
     pub fn value(&self) -> T 
-    where T: Copy{
+    where T: Copy {
         self.0
     }
 
     pub fn neighbors(&self, graph: &Graph<T>) -> Vec<Node<T>> 
-    where T: PartialEq + Copy + Hash
-    {
+    where T: PartialEq + Copy + Hash {
         graph
             .nodes
             .iter()
@@ -57,8 +56,7 @@ pub fn add_node<T>(graph: Graph<T>, to_add: Node<T>) -> Graph<T> {
 }
 
 pub fn rem_node<T>(graph: Graph<T>, to_remove: Node<T>) -> Graph<T> 
-where T: PartialEq
-{
+where T: PartialEq {
     let mut nodes = graph.nodes;
     nodes.retain(|value: &Node<T> | *value != to_remove);
     let new_vec: Graph<T> = Graph {
@@ -104,8 +102,7 @@ pub struct GraphStructure {
 }
 
 fn node_to_string<T>(graph: &Graph<T>, i: usize) -> GraphStructure
-where T: std::fmt::Display + std::fmt::Debug
-{
+where T: std::fmt::Display + std::fmt::Debug {
     let triivial_graph = GraphStructure {
         first_node: format!("{:?}", graph.edges[i].0),
         second_node: format!("{:?}", graph.edges[i].1),
