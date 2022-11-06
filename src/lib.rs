@@ -152,12 +152,12 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     // let deserialized: Result<GraphStructure, serde_yaml::Error> = serde_yaml::from_reader(file);
     // dbg!(deserialized);
     // println!("FILE {:?}", deserialized)
-    
+
     let file = fs::read_to_string("serial_graph.yml").expect("Unable to read line");
-
-    for i in serde_yaml::Deserializer::from_str(&file) {
-
-    }
+    println!("FILE \n{}", file);
+    // for i in serde_yaml::Deserializer::from_str(&file) {
+        //...
+    // }
 
 }
 
