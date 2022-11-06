@@ -104,7 +104,7 @@ pub struct GraphStructure {
     pub edge: String,
 }
 
-fn node_to_string<T>(graph: &Graph<T>, i: usize) -> GraphStructure
+fn into_structure<T>(graph: &Graph<T>, i: usize) -> GraphStructure
 where T: std::fmt::Display + std::fmt::Debug {
     let triivial_graph = GraphStructure {
         first_node: format!("{:?}", graph.edges[i].0),
@@ -127,7 +127,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     let gr_lenght = graph.edges.len();
     for i in 0..gr_lenght {
         let key = format!("Edge {}", i);
-        let serialized = serde_yaml::to_string(&node_to_string(graph, i))
+        let serialized = serde_yaml::to_string(&into_structure(graph, i))
             .unwrap().clone().into_bytes();
         let serialized: Vec<u8> = serialized
             .into_iter()
@@ -142,8 +142,10 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     serde_yaml::to_writer(file, &result).unwrap();
 }
 
+fn from_structure<T>(graph: String, i: usize) {}
 
 pub fn deserial_triv<T>() 
+// -> Graph<T> 
 where T: Copy + Display + ToString + std::fmt::Debug {
     // let file = std::fs::OpenOptions::new()
     //     .read(true)
@@ -157,6 +159,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
         //...
     }
 
+    // return graph
 }
 
 
