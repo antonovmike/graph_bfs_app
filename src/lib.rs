@@ -153,8 +153,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     //     .expect("Couldn't open file");
 
     let file = fs::read_to_string("serial_graph.yml").expect("Unable to read line");
-    println!("FILE \n{}", file);
-    // let file_slice = &file[..];
+    // println!("FILE \n{}", file);
 
     let mut all_lines: Vec<String> = vec![];
     let mut index = 0;
@@ -169,8 +168,8 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     }
     println!("VACTOR \n{:?}", all_lines);
 
-    let mut some_nodes: Vec<Node<i32>> = vec![];
-    let mut some_edges: Vec<Edge<i32>> = vec![];
+    let mut some_nodes: Vec<Node<T>> = vec![];
+    let mut some_edges: Vec<Edge<T>> = vec![];
     let mut edge_index = 0;
     let mut index = 0;
     for mut i in 0..all_lines.len() {
@@ -181,15 +180,10 @@ where T: Copy + Display + ToString + std::fmt::Debug {
             println!("Iteration {}: \t{}", i, &all_lines[i + 1]);
             println!("Iteration {}: \t{}", i, &all_lines[i + 2]);
             println!("Iteration {}: \t{}", i, &all_lines[i + 3]);
-            // some_nodes.push(value)
+            // some_nodes.push( ... );
             edge_index += 1;
-        } 
-        // i += 4
+        }
     }
-
-    // let file_str = &file[..];
-    // let graph_from_yaml: Graph<T> = serde_yaml::from_str(file_str).unwrap();
-    // let graph_from_yaml: Vec<Graph<T>> = serde_yaml::from_str(file_str);
 
     // return graph
 }
