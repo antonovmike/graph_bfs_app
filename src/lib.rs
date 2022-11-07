@@ -1,7 +1,7 @@
 #![allow(unused)]
 use std::{
-    collections::{BTreeMap, HashMap, HashSet, VecDeque}, 
-    hash::Hash, fmt::{Display, Debug}, fs
+    collections::{BTreeMap, HashMap, HashSet, VecDeque, self}, 
+    hash::Hash, fmt::{Display, Debug, format}, fs, io::BufRead
 };
 use serde::{Deserialize, Serialize, de::value};
 use std::fmt;
@@ -155,9 +155,45 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     let file = fs::read_to_string("serial_graph.yml").expect("Unable to read line");
     println!("FILE \n{}", file);
     // let file_slice = &file[..];
-    for i in serde_yaml::Deserializer::from_str(&file) {
-        //...
+
+    let mut all_lines: Vec<String> = vec![];
+    let mut index = 0;
+
+    for line in std::io::BufReader::new(std::fs::File::open("serial_graph.yml").expect("Failed at opening file.")).lines() {
+        let words = line.unwrap();
+        
+        // let splitter = format!("Edge {}: |", index);
+        // let words_split = words.split(&splitter);
+
+        let edge_index = format!("Edge {}:", index);
+        if words.contains(&edge_index) {
+            println!("words: \t{}", words);
+        }
+        all_lines.push(words)
     }
+    println!("VACTOR \n{:?}", all_lines);
+
+    let mut some_nodes: Vec<Node<i32>> = vec![];
+    let mut some_edges: Vec<Edge<i32>> = vec![];
+    // let the_len = all_lines.len();
+    let mut index = 0;
+    for mut i in 0..all_lines.len() {
+        let edge_index = format!("Edge {}:", index);
+        if all_lines[i].contains(&edge_index) {
+            println!("Iteration {}: \t{}", i, &all_lines[index]);
+            println!("Iteration {}: \t{}", i, &all_lines[index + 1]);
+            println!("Iteration {}: \t{}", i, &all_lines[index + 2]);
+            println!("Iteration {}: \t{}", i, &all_lines[index + 3]);
+            println!();
+            // some_nodes.push(value)
+            index += 1;
+        }
+        i += 4
+    }
+
+    let file_str = &file[..];
+    // let graph_from_yaml: Graph<T> = serde_yaml::from_str(file_str).unwrap();
+    // let graph_from_yaml: Vec<Graph<T>> = serde_yaml::from_str(file_str);
 
     // return graph
 }
