@@ -175,23 +175,23 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 
     let mut some_nodes: Vec<Node<i32>> = vec![];
     let mut some_edges: Vec<Edge<i32>> = vec![];
-    // let the_len = all_lines.len();
+    let mut edge_index = 0;
     let mut index = 0;
     for mut i in 0..all_lines.len() {
-        let edge_index = format!("Edge {}:", index);
-        if all_lines[i].contains(&edge_index) {
+        let edge_index_string = format!("Edge {}:", edge_index);
+        if all_lines[i].contains(&edge_index_string) {
             println!("Iteration {}: \t{}", i, &all_lines[index]);
             println!("Iteration {}: \t{}", i, &all_lines[index + 1]);
             println!("Iteration {}: \t{}", i, &all_lines[index + 2]);
             println!("Iteration {}: \t{}", i, &all_lines[index + 3]);
-            println!();
+            println!("edge_index {}", edge_index);
             // some_nodes.push(value)
-            index += 1;
-        }
-        i += 4
+            edge_index += 1;
+        } 
+        // i += 4
     }
 
-    let file_str = &file[..];
+    // let file_str = &file[..];
     // let graph_from_yaml: Graph<T> = serde_yaml::from_str(file_str).unwrap();
     // let graph_from_yaml: Vec<Graph<T>> = serde_yaml::from_str(file_str);
 
