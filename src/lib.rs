@@ -161,10 +161,6 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 
     for line in std::io::BufReader::new(std::fs::File::open("serial_graph.yml").expect("Failed at opening file.")).lines() {
         let words = line.unwrap();
-        
-        // let splitter = format!("Edge {}: |", index);
-        // let words_split = words.split(&splitter);
-
         let edge_index = format!("Edge {}:", index);
         if words.contains(&edge_index) {
             println!("words: \t{}", words);
@@ -179,12 +175,12 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     let mut index = 0;
     for mut i in 0..all_lines.len() {
         let edge_index_string = format!("Edge {}:", edge_index);
+        println!("edge_index {}; Edge {}", edge_index, edge_index_string);
         if all_lines[i].contains(&edge_index_string) {
-            println!("Iteration {}: \t{}", i, &all_lines[index]);
-            println!("Iteration {}: \t{}", i, &all_lines[index + 1]);
-            println!("Iteration {}: \t{}", i, &all_lines[index + 2]);
-            println!("Iteration {}: \t{}", i, &all_lines[index + 3]);
-            println!("edge_index {}", edge_index);
+            println!("Iteration {}: \t{}", i, &all_lines[i]);
+            println!("Iteration {}: \t{}", i, &all_lines[i + 1]);
+            println!("Iteration {}: \t{}", i, &all_lines[i + 2]);
+            println!("Iteration {}: \t{}", i, &all_lines[i + 3]);
             // some_nodes.push(value)
             edge_index += 1;
         } 
