@@ -175,12 +175,22 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     let mut index = 0;
     for mut i in 0..all_lines.len() {
         let edge_index_string = format!("Edge {}:", edge_index);
-        println!("edge_index {}; Edge {}", edge_index, edge_index_string);
+        // println!("edge_index {}; Edge {}", edge_index, edge_index_string);
         if all_lines[i].contains(&edge_index_string) {
+            let a = file.split(&edge_index_string);
+            // for s in a {
+                // println!("s {}", s);
+                // let u = s.as_ref().unwrap();
+                // let deser_2: Result<GraphStructure, serde_yaml::Error> = serde_yaml::from_str(s);
+                // let deser: Result<Vec<Node<T>>, serde_yaml::Error> = serde_yaml::from_str(s);
+                // println!("deser {:#?}", deser_2);
+            // }
             println!("Iteration {}: \t{}", i, &all_lines[i]);
-            println!("Iteration {}: \t{}", i, &all_lines[i + 1]);
-            println!("Iteration {}: \t{}", i, &all_lines[i + 2]);
-            println!("Iteration {}: \t{}", i, &all_lines[i + 3]);
+            // println!("Iteration {}: \t{}", i, &all_lines[i + 1]);
+            // println!("Iteration {}: \t{}", i, &all_lines[i + 2]);
+            // println!("Iteration {}: \t{}", i, &all_lines[i + 3]);
+            let each_part = format!("{}{}{}", &all_lines[i + 1], &all_lines[i + 2], &all_lines[i + 3]);
+            println!("{}", each_part);
             // some_nodes.push( &all_lines[i] );
             edge_index += 1;
         }
