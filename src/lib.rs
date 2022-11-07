@@ -156,6 +156,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     // println!("FILE \n{}", file);
 
     let mut all_lines: Vec<String> = vec![];
+    // let mut all_lines: Vec<Node<T>> = vec![];
     let mut index = 0;
 
     for line in std::io::BufReader::new(std::fs::File::open("serial_graph.yml").expect("Failed at opening file.")).lines() {
@@ -180,7 +181,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
             println!("Iteration {}: \t{}", i, &all_lines[i + 1]);
             println!("Iteration {}: \t{}", i, &all_lines[i + 2]);
             println!("Iteration {}: \t{}", i, &all_lines[i + 3]);
-            // some_nodes.push( ... );
+            // some_nodes.push( &all_lines[i] );
             edge_index += 1;
         }
     }
