@@ -1,7 +1,7 @@
 #![allow(unused)]
 use std::{
-    collections::{BTreeMap, HashSet, VecDeque}, 
-    hash::Hash, fmt::{Display, Debug}
+    collections::{BTreeMap, HashMap, HashSet, VecDeque, self}, 
+    hash::Hash, fmt::{Display, Debug, format}, fs, io::BufRead
 };
 use serde::{Deserialize, Serialize};
 
@@ -31,13 +31,12 @@ impl<T> From<T> for Node<T> {
 
 impl<T> Node<T> {
     pub fn value(&self) -> T 
-    where T: Copy{
+    where T: Copy {
         self.0
     }
 
     pub fn neighbors(&self, graph: &Graph<T>) -> Vec<Node<T>> 
-    where T: PartialEq + Copy + Hash
-    {
+    where T: PartialEq + Copy + Hash {
         graph
             .nodes
             .iter()
@@ -101,7 +100,7 @@ pub struct GraphStructure {
     pub edge: String,
 }
 
-fn node_to_string<T>(graph: &Graph<T>, i: usize) -> GraphStructure
+fn into_structure<T>(graph: &Graph<T>, i: usize) -> GraphStructure
 where T: std::fmt::Display + std::fmt::Debug {
     let triivial_graph = GraphStructure {
         first_node: format!("{:?}", graph.edges[i].0),
@@ -124,7 +123,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     let gr_lenght = graph.edges.len();
     for i in 0..gr_lenght {
         let key = format!("Edge {}", i);
-        let serialized = serde_yaml::to_string(&node_to_string(graph, i))
+        let serialized = serde_yaml::to_string(&into_structure(graph, i))
             .unwrap().clone().into_bytes();
         let serialized: Vec<u8> = serialized
             .into_iter()
@@ -139,15 +138,32 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     serde_yaml::to_writer(file, &result).unwrap();
 }
 
-pub fn deserial_triv<T>() 
-where T: Copy + Display + ToString + std::fmt::Debug {
-    let file = std::fs::OpenOptions::new()
-        .read(true)
-        .open("serial_graph.yml")
-        .expect("Couldn't open file");
+// fn from_structure<T>(graph: String, i: usize) {}
 
-    let deserialized: Result<GraphStructure, serde_yaml::Error> = serde_yaml::from_reader(file);
-    println!("FILE {:?}", deserialized)
+pub fn deserial_triv<T>(path: &str) 
+// -> Graph<T> 
+where T: Copy + Display + ToString + std::fmt::Debug {
+    let mut all_lines: Vec<String> = vec![];
+
+    for line in std::io::BufReader::new(std::fs::File::open(path).expect("Failed at opening file.")).lines() {
+        let words = line.unwrap();
+        all_lines.push(words)
+    }
+    
+    let mut edge_index = 0;
+    
+    for i in 0..all_lines.len() {
+        let edge_index_string = format!("Edge {}: |", edge_index);
+        if all_lines[i].contains(&edge_index_string[1..]) {
+            let each_part = format!("{}\n{}\n{}", &all_lines[i + 1], &all_lines[i + 2], &all_lines[i + 3]);
+            let deser: GraphStructure = serde_yaml::from_str(&each_part).unwrap();
+            println!("DESERIALIZED \n{:?}", deser);
+            println!();
+            edge_index += 1;
+        }
+    }
+
+    // return graph
 }
 
 

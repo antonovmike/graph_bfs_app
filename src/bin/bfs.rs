@@ -23,19 +23,20 @@ fn main() {
 
     // --> ADD AND REMOVE DIRECTED EDGES
     let two_three = Edge(Node(2), Node(3));
-    // let three_two = Edge(3, 2);
     let gr_3 = add_edge(gr_2, two_three.clone());
     println!("One edge added: \t{:?}", gr_3.edges);
     let gr_4 = rem_edge(gr_3, two_three);
     println!("One edge removed: \t{:?}", gr_4.edges);
 
-    let gr_5 = add_edge(gr_4, two_three.clone());
-
     // --> SERDE INTO TRIVIAL GRAPH FORMAT
+    let gr_5 = add_edge(gr_4, two_three.clone());
+    println!("gr_5.edges: \t\t{:?}", gr_5.edges);
+    println!("gr_5.edges: \t\t{:?}", gr_5.nodes);
     serial_triv(&gr_5);
-    deserial_triv::<i32>();
+    deserial_triv::<i32>("serial_graph.yml");
 
     // --> BREADTH FIRST SEARCH
     let found = bfs(&gr_5, Node(0), Node(2));
+    // println!("BFS: \t\t\t{:?}", found.as_ref().unwrap());
     println!("BFS: \t\t\t{:?}", found);
 }
