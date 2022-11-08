@@ -33,7 +33,7 @@ fn main() {
     println!("gr_5.edges: \t\t{:?}", gr_5.edges);
     println!("gr_5.edges: \t\t{:?}", gr_5.nodes);
     serial_triv(&gr_5);
-    deserial_triv::<i32>();
+    deserial_triv::<i32>("serial_graph.yml");
 
     // --> BREADTH FIRST SEARCH
     let found = bfs(&gr_5, Node(0), Node(2));

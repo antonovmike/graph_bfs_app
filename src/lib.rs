@@ -1,4 +1,4 @@
-#![allow(unused)]
+// #![allow(unused)]
 use std::{
     collections::{BTreeMap, HashMap, HashSet, VecDeque, self}, 
     hash::Hash, fmt::{Display, Debug, format}, fs, io::BufRead
@@ -144,11 +144,11 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 
 fn from_structure<T>(graph: String, i: usize) {}
 
-pub fn deserial_triv<T>() 
+pub fn deserial_triv<T>(path: &str) 
 // -> Graph<T> 
 where T: Copy + Display + ToString + std::fmt::Debug {
 
-    let file = fs::read_to_string("serial_graph.yml").expect("Unable to read line");
+    let file = fs::read_to_string(path).expect("Unable to read line");
     let mut all_lines: Vec<String> = vec![];
     let mut index = 0;
 
@@ -167,9 +167,10 @@ where T: Copy + Display + ToString + std::fmt::Debug {
         if all_lines[i].contains(&edge_index_string[1..]) {
             let a = file.split(&edge_index_string);
             let each_part = format!("{}\n{}\n{}", &all_lines[i + 1], &all_lines[i + 2], &all_lines[i + 3]);
-            println!("each_part\n{}", each_part);
+            // println!("each_part\n{}", each_part);
             let deser: GraphStructure = serde_yaml::from_str(&each_part).unwrap();
-            println!("DESER \n{:?}", deser);
+            println!("DESERIALIZED \n{:?}", deser);
+            println!();
             edge_index += 1;
         }
     }
