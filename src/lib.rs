@@ -1,13 +1,9 @@
-// #![allow(unused)]
+#![allow(unused)]
 use std::{
     collections::{BTreeMap, HashMap, HashSet, VecDeque, self}, 
     hash::Hash, fmt::{Display, Debug, format}, fs, io::BufRead
 };
 use serde::{Deserialize, Serialize, de::value};
-use std::fmt;
-
-// use anyhow::Result;
-use serde_yaml::Value;
 
 #[derive(Clone)]
 pub struct Graph<T> {
@@ -142,32 +138,24 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     serde_yaml::to_writer(file, &result).unwrap();
 }
 
-fn from_structure<T>(graph: String, i: usize) {}
+// fn from_structure<T>(graph: String, i: usize) {}
 
 pub fn deserial_triv<T>(path: &str) 
 // -> Graph<T> 
 where T: Copy + Display + ToString + std::fmt::Debug {
-
-    let file = fs::read_to_string(path).expect("Unable to read line");
     let mut all_lines: Vec<String> = vec![];
-    let mut index = 0;
 
-    for line in std::io::BufReader::new(std::fs::File::open("serial_graph.yml").expect("Failed at opening file.")).lines() {
+    for line in std::io::BufReader::new(std::fs::File::open(path).expect("Failed at opening file.")).lines() {
         let words = line.unwrap();
-        let edge_index = format!("Edge {}:", index);
         all_lines.push(words)
     }
-
-    let mut some_nodes: Vec<Node<T>> = vec![];
-    let mut some_edges: Vec<Edge<T>> = vec![];
+    
     let mut edge_index = 0;
-    let mut index = 0;
-    for mut i in 0..all_lines.len() {
+    
+    for i in 0..all_lines.len() {
         let edge_index_string = format!("Edge {}: |", edge_index);
         if all_lines[i].contains(&edge_index_string[1..]) {
-            let a = file.split(&edge_index_string);
             let each_part = format!("{}\n{}\n{}", &all_lines[i + 1], &all_lines[i + 2], &all_lines[i + 3]);
-            // println!("each_part\n{}", each_part);
             let deser: GraphStructure = serde_yaml::from_str(&each_part).unwrap();
             println!("DESERIALIZED \n{:?}", deser);
             println!();
