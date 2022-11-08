@@ -138,30 +138,40 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     serde_yaml::to_writer(file, &result).unwrap();
 }
 
-// fn from_structure<T>(graph: String, i: usize) {}
 
 pub fn deserial_triv<T>(path: &str) 
 // -> Graph<T> 
 where T: Copy + Display + ToString + std::fmt::Debug {
     let mut all_lines: Vec<String> = vec![];
 
-    for line in std::io::BufReader::new(std::fs::File::open(path).expect("Failed at opening file.")).lines() {
+    for line in std::io::BufReader::new(
+        std::fs::File::open(path).expect("Failed at opening file.")
+    ).lines() {
         let words = line.unwrap();
         all_lines.push(words)
     }
     
     let mut edge_index = 0;
+
+    let mut vec_of_graphs: Vec<GraphStructure> = vec![];
     
     for i in 0..all_lines.len() {
         let edge_index_string = format!("Edge {}: |", edge_index);
         if all_lines[i].contains(&edge_index_string[1..]) {
-            let each_part = format!("{}\n{}\n{}", &all_lines[i + 1], &all_lines[i + 2], &all_lines[i + 3]);
+            let each_part = format!(
+                "{}\n{}\n{}", &all_lines[i + 1], &all_lines[i + 2], &all_lines[i + 3]
+            );
             let deser: GraphStructure = serde_yaml::from_str(&each_part).unwrap();
-            println!("DESERIALIZED \n{:?}", deser);
-            println!();
+            vec_of_graphs.push(deser);
             edge_index += 1;
         }
     }
+
+    println!("first_node String = {}", vec_of_graphs[0].first_node);
+
+    // let some_nodes: Vec<Node<T>> = vec![vec_of_graphs[0].first_node, Node(2), Node(3), Node(4)];
+
+    // let gr_0 = Graph::new(some_nodes, some_edges);
 
     // return graph
 }
@@ -176,7 +186,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 
 pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<T>> 
 where T: PartialEq + Copy + Hash + Eq + Debug {
-    println!("root: {:?}; target: {:?}", root, target);
+    // println!("root: {:?}; target: {:?}", root, target);
     let mut visited: HashSet<Node<T>> = HashSet::new();
     let mut history: Vec<T> = Vec::new();
     let mut queue = VecDeque::new();
