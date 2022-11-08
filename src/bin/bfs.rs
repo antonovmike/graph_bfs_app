@@ -30,10 +30,9 @@ fn main() {
 
     // --> SERDE INTO TRIVIAL GRAPH FORMAT
     let gr_5 = add_edge(gr_4, two_three.clone());
-    println!("gr_5.edges: \t\t{:?}", gr_5.edges);
-    println!("gr_5.edges: \t\t{:?}", gr_5.nodes);
     serial_triv(&gr_5);
-    deserial_triv::<i32>("serial_graph.yml");
+    let deserialized_gr = deserial_triv::<i32>("serial_graph.yml");
+    println!("deserialized_gr\n{:?}", deserialized_gr);
 
     // --> BREADTH FIRST SEARCH
     let found = bfs(&gr_5, Node(0), Node(2));

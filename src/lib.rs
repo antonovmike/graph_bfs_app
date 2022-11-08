@@ -139,7 +139,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 }
 
 
-pub fn deserial_triv<T>(path: &str) 
+pub fn deserial_triv<T>(path: &str) -> Vec<GraphStructure>
 // -> Graph<T> 
 where T: Copy + Display + ToString + std::fmt::Debug {
     let mut all_lines: Vec<String> = vec![];
@@ -167,13 +167,11 @@ where T: Copy + Display + ToString + std::fmt::Debug {
         }
     }
 
-    println!("first_node String = {}", vec_of_graphs[0].first_node);
-
     // let some_nodes: Vec<Node<T>> = vec![vec_of_graphs[0].first_node, Node(2), Node(3), Node(4)];
-
     // let gr_0 = Graph::new(some_nodes, some_edges);
 
     // return graph
+    vec_of_graphs
 }
 
 
