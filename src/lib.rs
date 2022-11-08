@@ -162,35 +162,38 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     for line in std::io::BufReader::new(std::fs::File::open("serial_graph.yml").expect("Failed at opening file.")).lines() {
         let words = line.unwrap();
         let edge_index = format!("Edge {}:", index);
-        if words.contains(&edge_index) {
-            println!("words: \t{}", words);
-        }
+        // if words.contains(&edge_index) {
+        //     println!("words: \t{}", words);
+        // }
+        // let deser: GraphStructure = serde_yaml::from_str(&words).unwrap();
         all_lines.push(words)
     }
-    println!("VACTOR \n{:?}", all_lines);
+    // println!("VECTOR \n{:?}", all_lines);
 
     let mut some_nodes: Vec<Node<T>> = vec![];
     let mut some_edges: Vec<Edge<T>> = vec![];
     let mut edge_index = 0;
     let mut index = 0;
     for mut i in 0..all_lines.len() {
-        let edge_index_string = format!("Edge {}:", edge_index);
+        let edge_index_string = format!("Edge {}: |", edge_index);
         // println!("edge_index {}; Edge {}", edge_index, edge_index_string);
-        if all_lines[i].contains(&edge_index_string) {
+        if all_lines[i].contains(&edge_index_string[1..]) {
             let a = file.split(&edge_index_string);
-            // for s in a {
-                // println!("s {}", s);
+            for s in a {
+                // println!("SPLITTED{}", s);
                 // let u = s.as_ref().unwrap();
-                // let deser_2: Result<GraphStructure, serde_yaml::Error> = serde_yaml::from_str(s);
                 // let deser: Result<Vec<Node<T>>, serde_yaml::Error> = serde_yaml::from_str(s);
-                // println!("deser {:#?}", deser_2);
-            // }
-            println!("Iteration {}: \t{}", i, &all_lines[i]);
+                // let deser_2: GraphStructure = serde_yaml::from_str(s).unwrap();
+                // println!("deser {:?}", deser_2);
+            }
+            // println!("Iteration {}: \t{}", i, &all_lines[i]);
             // println!("Iteration {}: \t{}", i, &all_lines[i + 1]);
             // println!("Iteration {}: \t{}", i, &all_lines[i + 2]);
             // println!("Iteration {}: \t{}", i, &all_lines[i + 3]);
-            let each_part = format!("{}{}{}", &all_lines[i + 1], &all_lines[i + 2], &all_lines[i + 3]);
-            println!("{}", each_part);
+            let each_part = format!("{}\n{}\n{}", &all_lines[i + 1], &all_lines[i + 2], &all_lines[i + 3]);
+            println!("each_part\n{}", each_part);
+            let deser: GraphStructure = serde_yaml::from_str(&each_part).unwrap();
+            println!("DESER \n{:?}", deser);
             // some_nodes.push( &all_lines[i] );
             edge_index += 1;
         }
