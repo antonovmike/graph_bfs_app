@@ -35,7 +35,7 @@ fn main() {
     println!("deserialized_gr\n{:?}", deserialized_gr);
 
     // --> BREADTH FIRST SEARCH
-    let found = bfs(&gr_5, Node(0), Node(2));
+    let found = bfs(&gr_5, Node(2));
     // println!("BFS: \t\t\t{:?}", found.as_ref().unwrap());
     println!("BFS: \t\t\t{:?}", found.unwrap());
 }

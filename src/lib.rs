@@ -1,9 +1,9 @@
 #![allow(unused)]
 use std::{
-    collections::{BTreeMap, HashMap, HashSet, VecDeque, self}, 
-    hash::Hash, fmt::{Display, Debug, format}, fs, io::BufRead
+    collections::{BTreeMap, HashSet, VecDeque}, 
+    hash::Hash, fmt::{Display, Debug}, io::BufRead
 };
-use serde::{Deserialize, Serialize, de::value};
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone)]
 pub struct Graph<T> {
@@ -30,7 +30,7 @@ impl<T> From<T> for Node<T> {
 }
 
 impl<T> Node<T> {
-    pub fn value_2(&self) -> Node<T> 
+    pub fn value(&self) -> Node<T> 
     where T: Copy {
         Node(self.0)
     }
@@ -187,7 +187,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 // - the extracted node is visited (processed)
 // - all of the children are placed into the list
 
-pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<Node<T>>> 
+pub fn bfs<T>(graph: &Graph<T>, target: Node<T>) -> Option<Vec<Node<T>>> 
 where T: PartialEq + Copy + Hash + Eq + Debug {
     let mut visited: HashSet<Node<T>> = HashSet::new();
     let mut history: Vec<Node<T>> = Vec::new();
@@ -196,7 +196,7 @@ where T: PartialEq + Copy + Hash + Eq + Debug {
     visited.insert(target);
     queue.push_back(target);
     while let Some(currentnode) = queue.pop_front() {
-        history.push(currentnode.value_2());
+        history.push(currentnode.value());
 
         if currentnode == target {
             println!("Goal is found: {:?}", history);
