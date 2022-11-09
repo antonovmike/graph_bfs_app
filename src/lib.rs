@@ -105,6 +105,12 @@ pub struct GraphStructure<T> {
     pub second_node: Vec<Node<T>>,
     pub edge: Vec<Edge<T>>,
 }
+// #[derive(Debug, Deserialize, Serialize)]
+// pub struct GraphStructureTwo<T> {
+//     pub first_node: Node<T>,
+//     pub second_node: Node<T>,
+//     pub edge: Edge<T>,
+// }
 
 impl<T> GraphStructure<T> {
     pub fn new(first_node: Vec<Node<T>>, second_node: Vec<Node<T>>, edge: Vec<Edge<T>>) -> Self {
@@ -129,6 +135,12 @@ where T: Copy + std::fmt::Display + std::fmt::Debug {
         second_node: vec!(graph.edges[i].1),
         edge: vec!(graph.edges[i]),
     };
+
+    // let triivial_graph = GraphStructureTwo {
+    //     first_node: graph.edges[i].0,
+    //     second_node: graph.edges[i].1,
+    //     edge: graph.edges[i],
+    // };
     triivial_graph
 }
 
@@ -165,13 +177,19 @@ where T: Serialize + Copy + Display + ToString + std::fmt::Debug {
         second_node: graph.nodes.clone(),
         edge: graph.edges.clone() 
     };
+    // let triv_gr: GraphStructureTwo<T> = GraphStructureTwo { 
+    //     first_node: graph.nodes[0],
+    //     second_node: graph.nodes[1],
+    //     edge: graph.edges[0] 
+    // };
     let serialized = serde_yaml::to_string(&triv_gr).unwrap();
     println!("serialized\n{}", serialized);
     serde_yaml::to_writer(file, &serialized).unwrap();
 }
 
 // RETURNS GraphStructure
-pub fn deserial_triv<'de, T>(path: &'de str) -> GraphStructure<T>
+pub fn deserial_triv<'de, T>(path: &'de str) -> String
+// -> GraphStructure<T>
 // -> Vec<GraphStructure>
 where T: Deserialize<'de> + Copy + Display + ToString + std::fmt::Debug {
     // let file = std::fs::OpenOptions::new()
@@ -207,7 +225,7 @@ where T: Deserialize<'de> + Copy + Display + ToString + std::fmt::Debug {
     // let b = *a;
     // vec_of_graphs
 
-    let deserialized: GraphStructure<T> = serde_yaml::from_str(path).unwrap();
+    let deserialized: String = serde_yaml::from_str(path).unwrap();
     // println!("DESER\n{:?}", deserialized);
     deserialized
 }
