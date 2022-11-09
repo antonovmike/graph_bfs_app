@@ -170,11 +170,11 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     // let some_nodes: Vec<Node<T>> = vec![vec_of_graphs[0].first_node, Node(2), Node(3), Node(4)];
     // let gr_0 = Graph::new(some_nodes, some_edges);
 
-    let a = &vec_of_graphs[0].first_node.remove(5);
-    let b = *a;
-    let c = b.to_string().parse::<i32>().unwrap();
-    println!("REMOVED = {}", a);
-    let some_nodes: Vec<Node<i32>> = vec![Node(c), Node(2)];
+    // let a = &vec_of_graphs[0].first_node.remove(5);
+    // let b = *a;
+    // let c = b.to_string().parse::<i32>().unwrap();
+    // println!("REMOVED = {}", a);
+    // let some_nodes: Vec<Node<i32>> = vec![Node(c), Node(2)];
     // return graph
     vec_of_graphs
 }
