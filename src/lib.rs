@@ -140,7 +140,6 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 
 // RETURNS GraphStructure
 pub fn deserial_triv<T>(path: &str) -> Vec<GraphStructure>
-// -> Graph<T> 
 where T: Copy + Display + ToString + std::fmt::Debug {
     let mut all_lines: Vec<String> = vec![];
 
@@ -166,9 +165,6 @@ where T: Copy + Display + ToString + std::fmt::Debug {
             edge_index += 1;
         }
     }
-
-    let a = &vec_of_graphs[0].first_node.remove(5);
-    let b = *a;
     
     vec_of_graphs
 }
@@ -185,7 +181,7 @@ pub fn bfs<T>(graph: &Graph<T>, target: Node<T>) -> Option<Vec<Node<T>>>
 where T: PartialEq + Copy + Hash + Eq + Debug {
     let mut visited: HashSet<Node<T>> = HashSet::new();
     let mut history: Vec<Node<T>> = Vec::new();
-    let mut queue = VecDeque::new();
+    let mut queue: VecDeque<Node<T>> = VecDeque::new();
 
     visited.insert(target);
     queue.push_back(target);

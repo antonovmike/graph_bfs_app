@@ -32,7 +32,7 @@ fn main() {
     let gr_5 = add_edge(gr_4, two_three.clone());
     serial_triv(&gr_5);
     let deserialized_gr = deserial_triv::<i32>("serial_graph.yml");
-    println!("deserialized_gr\n{:?}", deserialized_gr);
+    println!("DESERIALIZED\n{:?}", deserialized_gr);
 
     // --> BREADTH FIRST SEARCH
     let found = bfs(&gr_5, Node(2));
