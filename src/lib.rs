@@ -1,7 +1,7 @@
 #![allow(unused)]
 use std::{
-    collections::{BTreeMap, HashMap, HashSet, VecDeque, self}, 
-    hash::Hash, fmt::{Display, Debug, format}, fs, io::BufRead
+    collections::{BTreeMap, HashSet, VecDeque}, 
+    hash::Hash, fmt::{Display, Debug}, io::BufRead
 };
 use serde::{Deserialize, Serialize};
 
@@ -30,9 +30,9 @@ impl<T> From<T> for Node<T> {
 }
 
 impl<T> Node<T> {
-    pub fn value(&self) -> T 
+    pub fn value(&self) -> Node<T> 
     where T: Copy {
-        self.0
+        Node(self.0)
     }
 
     pub fn neighbors(&self, graph: &Graph<T>) -> Vec<Node<T>> 
@@ -138,6 +138,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     serde_yaml::to_writer(file, &result).unwrap();
 }
 
+// RETURNS GraphStructure
 pub fn deserial_triv<T>(path: &str) -> Vec<GraphStructure>
 // -> Graph<T> 
 where T: Copy + Display + ToString + std::fmt::Debug {
@@ -165,8 +166,10 @@ where T: Copy + Display + ToString + std::fmt::Debug {
             edge_index += 1;
         }
     }
-    
-    // return graph
+
+    let a = &vec_of_graphs[0].first_node.remove(5);
+    let b = *a;
+    let c = b.to_string().parse::<i32>().unwrap();
     vec_of_graphs
 }
 
@@ -178,20 +181,18 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 // - the extracted node is visited (processed)
 // - all of the children are placed into the list
 
-pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<T>> 
+pub fn bfs<T>(graph: &Graph<T>, target: Node<T>) -> Option<Vec<Node<T>>> 
 where T: PartialEq + Copy + Hash + Eq + Debug {
-    println!("root: {:?}; target: {:?}", root, target);
     let mut visited: HashSet<Node<T>> = HashSet::new();
-    let mut history: Vec<T> = Vec::new();
+    let mut history: Vec<Node<T>> = Vec::new();
     let mut queue = VecDeque::new();
 
-    visited.insert(root);
-    queue.push_back(root);
+    visited.insert(target);
+    queue.push_back(target);
     while let Some(currentnode) = queue.pop_front() {
         history.push(currentnode.value());
 
         if currentnode == target {
-            println!("Goal is found: {:?}", history);
             return Some(history);
         }
 

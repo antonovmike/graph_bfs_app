@@ -1,8 +1,8 @@
 use graph_bfs_app::{Graph, Node, Edge};
 use graph_bfs_app::{
-    add_node, rem_node, 
-    add_edge, rem_edge, 
-    serial_triv, deserial_triv, 
+    add_node, rem_node,  
+    add_edge, rem_edge,  
+    serial_triv, deserial_triv,
     bfs
 };
 
@@ -35,7 +35,6 @@ fn main() {
     println!("deserialized_gr\n{:?}", deserialized_gr);
 
     // --> BREADTH FIRST SEARCH
-    let found = bfs(&gr_5, Node(0), Node(2));
-    // println!("BFS: \t\t\t{:?}", found.as_ref().unwrap());
-    println!("BFS: \t\t\t{:?}", found);
+    let found = bfs(&gr_5, Node(2));
+    println!("BFS: \t\t\t{:?}", found.unwrap());
 }
