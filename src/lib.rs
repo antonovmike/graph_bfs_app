@@ -172,7 +172,7 @@ where T: Serialize + Copy + Display + ToString + std::fmt::Debug {
 
 // RETURNS GraphStructure
 pub fn deserial_triv<'de, T>(path: &'de str) -> GraphStructure<T>
-// -> Graph<T> 
+// -> Vec<GraphStructure>
 where T: Deserialize<'de> + Copy + Display + ToString + std::fmt::Debug {
     // let file = std::fs::OpenOptions::new()
     //     .write(true)
@@ -202,11 +202,9 @@ where T: Deserialize<'de> + Copy + Display + ToString + std::fmt::Debug {
     //         edge_index += 1;
     //     }
     // }
-    
     // to_writer(file, &result).unwrap();
     // let a = &vec_of_graphs[0].first_node.remove(5);
     // let b = *a;
-    
     // vec_of_graphs
 
     let deserialized: GraphStructure<T> = serde_yaml::from_str(path).unwrap();
