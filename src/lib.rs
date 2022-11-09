@@ -30,9 +30,9 @@ impl<T> From<T> for Node<T> {
 }
 
 impl<T> Node<T> {
-    pub fn value(&self) -> T 
+    pub fn value_2(&self) -> Node<T> 
     where T: Copy {
-        self.0
+        Node(self.0)
     }
 
     pub fn neighbors(&self, graph: &Graph<T>) -> Vec<Node<T>> 
@@ -187,16 +187,16 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 // - the extracted node is visited (processed)
 // - all of the children are placed into the list
 
-pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<T>> 
+pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<Node<T>>> 
 where T: PartialEq + Copy + Hash + Eq + Debug {
     let mut visited: HashSet<Node<T>> = HashSet::new();
-    let mut history: Vec<T> = Vec::new();
+    let mut history: Vec<Node<T>> = Vec::new();
     let mut queue = VecDeque::new();
 
     visited.insert(target);
     queue.push_back(target);
     while let Some(currentnode) = queue.pop_front() {
-        history.push(currentnode.value());
+        history.push(currentnode.value_2());
 
         if currentnode == target {
             println!("Goal is found: {:?}", history);
