@@ -11,10 +11,10 @@ pub struct Graph<T> {
     pub edges: Vec<Edge<T>>,
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug, Deserialize, Serialize)]
 pub struct Node<T> (pub T);
 
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug, Deserialize, Serialize)]
 pub struct Edge<T>(pub Node<T>, pub Node<T>);
 
 impl<T> Graph<T> {
@@ -93,53 +93,82 @@ where T: PartialEq {
 1 2 Edge between the two
 */
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct GraphStructure {
-    pub first_node: String,
-    pub second_node: String,
-    pub edge: String,
+#[derive(Debug, Deserialize, Serialize)]
+// pub struct GraphStructure {
+//     pub first_node: String,
+//     pub second_node: String,
+//     pub edge: String,
+// }
+pub struct GraphStructure<T> {
+    pub first_node: Vec<Node<T>>,
+    pub second_node: Vec<Node<T>>,
+    pub edge: Vec<Edge<T>>,
 }
 
-fn into_structure<T>(graph: &Graph<T>, i: usize) -> GraphStructure
-where T: std::fmt::Display + std::fmt::Debug {
-    let triivial_graph = GraphStructure {
-        first_node: format!("{:?}", graph.edges[i].0),
-        second_node: format!("{:?}", graph.edges[i].1),
-        edge: format!("{:?}", graph.edges[i]),
-    };
-    triivial_graph
+impl<T> GraphStructure<T> {
+    pub fn new(first_node: Vec<Node<T>>, second_node: Vec<Node<T>>, edge: Vec<Edge<T>>) -> Self {
+        GraphStructure { first_node, second_node, edge }
+    }
 }
+// pub trait Serialize<'de, T>: GraphStructure<T> {
+//     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+//     where
+//         D: Serialize<'de>;
+// }
+// impl<'de, T> Serialize<'de, T> for T {
+//     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+//     where D: Serialize<'de> {
+//         deserializer.deserialize_i32(Self)
+//     }
+// }
+// fn into_structure<T>(graph: &Graph<T>, i: usize) -> GraphStructure<T>
+// where T: std::fmt::Display + std::fmt::Debug {
+//     let triivial_graph = GraphStructure {
+//         first_node: format!("{:?}", graph.edges[i].0),
+//         second_node: format!("{:?}", graph.edges[i].1),
+//         edge: format!("{:?}", graph.edges[i]),
+//     };
+//     triivial_graph
+// }
 
 pub fn serial_triv<T>(graph: &Graph<T>) 
-where T: Copy + Display + ToString + std::fmt::Debug {
-    let mut result: BTreeMap<String, String> = BTreeMap::new();
-
+where T: Serialize + Copy + Display + ToString + std::fmt::Debug {
     let file = std::fs::OpenOptions::new()
         .write(true)
         .create(true)
         .open("serial_graph.yml")
         .expect("Couldn't open file");
 
-    let gr_lenght = graph.edges.len();
-    for i in 0..gr_lenght {
-        let key = format!("Edge {}", i);
-        let serialized = serde_yaml::to_string(&into_structure(graph, i))
-            .unwrap().clone().into_bytes();
-        let serialized: Vec<u8> = serialized
-            .into_iter()
-            .take_while(|&x| x != 0)
-            .collect::<Vec<u8>>();
+    // -> NAMED FIELDS
+    // let mut result: BTreeMap<String, String> = BTreeMap::new();
+    // let gr_lenght = graph.edges.len();
+    // for i in 0..gr_lenght {
+    //     let key = format!("Edge {}", i);
+    //     let serialized = serde_yaml::to_string(&into_structure(graph, i))
+    //         .unwrap().clone().into_bytes();
+    //     let serialized: Vec<u8> = serialized
+    //         .into_iter()
+    //         .take_while(|&x| x != 0)
+    //         .collect::<Vec<u8>>();
         
-        let value_serialized = String::from_utf8(serialized).expect("Invalid utf8 message");
+    //     let value_serialized = String::from_utf8(serialized).expect("Invalid utf8 message");
 
-        result.insert(key, value_serialized);
-    }
+    //     result.insert(key, value_serialized);
+    // }
 
-    serde_yaml::to_writer(file, &result).unwrap();
+    // serde_yaml::to_writer(file, &result).unwrap();
+
+    // -> SIMPLE NOT NAMED FIELDS
+    let triv_gr: GraphStructure<T> = GraphStructure { 
+        first_node: graph.nodes.clone(), second_node: graph.nodes.clone(), edge: graph.edges.clone() 
+    };
+    let serialized = serde_yaml::to_string(&triv_gr).unwrap();
+    println!("serialized\n{:?}", serialized);
+    serde_yaml::to_writer(file, &serialized).unwrap();
 }
 
 // RETURNS GraphStructure
-pub fn deserial_triv<T>(path: &str) -> Vec<GraphStructure>
+pub fn deserial_triv<T>(path: &str) -> Vec<GraphStructure<T>>
 // -> Graph<T> 
 where T: Copy + Display + ToString + std::fmt::Debug {
     let mut all_lines: Vec<String> = vec![];
@@ -153,22 +182,22 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     
     let mut edge_index = 0;
 
-    let mut vec_of_graphs: Vec<GraphStructure> = vec![];
+    let mut vec_of_graphs: Vec<GraphStructure<T>> = vec![];
     
-    for i in 0..all_lines.len() {
-        let edge_index_string = format!("Edge {}: |", edge_index);
-        if all_lines[i].contains(&edge_index_string[1..]) {
-            let each_part = format!(
-                "{}\n{}\n{}", &all_lines[i + 1], &all_lines[i + 2], &all_lines[i + 3]
-            );
-            let deser: GraphStructure = serde_yaml::from_str(&each_part).unwrap();
-            vec_of_graphs.push(deser);
-            edge_index += 1;
-        }
-    }
+    // for i in 0..all_lines.len() {
+    //     let edge_index_string = format!("Edge {}: |", edge_index);
+    //     if all_lines[i].contains(&edge_index_string[1..]) {
+    //         let each_part = format!(
+    //             "{}\n{}\n{}", &all_lines[i + 1], &all_lines[i + 2], &all_lines[i + 3]
+    //         );
+    //         let deser: GraphStructure = serde_yaml::from_str(&each_part).unwrap();
+    //         vec_of_graphs.push(deser);
+    //         edge_index += 1;
+    //     }
+    // }
 
-    let a = &vec_of_graphs[0].first_node.remove(5);
-    let b = *a;
+    // let a = &vec_of_graphs[0].first_node.remove(5);
+    // let b = *a;
     
     vec_of_graphs
 }
