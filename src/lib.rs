@@ -169,7 +169,7 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 
     let a = &vec_of_graphs[0].first_node.remove(5);
     let b = *a;
-    let c = b.to_string().parse::<i32>().unwrap();
+    
     vec_of_graphs
 }
 
