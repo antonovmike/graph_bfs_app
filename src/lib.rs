@@ -93,6 +93,7 @@ where T: PartialEq {
 1 2 Edge between the two
 */
 
+// JUST CAN"T FIGURE OUT HOW TO DO THIS USING GENERIC TYPE
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GraphStructure {
     pub first_node: String,
