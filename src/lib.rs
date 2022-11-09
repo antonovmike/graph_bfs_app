@@ -140,7 +140,7 @@ where T: Serialize + Copy + Display + ToString + std::fmt::Debug {
         .open("serial_graph.yml")
         .expect("Couldn't open file");
 
-    // -> NAMED FIELDS
+    // 1. NAMED FIELDS
     // let mut result: BTreeMap<String, String> = BTreeMap::new();
     // let gr_lenght = graph.edges.len();
     // for i in 0..gr_lenght {
@@ -159,12 +159,14 @@ where T: Serialize + Copy + Display + ToString + std::fmt::Debug {
 
     // serde_yaml::to_writer(file, &result).unwrap();
 
-    // -> SIMPLE NOT NAMED FIELDS
+    // 2. SIMPLE NOT NAMED FIELDS
     let triv_gr: GraphStructure<T> = GraphStructure { 
-        first_node: graph.nodes.clone(), second_node: graph.nodes.clone(), edge: graph.edges.clone() 
+        first_node: graph.nodes.clone(),
+        second_node: graph.nodes.clone(),
+        edge: graph.edges.clone() 
     };
     let serialized = serde_yaml::to_string(&triv_gr).unwrap();
-    println!("serialized\n{:?}", serialized);
+    println!("serialized\n{}", serialized);
     serde_yaml::to_writer(file, &serialized).unwrap();
 }
 
