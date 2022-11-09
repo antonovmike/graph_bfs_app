@@ -170,6 +170,11 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     // let some_nodes: Vec<Node<T>> = vec![vec_of_graphs[0].first_node, Node(2), Node(3), Node(4)];
     // let gr_0 = Graph::new(some_nodes, some_edges);
 
+    let a = &vec_of_graphs[0].first_node.remove(5);
+    let b = *a;
+    let c = b.to_string().parse::<i32>().unwrap();
+    println!("REMOVED = {}", a);
+    let some_nodes: Vec<Node<i32>> = vec![Node(c), Node(2)];
     // return graph
     vec_of_graphs
 }
@@ -184,13 +189,12 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 
 pub fn bfs<T>(graph: &Graph<T>, root: Node<T>, target: Node<T>) -> Option<Vec<T>> 
 where T: PartialEq + Copy + Hash + Eq + Debug {
-    // println!("root: {:?}; target: {:?}", root, target);
     let mut visited: HashSet<Node<T>> = HashSet::new();
     let mut history: Vec<T> = Vec::new();
     let mut queue = VecDeque::new();
 
-    visited.insert(root);
-    queue.push_back(root);
+    visited.insert(target);
+    queue.push_back(target);
     while let Some(currentnode) = queue.pop_front() {
         history.push(currentnode.value());
 
@@ -209,45 +213,5 @@ where T: PartialEq + Copy + Hash + Eq + Debug {
 
     None
 }
-
-// pub fn bfs(graph: GraphType, start_node: i32, end_node: i32) -> Option<Vec<Option<i32>>> {
-//     let mut queue = Queue::new();
-//     queue.enqueue(start_node);
-
-//     let mut visisted_nodes = vec![false; graph.len()];
-//     visisted_nodes[0] = true;
-
-//     let mut prev: Vec<Option<i32>> = vec![None; graph.len()];
-
-//     'outer: while !queue.is_empty() {
-//         let current_node = queue.dequeue();
-//         for v in graph[current_node as usize].iter() {
-//             if *v == end_node {
-//                 prev[*v as usize] = Some(current_node);
-//                 break 'outer;
-//             }
-
-//             if !visisted_nodes[*v as usize] {
-//                 queue.enqueue(*v);
-//                 visisted_nodes[*v as usize] = true;
-//                 prev[*v as usize] = Some(current_node);
-//             }
-//         }
-//     }
-
-//     let mut path = Vec::new();
-//     let mut at = Some(end_node);
-//     while at != None {
-//         path.push(at);
-//         at = prev[at.unwrap_or(0) as usize];
-//     }
-
-//     path.reverse();
-    
-//     return match path[0] {
-//         Some(x) if x == start_node => Some(path),
-//         _ => None,
-//     };
-// }
 
 fn main() {}
