@@ -310,6 +310,11 @@ Edge 1: |
         assert_eq!(deserialized_gr[1].edge, control_content[1].edge);
         assert_ne!(deserialized_gr[0].edge, control_content[1].edge);
 
+        assert_eq!(deserialized_gr[0].first_node, control_content[0].first_node);
+        assert_eq!(deserialized_gr[0].second_node, control_content[0].second_node);
+        assert_eq!(deserialized_gr[1].first_node, control_content[1].first_node);
+        assert_eq!(deserialized_gr[1].second_node, control_content[1].second_node);
+        assert_ne!(deserialized_gr[0].first_node, control_content[1].first_node);
     }
 
     // 5. BREADTH FIRST SEARCH
