@@ -270,6 +270,29 @@ mod tests {
     }
     
     // 4. SERDE TRIVIAL GRAPH FORMAT
+    #[test]
+    fn serialize_trivial_graph() {
+        std::fs::remove_file("serial_graph.yml");
+        let gr_0 = Graph::new(
+            vec![Node(1), Node(2), Node(3), Node(4)], 
+            vec![Edge(Node(1), Node(2)), Edge(Node(3), Node(4))]
+        );
+        serial_triv(&gr_0);
+        let file = std::fs::read_to_string("serial_graph.yml").expect("Couldn't open file");
+        let file_content = "Edge 0: |
+  first_node: Node(1)
+  second_node: Node(2)
+  edge: Edge(Node(1), Node(2))
+Edge 1: |
+  first_node: Node(3)
+  second_node: Node(4)
+  edge: Edge(Node(3), Node(4))
+".to_string();
+        assert_eq!(file, file_content);
+    }
+
+    // #[test]
+    // fn deserialize_trivial_graph() {}
 
     // 5. BREADTH FIRST SEARCH
     #[test]

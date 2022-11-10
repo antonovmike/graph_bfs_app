@@ -42,4 +42,7 @@ fn main() {
     println!("\t5. BREADTH FIRST SEARCH");
     let found = bfs(&gr_5, Node(2));
     println!("BFS: \t\t\t{:?}", found.unwrap());
+
+    // let file = std::fs::read_to_string("serial_graph.yml").expect("Couldn't open file");
+    // println!("FILE: {}", file);
 }
