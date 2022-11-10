@@ -241,29 +241,36 @@ mod tests {
     }
 
     // 2. ADD AND REMOVE NODES
+    // 3. ADD AND REMOVE DIRECTED EDGES
     #[test]
-    fn add_nodes() {
+    fn add_nodes_and_edges() {
         let gr_0 = Graph::new(
             vec![Node(1), Node(2), Node(3), Node(4)], 
             vec![Edge(Node(1), Node(2)), Edge(Node(3), Node(4))]
         );
         let gr_1 = add_node(gr_0, Node(5));
+        let gr_2 = add_edge(gr_1.clone(), Edge(Node(4), Node(5)));
         let control_nodes: Vec<Node<i32>> = vec![Node(1), Node(2), Node(3), Node(4), Node(5)];
+        let control_edges: Vec<Edge<i32>> = vec![Edge(Node(1), Node(2)), Edge(Node(3), Node(4)), Edge(Node(4), Node(5))];
         assert_eq!(control_nodes, gr_1.nodes);
+        assert_eq!(control_edges, gr_2.edges);
     }
     #[test]
     fn rem_nodes() {
         let gr_0 = Graph::new(
             vec![Node(1), Node(2), Node(3), Node(4), Node(5)], 
-            vec![Edge(Node(1), Node(2)), Edge(Node(3), Node(4))]
+            vec![Edge(Node(1), Node(2)), Edge(Node(3), Node(4)), Edge(Node(4), Node(5))]
         );
         let gr_1 = rem_node(gr_0, Node(5));
+        let gr_2 = rem_edge(gr_1.clone(), Edge(Node(4), Node(5)));
         let control_nodes: Vec<Node<i32>> = vec![Node(1), Node(2), Node(3), Node(4)];
+        let control_edges: Vec<Edge<i32>> = vec![Edge(Node(1), Node(2)), Edge(Node(3), Node(4))];
         assert_eq!(control_nodes, gr_1.nodes);
+        assert_eq!(control_edges, gr_2.edges);
     }
-
-    // 3. ADD AND REMOVE DIRECTED EDGES
+    
     // 4. SERDE TRIVIAL GRAPH FORMAT
+
     // 5. BREADTH FIRST SEARCH
     #[test]
     fn search_graph_of_char() {
