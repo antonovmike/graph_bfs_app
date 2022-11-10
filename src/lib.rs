@@ -17,10 +17,13 @@ pub struct Node<T> (pub T);
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub struct Edge<T>(pub Node<T>, pub Node<T>);
 
-impl<T> Graph<T> {
-    pub fn new(nodes: Vec<Node<T>>, edges: Vec<Edge<T>>) -> Self {
-        Graph { nodes, edges }
-    }
+// I made this struct using generic type (test branch)
+// but I can't implement deserialization yet
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GraphStructure {
+    pub first_node: String,
+    pub second_node: String,
+    pub edge: String,
 }
 
 impl<T> From<T> for Node<T> {
@@ -46,7 +49,15 @@ impl<T> Node<T> {
     }
 }
 
-// --> ADD AND REMOVE NODES
+// 1. CREATE GRAPH
+
+impl<T> Graph<T> {
+    pub fn new(nodes: Vec<Node<T>>, edges: Vec<Edge<T>>) -> Self {
+        Graph { nodes, edges }
+    }
+}
+
+// 2. ADD AND REMOVE NODES
 
 pub fn add_node<T>(graph: Graph<T>, to_add: Node<T>) -> Graph<T> {
     let mut new_vec = graph;
@@ -65,7 +76,7 @@ where T: PartialEq {
     new_vec
 }
 
-// --> ADD AND REMOVE EDGES
+// 3. ADD AND REMOVE EDGES
 
 pub fn add_edge<T>(graph: Graph<T>, to_add: Edge<T>) -> Graph<T> {
     let mut new_vec = graph;
@@ -85,21 +96,13 @@ where T: PartialEq {
 }
 
 
-// --> SERDE INTO TRIVIAL GRAPH FORMAT
+// 4. SERDE TRIVIAL GRAPH FORMAT
 /*
 1 First node
 2 Second node
 #
 1 2 Edge between the two
 */
-
-// JUST CAN"T FIGURE OUT HOW TO DO THIS USING GENERIC TYPE
-#[derive(Debug, Serialize, Deserialize)]
-pub struct GraphStructure {
-    pub first_node: String,
-    pub second_node: String,
-    pub edge: String,
-}
 
 fn into_structure<T>(graph: &Graph<T>, i: usize) -> GraphStructure
 where T: std::fmt::Display + std::fmt::Debug {
@@ -139,7 +142,6 @@ where T: Copy + Display + ToString + std::fmt::Debug {
     serde_yaml::to_writer(file, &result).unwrap();
 }
 
-// RETURNS GraphStructure
 pub fn deserial_triv<T>(path: &str) -> Vec<GraphStructure>
 where T: Copy + Display + ToString + std::fmt::Debug {
     let mut all_lines: Vec<String> = vec![];
@@ -171,12 +173,14 @@ where T: Copy + Display + ToString + std::fmt::Debug {
 }
 
 
-// --> BREADTH FIRST SEARCH
-// Use a list that stores nodes that need to be browsed.
-// In one iteration of the algorythm:
-// - if the list is not empty, the node is extracted from the list
-// - the extracted node is visited (processed)
-// - all of the children are placed into the list
+// 5. BREADTH FIRST SEARCH
+/*
+Use a list that stores nodes that need to be browsed.
+In one iteration of the algorythm:
+- if the list is not empty, the node is extracted from the list
+- the extracted node is visited (processed)
+- all of the children are placed into the list
+*/
 
 pub fn bfs<T>(graph: &Graph<T>, target: Node<T>) -> Option<Vec<Node<T>>> 
 where T: PartialEq + Copy + Hash + Eq + Debug {
