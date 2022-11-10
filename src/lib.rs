@@ -26,12 +26,6 @@ pub struct GraphStructure {
     pub edge: String,
 }
 
-impl<T> From<T> for Node<T> {
-    fn from(item: T) -> Self {
-        Node(item)
-    }
-}
-
 impl<T> Node<T> {
     pub fn value(&self) -> Node<T> 
     where T: Copy {
@@ -46,6 +40,12 @@ impl<T> Node<T> {
             .filter(|e| e.0 == self.0)
             .map(|e| e.0.into())
             .collect()
+    }
+}
+
+impl<T> From<T> for Node<T> {
+    fn from(item: T) -> Self {
+        Node(item)
     }
 }
 
@@ -76,7 +76,7 @@ where T: PartialEq {
     new_vec
 }
 
-// 3. ADD AND REMOVE EDGES
+// 3. ADD AND REMOVE DIRECTED EDGES
 
 pub fn add_edge<T>(graph: Graph<T>, to_add: Edge<T>) -> Graph<T> {
     let mut new_vec = graph;
