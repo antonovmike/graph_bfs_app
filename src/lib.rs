@@ -291,8 +291,26 @@ Edge 1: |
         assert_eq!(file_content, control_content);
     }
 
-    // #[test]
-    // fn deserialize_trivial_graph() {}
+    #[test]
+    fn deserialize_trivial_graph() {
+        let deserialized_gr = deserial_triv::<i32>("serial_graph.yml");
+        let control_content = vec![
+            GraphStructure { 
+                first_node: "Node(1)".to_string(), 
+                second_node: "Node(2)".to_string(), 
+                edge: "Edge(Node(1), Node(2))".to_string() 
+            }, 
+            GraphStructure { 
+                first_node: "Node(3)".to_string(), 
+                second_node: "Node(4)".to_string(), 
+                edge: "Edge(Node(3), Node(4))".to_string() 
+            }
+        ];
+        assert_eq!(deserialized_gr[0].edge, control_content[0].edge);
+        assert_eq!(deserialized_gr[1].edge, control_content[1].edge);
+        assert_ne!(deserialized_gr[0].edge, control_content[1].edge);
+
+    }
 
     // 5. BREADTH FIRST SEARCH
     #[test]
