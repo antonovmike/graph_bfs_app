@@ -1,5 +1,5 @@
-use graph_bfs_app::{Graph, Node, Edge};
-use graph_bfs_app::{
+use graph_library::{Graph, Node, Edge};
+use graph_library::{
     add_node, rem_node,  
     add_edge, rem_edge,  
     serial_triv, deserial_triv,
