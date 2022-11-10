@@ -278,8 +278,8 @@ mod tests {
             vec![Edge(Node(1), Node(2)), Edge(Node(3), Node(4))]
         );
         serial_triv(&gr_0);
-        let file = std::fs::read_to_string("serial_graph.yml").expect("Couldn't open file");
-        let file_content = "Edge 0: |
+        let file_content = std::fs::read_to_string("serial_graph.yml").expect("Couldn't open file");
+        let control_content = "Edge 0: |
   first_node: Node(1)
   second_node: Node(2)
   edge: Edge(Node(1), Node(2))
@@ -288,7 +288,7 @@ Edge 1: |
   second_node: Node(4)
   edge: Edge(Node(3), Node(4))
 ".to_string();
-        assert_eq!(file, file_content);
+        assert_eq!(file_content, control_content);
     }
 
     // #[test]
