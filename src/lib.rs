@@ -209,3 +209,39 @@ where T: PartialEq + Copy + Hash + Eq + Debug {
 }
 
 fn main() {}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // 1. CREATE NEW GRAPH
+    #[test]
+    fn create_graph_of_u8() {
+        let some_nodes: Vec<Node<u8>> = vec![Node(1), Node(2), Node(3), Node(4)];
+        let some_edges: Vec<Edge<u8>> = vec![Edge(Node(1), Node(2)), Edge(Node(3), Node(4))];
+        let graph_of_u8 = Graph::new(some_nodes.clone(), some_edges.clone());
+        assert_eq!(some_nodes, graph_of_u8.nodes );
+        assert_eq!(some_edges, graph_of_u8.edges );
+    }
+    #[test]
+    fn create_graph_of_char() {
+        let some_nodes: Vec<Node<char>> = vec![Node('a'), Node('b'), Node('c'), Node('d')];
+        let some_edges: Vec<Edge<char>> = vec![Edge(Node('a'), Node('b')), Edge(Node('c'), Node('d'))];
+        let graph_of_char = Graph::new(some_nodes.clone(), some_edges.clone());
+        assert_eq!(some_nodes, graph_of_char.nodes );
+        assert_eq!(some_edges, graph_of_char.edges );
+    }
+    #[test]
+    fn create_graph_of_str() {
+        let some_nodes: Vec<Node<&str>> = vec![Node("aa"), Node("bb"), Node("cc"), Node("dd")];
+        let some_edges: Vec<Edge<&str>> = vec![Edge(Node("aa"), Node("bb")), Edge(Node("cc"), Node("dd"))];
+        let graph_of_str = Graph::new(some_nodes.clone(), some_edges.clone());
+        assert_eq!(some_nodes, graph_of_str.nodes );
+        assert_eq!(some_edges, graph_of_str.edges );
+    }
+
+    // 2. ADD AND REMOVE NODES
+    // 3. ADD AND REMOVE DIRECTED EDGES
+    // 4. SERDE TRIVIAL GRAPH FORMAT
+    // 5. BREADTH FIRST SEARCH
+}
