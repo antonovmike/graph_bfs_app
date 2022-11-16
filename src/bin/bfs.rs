@@ -1,10 +1,5 @@
-use graph_library::{Graph, Node, Edge};
-use graph_library::{
-    add_node, rem_node,  
-    add_edge, rem_edge,  
-    serial_triv, deserial_triv,
-    bfs
-};
+use graph_library::{add_edge, add_node, bfs, deserial_triv, rem_edge, rem_node, serial_triv};
+use graph_library::{Edge, Graph, Node};
 
 fn main() {
     // 1. CREATE NEW GRAPH
@@ -26,14 +21,14 @@ fn main() {
     // 3. ADD AND REMOVE DIRECTED EDGES
     println!("\t3. ADD AND REMOVE DIRECTED EDGES");
     let two_three = Edge(Node(2), Node(3));
-    let gr_3 = add_edge(gr_2, two_three.clone());
+    let gr_3 = add_edge(gr_2, two_three);
     println!("One edge added: \t{:?}", gr_3.edges);
     let gr_4 = rem_edge(gr_3, two_three);
     println!("One edge removed: \t{:?}\n", gr_4.edges);
 
     // 4. SERDE TRIVIAL GRAPH FORMAT
     println!("\t4. SERDE TRIVIAL GRAPH FORMAT");
-    let gr_5 = add_edge(gr_4, two_three.clone());
+    let gr_5 = add_edge(gr_4, two_three);
     serial_triv(&gr_5);
     let deserialized_gr = deserial_triv::<i32>("serial_graph.yml");
     println!("Deserialized\t\t{:?}\n", deserialized_gr);
