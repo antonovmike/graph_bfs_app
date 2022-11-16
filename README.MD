@@ -16,3 +16,18 @@ This library can:
 - Breadth first search by Node() bfs(&some_graph, some_node)
 
 [*] Structures of types String is used. Have to implement a deserializer for generic types 
+
+TODO:
+- Create interface like HashMap/HashSet/Vec
+- Verify Nodes and Graphs uniqueness (hashtable or matrix)
+For example
+```bash
+struct Graph<T, E> {
+    nodes: HashMap<u64, T>,
+    edges: HashMap<u64, HashMap<u64, E>,
+}
+```
+- Serialization/Deserialization TGF using ToString/FromString
+- Use doc comments
+- User's path to file
+- Executable in separate crate
