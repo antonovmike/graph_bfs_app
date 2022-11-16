@@ -1,41 +1,40 @@
-use graph_bfs_app::{Graph, Node, Edge};
-use graph_bfs_app::{
-    add_node, rem_node,  
-    add_edge, rem_edge,  
-    serial_triv, deserial_triv,
-    bfs
-};
+use graph_library::{add_edge, add_node, bfs, deserial_triv, rem_edge, rem_node, serial_triv};
+use graph_library::{Edge, Graph, Node};
 
 fn main() {
-    // --> CREATE NEW GRAPH
-    let some_nodes: Vec<Node<char>> = vec![Node('a'), Node('b'), Node('c'), Node('d')];
-    let some_edges: Vec<Edge<char>> = vec![Edge(Node('a'), Node('b')), Edge(Node('c'), Node('d'))];
+    // 1. CREATE NEW GRAPH
+    println!("\t1. CREATE NEW GRAPH");
+    let some_nodes: Vec<Node<i32>> = vec![Node(1), Node(2), Node(3), Node(4)];
+    let some_edges: Vec<Edge<i32>> = vec![Edge(Node(1), Node(2)), Edge(Node(3), Node(4))];
     let gr_0 = Graph::new(some_nodes, some_edges);
     println!("Graph new nodes: \t{:?}", gr_0.nodes);
-    println!("Graph new edges: \t{:?}", gr_0.edges);
+    println!("Graph new edges: \t{:?}\n", gr_0.edges);
 
-    // --> ADD AND REMOVE NODES
-    let seven = Node('g');
+    // 2. ADD AND REMOVE NODES
+    println!("\t2. ADD AND REMOVE NODES");
+    let seven = Node(7);
     let gr_1 = add_node(gr_0, seven);
     println!("One node added: \t{:?}", gr_1.nodes);
-    let gr_2 = rem_node(gr_1, Node('g'));
-    println!("One node removed: \t{:?}", gr_2.nodes);
+    let gr_2 = rem_node(gr_1, Node(7));
+    println!("One node removed: \t{:?}\n", gr_2.nodes);
 
-    // --> ADD AND REMOVE DIRECTED EDGES
-    let two_three = Edge(Node('b'), Node('c'));
-    let gr_3 = add_edge(gr_2, two_three.clone());
+    // 3. ADD AND REMOVE DIRECTED EDGES
+    println!("\t3. ADD AND REMOVE DIRECTED EDGES");
+    let two_three = Edge(Node(2), Node(3));
+    let gr_3 = add_edge(gr_2, two_three);
     println!("One edge added: \t{:?}", gr_3.edges);
     let gr_4 = rem_edge(gr_3, two_three);
-    println!("One edge removed: \t{:?}", gr_4.edges);
+    println!("One edge removed: \t{:?}\n", gr_4.edges);
 
-    // --> SERDE INTO TRIVIAL GRAPH FORMAT
-    let gr_5 = add_edge(gr_4, two_three.clone());
+    // 4. SERDE TRIVIAL GRAPH FORMAT
+    println!("\t4. SERDE TRIVIAL GRAPH FORMAT");
+    let gr_5 = add_edge(gr_4, two_three);
     serial_triv(&gr_5);
-    let deserialized_gr = deserial_triv::<char>("serial_graph.yml");
-    println!("DESERIALIZED\n{:?}", deserialized_gr);
+    let deserialized_gr = deserial_triv::<i32>("serial_graph.yml");
+    println!("Deserialized\t\t{:?}\n", deserialized_gr);
 
-    // --> BREADTH FIRST SEARCH
-    let found = bfs(&gr_5, Node('b'));
-    // println!("BFS: \t\t\t{:?}", found.as_ref().unwrap());
+    // 5. BREADTH FIRST SEARCH
+    println!("\t5. BREADTH FIRST SEARCH");
+    let found = bfs(&gr_5, Node(2));
     println!("BFS: \t\t\t{:?}", found.unwrap());
 }
