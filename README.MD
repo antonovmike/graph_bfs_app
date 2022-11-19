@@ -26,7 +26,7 @@ For example
 ```rust
 struct Graph<T, E> {
     nodes: HashMap<u64, T>,
-    edges: HashMap<u64, HashMap<u64, E>,
+    edges: HashMap<u64, HashMap<u64, E>>,
 }
 ```
 - Serialization/Deserialization TGF using ToString/FromString
