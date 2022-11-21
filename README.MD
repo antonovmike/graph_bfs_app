@@ -24,8 +24,8 @@
 - Verify Nodes and Graphs uniqueness (hashtable or matrix)
 For example
 ```rust
-struct Graph<T, E> {
-    nodes: HashMap<u64, T>,
+struct Graph<N, E> {
+    nodes: HashMap<u64, N>,
     edges: HashMap<u64, HashMap<u64, E>>,
 }
 ```

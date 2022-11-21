@@ -8,10 +8,6 @@ use std::{
 };
 
 #[derive(Clone)]
-// pub struct Graph<T> {
-//     pub nodes: Vec<Node<T>>,
-//     pub edges: Vec<Edge<T>>,
-// }
 struct Graph<N, E> {
     nodes: HashMap<u64, N>,
     edges: HashMap<u64, HashMap<u64, E>>,
