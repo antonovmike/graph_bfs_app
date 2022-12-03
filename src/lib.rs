@@ -46,7 +46,9 @@ impl<N> Edge<N> {
     }
 }
 
-impl<N> Graph<N> {
+impl<N> Graph<N> 
+where N: Debug, 
+{
     pub fn new(nodes: Vec<Node<N>>, edges: Vec<Edge<N>>) -> Self {
         Graph { nodes, edges }
     }
