@@ -35,12 +35,24 @@ impl<N> Node<N> {
     }
 }
 
-impl<N> Edge<N> {
+impl<N> Edge<N> where N: Clone {
     pub fn new(node_a: Node<N>, node_b: Node<N>) -> Self {
+        let a_clone = node_a.clone();
+        let b_clone = node_b.clone();
+        let hash_a = a_clone.0;
+        let hash_b = b_clone.0;
+        let mut id_vec: Vec<u64> = vec![];
+        for (key, val) in hash_a.iter() {
+            id_vec.push(*key);
+        }
+        for (key, val) in hash_b.iter() {
+            id_vec.push(*key);
+        }
         let id = set_id() as u64;
+        let edge_id = format!("{}{}{}", id, id_vec[0], id_vec[1]).parse::<u64>().unwrap();
         let mut hash_nodes = (node_a, node_b);
         let mut hash_edge: HashMap<u64, (Node<N>, Node<N>)> = HashMap::new();
-        hash_edge.insert(id, hash_nodes);
+        hash_edge.insert(edge_id, hash_nodes);
         let new_edge: Edge<N> = Edge(hash_edge);
         new_edge
     }
