@@ -19,7 +19,9 @@ pub struct Node<N>(pub HashMap<u64, N>);
 pub struct Edge<N>(pub HashMap<u64, (Node<N>, Node<N>)>);
 
 static COUNTER: AtomicUsize = AtomicUsize::new(0);
-fn set_id() -> usize { COUNTER.fetch_add(1, Ordering::SeqCst) }
+fn set_id() -> usize {
+    COUNTER.fetch_add(1, Ordering::SeqCst)
+}
 
 // 1. CREATE GRAPH
 
@@ -52,9 +54,9 @@ impl<N> Graph<N> {
 
 // 2. ADD AND REMOVE NODES
 
-pub fn add_node<N>(graph: Graph<N>, to_add: Node<N>) -> Graph<N> {
+pub fn add_node<N>(graph: Graph<N>, add_node: Node<N>) -> Graph<N> {
     let mut new_vec = graph;
-    new_vec.nodes.push(to_add);
+    new_vec.nodes.push(add_node);
     new_vec
 }
 
