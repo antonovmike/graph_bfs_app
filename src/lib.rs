@@ -112,6 +112,37 @@ In one iteration of the algorythm:
 - all of the children are placed into the list
 */
 
+pub fn bfs<N>(graph: &Graph<N>, target: Node<N>) -> Option<Vec<Node<N>>>
+where
+    N: PartialEq + Copy + Hash + Eq + Debug,
+{
+    let a = target.0;
+    for (key, val) in a.iter() {
+        println!("{} {:?}", key, val);
+    }
+    let mut visited: HashMap<u64, Node<N>> = HashMap::new();
+    let mut history: Vec<Node<N>> = Vec::new();
+    let mut queue: VecDeque<Node<N>> = VecDeque::new();
+/*
+    visited.insert(target);
+    queue.push_back(target);
+    while let Some(currentnode) = queue.pop_front() {
+        history.push(currentnode.value());
+
+        if currentnode == target {
+            return Some(history);
+        }
+
+        for neighbor in currentnode.neighbors(graph) {
+            if !visited.contains(&neighbor) {
+                visited.insert(neighbor);
+                queue.push_back(neighbor);
+            }
+        }
+    }
+ */
+    None
+}
 
 
 #[cfg(test)]
