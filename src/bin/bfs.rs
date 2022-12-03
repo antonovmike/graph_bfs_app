@@ -23,8 +23,13 @@ fn main() {
     // println!("Graph 0 EDGES:\n{:?}", gr_0.edges);
 
     // Add node to graph
-    let gr_1 = gr_0;
+    // add_node works, but creates a new graph
     let node_d = Node::new("D");
-    let gr_2 = add_node(gr_1.clone(), node_d);
-    println!("Graph 2 + new node:\n{:?}", gr_2.nodes);
+    let gr_1 = add_node(gr_0.clone(), node_d.clone());
+    println!("Graph 1 + node_d:\n{:?}", gr_1.nodes);
+
+    // Remove node
+    // rem_node works, but creates a new graph
+    let gr_2 = rem_node(gr_0, node_d);
+    println!("Graph 2 - node_d:\n{:?}", gr_2.nodes);
 }
