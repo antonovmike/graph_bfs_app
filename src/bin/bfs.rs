@@ -23,17 +23,22 @@ fn main() {
     // println!("Graph 0 EDGES:\n{:?}", gr_0.edges);
 
     // 2. ADD AND REMOVE NODES
-    // add_node works, but creates a new graph
+    // works, but creates a new graph
     let node_d = Node::new("D");
     let gr_1 = add_node(gr_0.clone(), node_d.clone());
     // println!("Graph 1 + node_d:\n{:?}", gr_1.nodes);
-    // rem_node works, but creates a new graph
     let gr_2 = rem_node(gr_0.clone(), node_d);
     // println!("Graph 2 - node_d:\n{:?}", gr_2.nodes);
 
     // 3. ADD AND REMOVE DIRECTED EDGES
+    // works, but creates a new graph
     let gr_3 = add_edge(gr_0.clone(), edge_c_b.clone());
     println!("Graph 3 + edge_c_b:\n{:?}", gr_3.edges[5]);
     let gr_4 = rem_edge(gr_0, edge_c_b);
     println!("Graph 4 - edge_c_b:\n{:?}", gr_4.edges);
+
+    // 4. SERDE TRIVIAL GRAPH FORMAT
+
+    // 5. BREADTH FIRST SEARCH
+    
 }
