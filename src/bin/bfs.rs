@@ -1,4 +1,4 @@
-use graph_library::{Graph, Node, Edge};
+use graph_library::{Graph, Node, Edge, add_edge, rem_edge};
 use graph_library::{add_node, rem_node};
 
 fn main() {
@@ -15,21 +15,25 @@ fn main() {
     let edge_b_c = Edge::new(node_b.clone(), node_c.clone());
     let edge_c_b = Edge::new(node_c.clone(), node_b.clone());
     
-    // Create graph
+    // 1. Create graph
     let vec_of_nodes = vec![node_a, node_b, node_c];
-    let vec_of_edges = vec![edge_a_b, edge_b_a, edge_a_c, edge_c_a, edge_b_c, edge_c_b];
+    let vec_of_edges = vec![edge_a_b, edge_b_a, edge_a_c, edge_c_a, edge_b_c];
     let gr_0 = Graph::new(vec_of_nodes, vec_of_edges);
-    println!("Graph 0 NODES:\n{:?}", gr_0.nodes);
+    // println!("Graph 0 NODES:\n{:?}", gr_0.nodes);
     // println!("Graph 0 EDGES:\n{:?}", gr_0.edges);
 
-    // Add node to graph
+    // 2. ADD AND REMOVE NODES
     // add_node works, but creates a new graph
     let node_d = Node::new("D");
     let gr_1 = add_node(gr_0.clone(), node_d.clone());
-    println!("Graph 1 + node_d:\n{:?}", gr_1.nodes);
-
-    // Remove node
+    // println!("Graph 1 + node_d:\n{:?}", gr_1.nodes);
     // rem_node works, but creates a new graph
-    let gr_2 = rem_node(gr_0, node_d);
-    println!("Graph 2 - node_d:\n{:?}", gr_2.nodes);
+    let gr_2 = rem_node(gr_0.clone(), node_d);
+    // println!("Graph 2 - node_d:\n{:?}", gr_2.nodes);
+
+    // 3. ADD AND REMOVE DIRECTED EDGES
+    let gr_3 = add_edge(gr_0.clone(), edge_c_b.clone());
+    println!("Graph 3 + edge_c_b:\n{:?}", gr_3.edges[5]);
+    let gr_4 = rem_edge(gr_0, edge_c_b);
+    println!("Graph 4 - edge_c_b:\n{:?}", gr_4.edges);
 }
