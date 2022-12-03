@@ -20,7 +20,7 @@ fn main() {
     let vec_of_edges = vec![edge_a_b, edge_b_a, edge_a_c, edge_c_a, edge_b_c];
     let gr_0 = Graph::new(vec_of_nodes, vec_of_edges);
     // println!("Graph 0 NODES:\n{:?}", gr_0.nodes);
-    println!("Graph 0 EDGES:\n{:?}", gr_0.edges);
+    // println!("Graph 0 EDGES:\n{:?}", gr_0.edges);
 
     // 2. ADD AND REMOVE NODES
     // works, but creates a new graph
