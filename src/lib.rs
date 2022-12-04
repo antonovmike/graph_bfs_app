@@ -139,18 +139,19 @@ pub fn bfs<N>(graph: &Graph<N>, target: Node<N>)
 where
     N: PartialEq + Copy + Hash + Eq + Debug,
 {
-    let mut visited: HashMap<u64, N> = HashMap::new();
-    let a = target.0;
-    for (key, val) in a.iter() {
-        visited.insert(*key, *val);
+    // Target node. For example: {4: "D"}
+    let mut target_node: HashMap<u64, N> = HashMap::new();
+    let tn = target.0;
+    for (key, val) in tn.iter() {
+        target_node.insert(*key, *val);
     }
     // List of nodes. For example: {2: "C", 0: "A", 1: "B"}
-    let mut nodes: HashMap<u64, N> = HashMap::new();
-    let b = &graph.nodes;
-    for i in b {
+    let mut all_nodes: HashMap<u64, N> = HashMap::new();
+    let an = &graph.nodes;
+    for i in an {
         let c = i.clone().0;
         for (key, val) in c.iter() {
-            nodes.insert(*key, *val);
+            all_nodes.insert(*key, *val);
         }
     }
 
@@ -160,7 +161,7 @@ where
     // ...
  
     // None
-    nodes
+    all_nodes
 }
 
 
@@ -169,5 +170,24 @@ mod tests {
     use super::*;
 
     #[test]
-    fn some_test() {}
+    fn create_node_str() {
+        let node_a = Node::new("A").0;
+        let mut example: HashMap<u64, &str> = HashMap::new();
+        example.insert(1, "A");
+        assert_eq!(example, node_a);
+    }
+    #[test]
+    fn create_node_char() {
+        let node_a = Node::new('A').0;
+        let mut example: HashMap<u64, char> = HashMap::new();
+        example.insert(0, 'A');
+        assert_eq!(example, node_a);
+    }
+    #[test]
+    fn create_node_string() {
+        let node_a = Node::new("A".to_string()).0;
+        let mut example: HashMap<u64, String> = HashMap::new();
+        example.insert(2, "A".to_string());
+        assert_eq!(example, node_a);
+    }
 }

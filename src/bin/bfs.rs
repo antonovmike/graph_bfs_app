@@ -1,3 +1,4 @@
+#[allow(unused)]
 use graph_library::{Graph, Node, Edge, add_edge, rem_edge};
 use graph_library::{add_node, rem_node, bfs};
 
@@ -6,6 +7,10 @@ fn main() {
     let node_a = Node::new("A");
     let node_b = Node::new("B");
     let node_c = Node::new("C");
+    let node_e = Node::new("E");
+
+    let asd = node_e.0;
+    println!("{:?}", asd);
 
     // Create edges
     let edge_a_b = Edge::new(node_a.clone(), node_b.clone());
@@ -25,9 +30,9 @@ fn main() {
     // 2. ADD AND REMOVE NODES
     // works, but creates a new graph
     let node_d = Node::new("D");
-    let gr_1 = add_node(gr_0.clone(), node_d.clone());
+    // let gr_1 = add_node(gr_0.clone(), node_d.clone());
     // println!("Graph 1 + node_d:\n{:?}", gr_1.nodes);
-    let gr_2 = rem_node(gr_0.clone(), node_d.clone());
+    // let gr_2 = rem_node(gr_0.clone(), node_d.clone());
     // println!("Graph 2 - node_d:\n{:?}", gr_2.nodes);
 
     // 3. ADD AND REMOVE DIRECTED EDGES
