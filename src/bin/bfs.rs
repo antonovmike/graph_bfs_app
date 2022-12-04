@@ -40,5 +40,8 @@ fn main() {
     // 4. SERDE TRIVIAL GRAPH FORMAT
 
     // 5. BREADTH FIRST SEARCH
-    bfs(&gr_4, node_d);
+    // bfs(&gr_4, node_d);
+
+
+    println!("BFS:\n{:?}", bfs(&gr_4, node_d));
 }

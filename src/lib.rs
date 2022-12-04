@@ -18,6 +18,8 @@ pub struct Node<N>(pub HashMap<u64, N>);
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct Edge<N>(pub HashMap<u64, (Node<N>, Node<N>)>);
 
+// impl<'a, N: 'a> Copy for Node<'a, N> where N: Copy {}
+
 static COUNTER: AtomicUsize = AtomicUsize::new(0);
 fn set_id() -> usize {
     COUNTER.fetch_add(1, Ordering::SeqCst)
@@ -131,7 +133,9 @@ In one iteration of the algorythm:
 - all of the children are placed into the list
 */
 
-pub fn bfs<N>(graph: &Graph<N>, target: Node<N>) -> Option<Vec<Node<N>>>
+pub fn bfs<N>(graph: &Graph<N>, target: Node<N>) 
+-> HashMap<u64, N> 
+// -> Option<Vec<Node<N>>>
 where
     N: PartialEq + Copy + Hash + Eq + Debug,
 {
@@ -140,12 +144,23 @@ where
     for (key, val) in a.iter() {
         visited.insert(*key, *val);
     }
+    // List of nodes. For example: {2: "C", 0: "A", 1: "B"}
+    let mut nodes: HashMap<u64, N> = HashMap::new();
+    let b = &graph.nodes;
+    for i in b {
+        let c = i.clone().0;
+        for (key, val) in c.iter() {
+            nodes.insert(*key, *val);
+        }
+    }
+
     let mut history: Vec<Node<N>> = Vec::new();
     let mut queue: VecDeque<Node<N>> = VecDeque::new();
 
     // ...
  
-    None
+    // None
+    nodes
 }
 
 
