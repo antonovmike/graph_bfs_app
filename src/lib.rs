@@ -35,6 +35,25 @@ impl<N> Node<N> {
         let new_node: Node<N> = Node(hash_node);
         new_node
     }
+
+    pub fn value(&self) -> Node<N>
+    where
+        N: Copy,
+    {
+        Node(self.0)
+    }
+
+    pub fn neighbors(&self, graph: &Graph<N>) -> Vec<Node<N>>
+    where
+        N: PartialEq + Copy + Hash,
+    {
+        graph
+            .nodes
+            .iter()
+            .filter(|e| e.0 == self.0)
+            .map(|e| e.0.into())
+            .collect()
+    }
 }
 
 impl<N> Edge<N> where N: Clone {
@@ -134,11 +153,12 @@ In one iteration of the algorythm:
 */
 
 pub fn bfs<N>(graph: &Graph<N>, target: Node<N>) 
--> HashMap<u64, N> 
-// -> Option<Vec<Node<N>>>
+// -> HashMap<u64, N> 
+-> Option<Vec<Node<N>>>
 where
     N: PartialEq + Copy + Hash + Eq + Debug,
 {
+    /*
     // Target node. For example: {4: "D"}
     let mut target_node: HashMap<u64, N> = HashMap::new();
     let tn = target.0;
@@ -157,11 +177,31 @@ where
 
     let mut history: Vec<Node<N>> = Vec::new();
     let mut queue: VecDeque<Node<N>> = VecDeque::new();
+    */
 
-    // ...
- 
-    // None
-    all_nodes
+    let mut visited: HashMap<u64, N> = HashMap::new();
+    let mut history: Vec<Node<N>> = Vec::new();
+    let mut queue: VecDeque<Node<N>> = VecDeque::new();
+
+    let key_val = target.0.get_key_value(&0).unwrap();
+    visited.insert(*key_val.0, *key_val.1);
+    queue.push_back(target);
+    while let Some(currentnode) = queue.pop_front() {
+        history.push(currentnode.value());
+
+        if currentnode == target.0 {
+            return Some(history);
+        }
+
+        for neighbor in currentnode.neighbors(graph) {
+            if !visited.contains(&neighbor) {
+                visited.insert(neighbor);
+                queue.push_back(neighbor);
+            }
+        }
+    }
+
+    None
 }
 
 

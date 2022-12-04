@@ -9,9 +9,6 @@ fn main() {
     let node_c = Node::new("C");
     let node_e = Node::new("E");
 
-    let asd = node_e.0;
-    println!("{:?}", asd);
-
     // Create edges
     let edge_a_b = Edge::new(node_a.clone(), node_b.clone());
     let edge_b_a = Edge::new(node_b.clone(), node_a.clone());
