@@ -1,6 +1,6 @@
 #[allow(unused)]
 use graph_library::{Graph, Node, Edge, add_edge, rem_edge};
-use graph_library::{add_node, rem_node, bfs};
+use graph_library::{add_node, rem_node, bfs, serial_triv};
 
 fn main() {
     // Create nodes
@@ -40,6 +40,7 @@ fn main() {
     println!("Graph 4 - edge_c_b:\n{:?}", gr_4.edges);
 
     // 4. SERDE TRIVIAL GRAPH FORMAT
+    serial_triv(&gr_4);
 
     // 5. BREADTH FIRST SEARCH
     // bfs(&gr_4, node_d);
