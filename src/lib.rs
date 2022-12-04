@@ -49,7 +49,7 @@ impl<N> Edge<N> where N: Clone {
         for (key, val) in hash_b.iter() {
             id_vec.push(*key);
         }
-        let edge_id = format!("{}{}{}", 1, id_vec[0], id_vec[1]).parse::<u64>().unwrap();
+        let edge_id = format!("1{}{}", id_vec[0], id_vec[1]).parse::<u64>().unwrap();
 
         let mut hash_nodes = (node_a, node_b);
         let mut hash_edge: HashMap<u64, (Node<N>, Node<N>)> = HashMap::new();
@@ -60,7 +60,7 @@ impl<N> Edge<N> where N: Clone {
 }
 
 impl<N> Graph<N> 
-where N: Debug, 
+where N: Debug + Copy
 {
     pub fn new(nodes: Vec<Node<N>>, edges: Vec<Edge<N>>) -> Self {
         Graph { nodes, edges }
@@ -69,7 +69,9 @@ where N: Debug,
 
 // 2. ADD AND REMOVE NODES
 
-pub fn add_node<N>(graph: Graph<N>, add_node: Node<N>) -> Graph<N> {
+pub fn add_node<N>(graph: Graph<N>, add_node: Node<N>) -> Graph<N> 
+where N: Copy 
+{
     let mut new_vec = graph;
     new_vec.nodes.push(add_node);
     new_vec
@@ -116,6 +118,10 @@ where
 1 2 Edge between the two
 */
 
+pub fn serial_triv() {}
+
+pub fn deserial_triv() {}
+
 // 5. BREADTH FIRST SEARCH
 /*
 Use a list that stores nodes that need to be browsed.
@@ -129,31 +135,16 @@ pub fn bfs<N>(graph: &Graph<N>, target: Node<N>) -> Option<Vec<Node<N>>>
 where
     N: PartialEq + Copy + Hash + Eq + Debug,
 {
+    let mut visited: HashMap<u64, N> = HashMap::new();
     let a = target.0;
     for (key, val) in a.iter() {
-        println!("{} {:?}", key, val);
+        visited.insert(*key, *val);
     }
-    let mut visited: HashMap<u64, Node<N>> = HashMap::new();
     let mut history: Vec<Node<N>> = Vec::new();
     let mut queue: VecDeque<Node<N>> = VecDeque::new();
-/*
-    visited.insert(target);
-    queue.push_back(target);
-    while let Some(currentnode) = queue.pop_front() {
-        history.push(currentnode.value());
 
-        if currentnode == target {
-            return Some(history);
-        }
-
-        for neighbor in currentnode.neighbors(graph) {
-            if !visited.contains(&neighbor) {
-                visited.insert(neighbor);
-                queue.push_back(neighbor);
-            }
-        }
-    }
- */
+    // ...
+ 
     None
 }
 
