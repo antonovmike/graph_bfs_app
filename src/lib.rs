@@ -27,9 +27,7 @@ fn set_id() -> usize {
 
 // 1. CREATE GRAPH
 
-impl<N> Node<N> 
-where N: Copy
-{
+impl<N> Node<N> {
     pub fn new(node: N) -> Self {
         let id = set_id() as u64;
         let mut hash_node: HashMap<u64, N> = HashMap::new();
