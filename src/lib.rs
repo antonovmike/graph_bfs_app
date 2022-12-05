@@ -172,5 +172,10 @@ mod tests {
     use super::*;
 
     #[test]
-    fn some_test() {}
+    fn create_node_string() {
+        let node_a = Node::new("ABC".to_string()).0;
+        let mut example: HashMap<u64, String> = HashMap::new();
+        example.insert(0, "ABC".to_string());
+        assert_eq!(example, node_a);
+    }
 }
