@@ -7,15 +7,16 @@ use std::{
     io::BufRead, sync::atomic::{AtomicUsize, Ordering},
 };
 
-#[derive(Clone)]
+#[derive(Serialize, Clone)]
 pub struct Graph<N> {
     pub nodes: Vec<Node<N>>,
     pub edges: Vec<Edge<N>>,
 }
 
-#[derive(Clone, PartialEq, Eq, Debug)]
+#[derive(Serialize, Clone, PartialEq, Eq, Debug)]
 pub struct Node<N>(pub HashMap<u64, N>);
-#[derive(Clone, PartialEq, Eq, Debug)]
+
+#[derive(Serialize, Clone, PartialEq, Eq, Debug)]
 pub struct Edge<N>(pub HashMap<u64, (Node<N>, Node<N>)>);
 
 static COUNTER: AtomicUsize = AtomicUsize::new(0);
@@ -118,7 +119,24 @@ where
 1 2 Edge between the two
 */
 
-pub fn serial_triv() {}
+pub fn serial_triv<N>(graph: &Graph<N>) where
+N: Serialize + Copy + Display + ToString + std::fmt::Debug
+{
+    let file = std::fs::OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("serial_graph.yml")
+        .expect("Couldn't open file");
+    
+    let serialized = serde_yaml::to_string(graph)
+        .unwrap()
+        .clone()
+        .into_bytes();
+
+    let value_serialized = String::from_utf8(serialized).expect("Invalid utf8 message");
+
+    serde_yaml::to_writer(file, &value_serialized).unwrap();
+}
 
 pub fn deserial_triv() {}
 
