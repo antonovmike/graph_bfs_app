@@ -1,6 +1,6 @@
 #[allow(unused)]
 use graph_library::{Graph, Node, Edge, add_edge, rem_edge};
-use graph_library::{add_node, rem_node, bfs, serial_triv};
+use graph_library::{rem_node, bfs, serial_triv};
 
 fn main() {
     // Create nodes

@@ -27,7 +27,9 @@ fn set_id() -> usize {
 
 // 1. CREATE GRAPH
 
-impl<N> Node<N> {
+impl<N> Node<N> 
+where N: Copy
+{
     pub fn new(node: N) -> Self {
         let id = set_id() as u64;
         let mut hash_node: HashMap<u64, N> = HashMap::new();
@@ -56,7 +58,7 @@ impl<N> Node<N> {
     // }
 }
 
-impl<N> Edge<N> where N: Clone {
+impl<N> Edge<N> where N: Clone + Copy {
     pub fn new(node_a: Node<N>, node_b: Node<N>) -> Self {
         let a_clone = node_a.clone();
         let b_clone = node_b.clone();
@@ -98,17 +100,29 @@ where N: Debug + Copy
         new_vec.nodes.push(add_node);
         new_vec
     }
+    // Remove Node
+    // pub fn rem_node(&mut self, remove_node: Node<N>) -> Graph<N>
+    // where N: PartialEq,
+    // {
+    //     let mut nodes = &self.nodes;
+    //     nodes.retain(|value: &Node<N>| *value != remove_node);
+    //     let new_vec: Graph<N> = Graph {
+    //         nodes,
+    //         edges: self.edges,
+    //     };
+    //     new_vec
+    // }
 }
 
 // 2. ADD AND REMOVE NODES
 
-pub fn add_node<N>(graph: Graph<N>, add_node: Node<N>) -> Graph<N> 
-where N: Copy 
-{
-    let mut new_vec = graph;
-    new_vec.nodes.push(add_node);
-    new_vec
-}
+// pub fn add_node<N>(graph: Graph<N>, add_node: Node<N>) -> Graph<N> 
+// where N: Copy 
+// {
+//     let mut new_vec = graph;
+//     new_vec.nodes.push(add_node);
+//     new_vec
+// }
 
 pub fn rem_node<N>(graph: Graph<N>, remove_node: Node<N>) -> Graph<N>
 where
