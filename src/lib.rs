@@ -86,6 +86,18 @@ where N: Debug + Copy
     pub fn new(nodes: Vec<Node<N>>, edges: Vec<Edge<N>>) -> Self {
         Graph { nodes, edges }
     }
+    // Check if node exists in the graph
+    pub fn in_graph(&self, index: usize) -> bool {
+        false
+    }
+    // Add new node
+    pub fn add_node(&mut self, add_node: Node<N>) -> &Graph<N> 
+    where N: Copy 
+    {
+        let mut new_vec = self;
+        new_vec.nodes.push(add_node);
+        new_vec
+    }
 }
 
 // 2. ADD AND REMOVE NODES
@@ -158,7 +170,16 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
     serde_yaml::to_writer(file, &value_serialized).unwrap();
 }
 
-pub fn deserial_triv() {}
+pub fn deserial_triv<N>() 
+// where N: Deserialize
+{
+    let file = std::fs::OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("serial_graph.yml")
+        .expect("Couldn't open file");
+    // let work_from_json: Graph<N> = serde_yaml::from_str(file.as_str()).unwrap();
+}
 
 // 5. BREADTH FIRST SEARCH
 /*

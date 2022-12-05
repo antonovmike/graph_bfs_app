@@ -20,13 +20,14 @@ fn main() {
     // 1. Create graph
     let vec_of_nodes = vec![node_a, node_b, node_c];
     let vec_of_edges = vec![edge_a_b, edge_b_a, edge_a_c, edge_c_a, edge_b_c];
-    let gr_0 = Graph::new(vec_of_nodes, vec_of_edges);
+    let mut gr_0 = Graph::new(vec_of_nodes, vec_of_edges);
     // println!("Graph 0 NODES:\n{:?}", gr_0.nodes);
     // println!("Graph 0 EDGES:\n{:?}", gr_0.edges);
 
     // 2. ADD AND REMOVE NODES
     // works, but creates a new graph
     let node_d = Node::new("D");
+    let gr_00 = Graph::add_node(&mut gr_0, node_d.clone());
     // let gr_1 = add_node(gr_0.clone(), node_d.clone());
     // println!("Graph 1 + node_d:\n{:?}", gr_1.nodes);
     // let gr_2 = rem_node(gr_0.clone(), node_d.clone());
