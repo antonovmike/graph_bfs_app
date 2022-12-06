@@ -1,4 +1,5 @@
 use graph_library::*;
+use graph_library::node::Node;
 
 fn main() {
     // Create nodes - impl Node

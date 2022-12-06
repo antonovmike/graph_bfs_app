@@ -1,12 +1,13 @@
-#![allow(unused)]
+// #![allow(unused)]
+use node::Node;
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::{BTreeMap, HashSet, VecDeque, HashMap},
+    collections::HashMap,
     fmt::{Debug, Display},
-    hash::Hash,
-    io::BufRead, sync::atomic::{AtomicUsize, Ordering},
+    sync::atomic::{AtomicUsize, Ordering},
 };
 
+pub mod node;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Graph<N> {
@@ -14,8 +15,6 @@ pub struct Graph<N> {
     pub edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>,
 }
 
-#[derive(Serialize, Clone, PartialEq, Eq, Debug)]
-pub struct Node<N>(pub HashMap<u64, N>);
 
 #[derive(Serialize, Clone, PartialEq, Eq, Debug)]
 pub struct Edge<N>(pub HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>);
@@ -28,23 +27,10 @@ fn set_id() -> usize {
 
 
 // 1. CREATE GRAPH
-impl<N> Node<N> where N: Copy {
-    pub fn new(list_of_nodes: &[N]) -> Self {
-        let mut hash_node: HashMap<u64, N> = HashMap::new();
-        let mut index = 0;
-        for _i in list_of_nodes.iter() {
-            let id = set_id() as u64;
-            hash_node.insert(id, list_of_nodes[index]);
-            index += 1;
-        }
-        let new_node: Node<N> = Node(hash_node);
-        new_node
-    }
-}
+
 
 impl<N> Edge<N> where N: Clone + Copy + Eq {
     pub fn new(nodes: Node<N>, node_a: N, node_b: N) -> Self {
-        let mut index: u64 = 0;
         let hashed = nodes.0;
         
         let a: HashMap<&u64, &N> = hashed.iter().map(|(key, value)| {
@@ -174,12 +160,6 @@ impl<N> std::fmt::Display for Graph<N> where N: Debug {
             "\nGRAPH:\n nodes: {:?}\n edges: {:?}\n-----",
             self.nodes, self.edges,
         )
-    }
-}
-
-impl<N> std::fmt::Display for Node<N> where N: Debug {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "\n{:?}\n-----", self)
     }
 }
 
