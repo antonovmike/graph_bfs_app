@@ -1,51 +1,32 @@
-#[allow(unused)]
-use graph_library::{Graph, Node, Edge, add_edge, rem_edge};
-use graph_library::{rem_node, bfs, serial_triv};
+use graph_library::*;
 
 fn main() {
-    // Create nodes
-    let node_a = Node::new("A");
-    let node_b = Node::new("B");
-    let node_c = Node::new("C");
-    let node_e = Node::new("E");
+    // Create nodes - impl Node
+    let list_of_nodes = ["A", "B", "C", "D"];
+    let nodes = Node::new(&list_of_nodes);
+    println!("{}", nodes);
+
+    // Create nodes - impl Graph
+    let second_list = ["F", "G"];
+    let nodes_in_gr = Graph::create_node(&second_list);
+    println!("{}", nodes_in_gr);
 
     // Create edges
-    let edge_a_b = Edge::new(node_a.clone(), node_b.clone());
-    let edge_b_a = Edge::new(node_b.clone(), node_a.clone());
-    let edge_a_c = Edge::new(node_a.clone(), node_c.clone());
-    let edge_c_a = Edge::new(node_c.clone(), node_a.clone());
-    let edge_b_c = Edge::new(node_b.clone(), node_c.clone());
-    let edge_c_b = Edge::new(node_c.clone(), node_b.clone());
-    
-    // 1. Create graph
-    let vec_of_nodes = vec![node_a, node_b, node_c];
-    let vec_of_edges = vec![edge_a_b, edge_b_a, edge_a_c, edge_c_a, edge_b_c];
-    let mut gr_0 = Graph::new(vec_of_nodes, vec_of_edges);
-    // println!("Graph 0 NODES:\n{:?}", gr_0.nodes);
-    // println!("Graph 0 EDGES:\n{:?}", gr_0.edges);
+    let edge_a_b = Edge::new(nodes.clone(), "A", "B");
+    println!("{}", edge_a_b);
+    let edge_b_a = Edge::new(nodes.clone(), "B", "A");
+    println!("{}", edge_b_a);
 
-    // 2. ADD AND REMOVE NODES
-    // works, but creates a new graph
-    let node_d = Node::new("D");
-    let gr_00 = Graph::add_node(&mut gr_0, node_d.clone());
-    // let gr_1 = add_node(gr_0.clone(), node_d.clone());
-    // println!("Graph 1 + node_d:\n{:?}", gr_1.nodes);
-    // let gr_2 = rem_node(gr_0.clone(), node_d.clone());
-    // println!("Graph 2 - node_d:\n{:?}", gr_2.nodes);
+    let mut gr_0 = Graph::new(nodes.0, edge_a_b.0);
+    println!("{}", gr_0);
 
-    // 3. ADD AND REMOVE DIRECTED EDGES
-    // works, but creates a new graph
-    let gr_3 = add_edge(gr_0.clone(), edge_c_b.clone());
-    println!("Graph 3 + edge_c_b:\n{:?}", gr_3.edges[5]);
-    let gr_4 = rem_edge(gr_0, edge_c_b);
-    println!("Graph 4 - edge_c_b:\n{:?}", gr_4.edges);
+    let node_e = Node::new(&["C"]);
+    let gr_0 = Graph::add_node(&mut gr_0, node_e.clone());
+    println!("{}", gr_0);
 
-    // 4. SERDE TRIVIAL GRAPH FORMAT
-    serial_triv(&gr_4);
+    let node_to_get: Node<&str> = Graph::get_node(&gr_0.clone(), &1);
+    println!("get node: {}", node_to_get);
 
-    // 5. BREADTH FIRST SEARCH
-    // bfs(&gr_4, node_d);
-
-
-    println!("BFS:\n{:?}", bfs(&gr_4, node_d));
+    let node_f = Node::new(&["F"]);
+    println!("Check if node exist: {}", Graph::check_node(&gr_0, node_f));
 }
