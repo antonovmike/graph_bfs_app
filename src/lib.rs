@@ -1,11 +1,11 @@
-// #![allow(unused)]
-use node::Node;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
     fmt::{Debug, Display},
     sync::atomic::{AtomicUsize, Ordering},
 };
+use node::Node;
+// use edge::Edge;
 
 pub mod node;
 pub mod edge;
@@ -44,23 +44,33 @@ impl<N> Graph<N> where N: Debug + Copy {
 
                 if let Some(_value) = x { b = 1 }
                 else { b = 0 }
-            }
+            }            
         }
         if b == 1 { true } else { false }
     }
+
+    // pub fn if_gr_contains(&self, node: N) -> bool where N: Eq{
+    //     let mut indicator = false;
+    //     for i in self.nodes.iter() {
+    //         let node_names = self.nodes[i.0];
+    //         if node_names == node {
+    //             indicator= true
+    //         } else { indicator = false }
+    //     }
+    //     indicator
+    // }
 
     pub fn add_node(&mut self, add_node: Node<N>) -> &Graph<N> 
     where N: Copy + Eq
     {
         for (k, v) in add_node.0 {
-            // if self.get_node(&k).0.get_key_value(&k).unwrap().0 == &k {
-            //     self.nodes.insert(k, v);
-            // }
+            if if_gr_contains(self, v) {
+                ();
+            } else {
+                self.nodes.insert(k, v);
+            }
 
-            // let map = self.nodes.clone();
-            // let a = map.iter().find_map(|(key, &val)| if val == v { Some(v) } else { None }).unwrap();
-
-            self.nodes.insert(k, v);
+            // self.nodes.insert(k, v);
         };
         self
     }
@@ -112,6 +122,17 @@ impl<N> Graph<N> where N: Debug + Copy {
     }
 }
 
+pub fn if_gr_contains<N>(graph: &Graph<N>, node: N) -> bool where N: Copy + Eq{
+    let mut indicator = true;
+    for i in graph.nodes.iter() {
+        let node_names = graph.nodes[i.0];
+        if node_names == node {
+            indicator= true;
+            break;
+        } else { indicator = false }
+    }
+    indicator
+}
 
 impl<N> std::fmt::Display for Graph<N> where N: Debug {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
