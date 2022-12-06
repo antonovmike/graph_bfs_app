@@ -8,6 +8,7 @@ use std::{
 };
 
 pub mod node;
+pub mod edge;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Graph<N> {
@@ -15,59 +16,18 @@ pub struct Graph<N> {
     pub edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>,
 }
 
-
-#[derive(Serialize, Clone, PartialEq, Eq, Debug)]
-pub struct Edge<N>(pub HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>);
-
-
 static COUNTER: AtomicUsize = AtomicUsize::new(0);
 fn set_id() -> usize {
     COUNTER.fetch_add(1, Ordering::SeqCst)
 }
 
 
-// 1. CREATE GRAPH
-
-
-impl<N> Edge<N> where N: Clone + Copy + Eq {
-    pub fn new(nodes: Node<N>, node_a: N, node_b: N) -> Self {
-        let hashed = nodes.0;
-        
-        // let a: HashMap<&u64, &N> = hashed.iter().map(|(key, value)| {
-        //     if value == &node_a { (key, value) }
-        //     else { (key, value) }
-        // }).collect();
-        // let b: HashMap<&u64, &N> = hashed.iter().map(|(key, value)| {
-        //     if value == &node_b { (key, value) }
-        //     else { (key, value) }
-        // }).collect();
-        let a_id = hashed.iter()
-        .find_map(|(key, &val)| if val == node_a { Some(key) } else { None }).unwrap();
-        let b_id = hashed.iter()
-        .find_map(|(key, &val)| if val == node_b { Some(key) } else { None }).unwrap();
-
-        let edge_id = format!("1{}{}", a_id, b_id).parse::<u64>().unwrap();
-
-        let mut new_node_a: HashMap<u64, N> = HashMap::new();
-        new_node_a.insert(*a_id, node_a);
-        let mut new_node_b: HashMap<u64, N> = HashMap::new();
-        new_node_b.insert(*b_id, node_b);
-        let hash_nodes: (HashMap<u64, N>, HashMap<u64, N>) = (new_node_a, new_node_b);
-        let mut hash_edge: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)> = HashMap::new();
-        hash_edge.insert(edge_id, hash_nodes);
-        let new_edge: Edge<N> = Edge(hash_edge);
-        new_edge
-    }
-}
-
-impl<N> Graph<N> 
-where N: Debug + Copy
-{
+impl<N> Graph<N> where N: Debug + Copy {
     pub fn new(nodes: HashMap<u64, N>, edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>) -> Self {
         Graph { nodes, edges }
     }
     // Check if node exists in the graph
-    pub fn in_graph(&self, index: usize) -> bool {
+    pub fn in_graph(&self, _index: usize) -> bool {
         false
     }
     // Check if the node exists
@@ -77,12 +37,12 @@ where N: Debug + Copy
         if add_node.0.len() == 0 {
             b = 0
         } else {
-            for (k, v) in add_node.0 {
+            for (_k, v) in add_node.0 {
                 let map = self.nodes.clone();
-                let a = map.iter().find_map(|(key, &val)| if val == v { Some(v) } else { None }).unwrap();
+                let a = map.iter().find_map(|(_key, &val)| if val == v { Some(v) } else { None }).unwrap();
                 let x = Some(a);
 
-                if let Some(value) = x { b = 1 }
+                if let Some(_value) = x { b = 1 }
                 else { b = 0 }
             }
         }
@@ -163,18 +123,12 @@ impl<N> std::fmt::Display for Graph<N> where N: Debug {
     }
 }
 
-impl<N> std::fmt::Display for Edge<N> where N: Debug {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "\n{:?}\n-----", self)
-    }
-}
-
 
 pub fn deserial_triv() 
 // where N: Deserialize
 // where N: DeserializeOwned
 {
-    let string = std::fs::read_to_string("serial_graph.yml").expect("Error in reading the file");
+    // let string = std::fs::read_to_string("serial_graph.yml").expect("Error in reading the file");
     
     // let deserialized: Graph<&'a str> = serde_yaml::from_str(&str[..]).unwrap();
 }
