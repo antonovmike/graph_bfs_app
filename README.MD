@@ -10,16 +10,22 @@
 
 **This library can:**
 
+- Create nodes from the list
 - Create a new graph Graph::new(some_nodes, some_edges)
 - Add and remove nodes add_node(some_graph, some_node)
-- Add and remove directed edges add_edge(some_graph, some_edge)
-- Serialize/Deserialize graph serial_triv(&some_graph) [*]
-- Breadth first search by Node() bfs(&some_graph, some_node)
+- Create nodes from the list
+- Create a new graph Graph::new(some_nodes, some_edges)
+- Add and remove nodes add_node(some_graph, some_node)
+- Check Node's identity and avoid adding duplicates
+
 
 [*] Structures of types String is used. Have to implement a deserializer for generic types 
 
 **TODO:**
 
+- Add and remove directed edges add_edge(some_graph, some_edge)
+- Serialize/Deserialize graph serial_triv(&some_graph) [*]
+- Breadth first search by Node() bfs(&some_graph, some_node)
 - Create interface like HashMap/HashSet/Vec
 - Verify Nodes and Graphs uniqueness (hashtable or matrix)
 For example

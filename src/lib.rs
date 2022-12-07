@@ -49,17 +49,6 @@ impl<N> Graph<N> where N: Debug + Copy {
         if b == 1 { true } else { false }
     }
 
-    // pub fn if_gr_contains(&self, node: N) -> bool where N: Eq{
-    //     let mut indicator = false;
-    //     for i in self.nodes.iter() {
-    //         let node_names = self.nodes[i.0];
-    //         if node_names == node {
-    //             indicator= true
-    //         } else { indicator = false }
-    //     }
-    //     indicator
-    // }
-
     pub fn add_node(&mut self, add_node: Node<N>) -> &Graph<N> 
     where N: Copy + Eq
     {
@@ -69,8 +58,6 @@ impl<N> Graph<N> where N: Debug + Copy {
             } else {
                 self.nodes.insert(k, v);
             }
-
-            // self.nodes.insert(k, v);
         };
         self
     }
