@@ -11,13 +11,13 @@ fn main() {
     // Create nodes - impl Graph
     let second_list = ["F", "G"];
     let nodes_in_gr = Graph::create_node(&second_list);
-    // println!("{}", nodes_in_gr);
+    println!("{}", nodes_in_gr);
 
     // Create edges
     let edge_a_b = Edge::new(nodes.clone(), "A", "B");
-    // println!("{}", edge_a_b);
+    println!("{}", edge_a_b);
     let edge_b_a = Edge::new(nodes.clone(), "B", "A");
-    // println!("{}", edge_b_a);
+    println!("{}", edge_b_a);
 
     let mut gr_0 = Graph::new(nodes.0, edge_a_b.0);
     println!("{}", gr_0);

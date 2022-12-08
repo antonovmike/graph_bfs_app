@@ -14,6 +14,7 @@ pub mod edge;
 pub struct Graph<N> {
     pub nodes: HashMap<u64, N>,
     pub edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>,
+    // pub root: Option<u64>
 }
 
 static COUNTER: AtomicUsize = AtomicUsize::new(0);
@@ -73,6 +74,8 @@ impl<N> Graph<N> where N: Debug + Copy {
         let new_node: Node<N> = Node(hash_node);
         new_node
     }
+
+    // pub fn set_root(&mut self, root: Option<u64>) {}
 
     pub fn get_node(&self, index: &u64) -> Node<N> {
         let mut hash_node: HashMap<u64, N> = HashMap::new();
