@@ -26,11 +26,11 @@ fn main() {
     let gr_0 = Graph::add_node(&mut gr_0, node_e.clone());
     println!("{}", gr_0);
 
-    // let node_to_get: Node<&str> = Graph::get_node(&gr_0, &1);
-    // println!("get node: {}", node_to_get);
+    let node_to_get: Node<&str> = Graph::get_node(&gr_0, &1);
+    println!("get node: {}", node_to_get);
 
-    // let node_f = Node::new(&["F"]);
-    // println!("Check if node exist: {}", Graph::check_node(&gr_0, node_f));
+    let node_f = Node::new(&["F"]);
+    println!("Check if node exist: {}", Graph::check_node(&gr_0, node_f));
 
     // let node_f = Node::new(&["A"]);
     // let gr_1 = Graph::add_node(&mut gr_0, node_f.clone());

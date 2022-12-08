@@ -14,7 +14,6 @@ pub mod edge;
 pub struct Graph<N> {
     pub nodes: HashMap<u64, N>,
     pub edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>,
-    // pub root: Option<u64>
 }
 
 static COUNTER: AtomicUsize = AtomicUsize::new(0);
@@ -27,10 +26,7 @@ impl<N> Graph<N> where N: Debug + Copy {
     pub fn new(nodes: HashMap<u64, N>, edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>) -> Self {
         Graph { nodes, edges }
     }
-    // Check if node exists in the graph
-    pub fn in_graph(&self, _index: usize) -> bool {
-        false
-    }
+
     // Check if the node exists
     pub fn check_node(&self, add_node: Node<N>) -> bool
     where N: Copy + Eq {
@@ -84,12 +80,6 @@ impl<N> Graph<N> where N: Debug + Copy {
         }
         Node(hash_node)
     }
-
-/* SERDE TRIVIAL GRAPH FORMAT:
-1 First node
-2 Second node
-#
-1 2 Edge between the two */
 
     pub fn serial_triv(graph: &Graph<N>) where
     N: Serialize + Copy + Display + ToString + std::fmt::Debug
