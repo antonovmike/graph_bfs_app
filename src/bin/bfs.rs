@@ -26,7 +26,7 @@ fn main() {
     // let gr_0 = Graph::add_node(&mut gr_0, node_e.clone());
     // println!("{}", gr_0);
 
-    let root = Graph::set_root(&mut gr_0, Some(0));
+    let root = Graph::set_root(&mut gr_0, Some(2));
     println!("Root is set to {:?}", root);
     println!("{}", gr_0);
 

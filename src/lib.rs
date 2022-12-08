@@ -75,9 +75,16 @@ impl<N> Graph<N> where N: Debug + Copy {
         new_node
     }
 
-    pub fn set_root(&mut self, root: Option<u64>) -> u64 {
-        self.root = root;
-        root.to_owned().unwrap()
+    pub fn set_root(&mut self, root: Option<u64>) -> Option<u64> {
+        let ids = &self.nodes;
+        let a = root.unwrap();
+        if ids.contains_key(&a) {
+            self.root = root;
+            root
+        } else {
+            self.root = None;
+            root
+        }
     }
 
     pub fn get_node(&self, index: &u64) -> Node<N> {
