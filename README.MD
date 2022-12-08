@@ -10,26 +10,42 @@
 
 **This library can:**
 
+- Create nodes from the list
 - Create a new graph Graph::new(some_nodes, some_edges)
 - Add and remove nodes add_node(some_graph, some_node)
-- Add and remove directed edges add_edge(some_graph, some_edge)
-- Serialize/Deserialize graph serial_triv(&some_graph) [*]
-- Breadth first search by Node() bfs(&some_graph, some_node)
+- Create nodes from the list
+- Create a new graph Graph::new(some_nodes, some_edges)
+- Add and remove nodes add_node(some_graph, some_node)
+- Check Node's identity and avoid adding duplicates
+
 
 [*] Structures of types String is used. Have to implement a deserializer for generic types 
 
 **TODO:**
 
+- Add and remove directed edges add_edge(some_graph, some_edge)
+- Serialize/Deserialize graph serial_triv(&some_graph) [*]
+```bash
+TRIVIAL GRAPH FORMAT:
+1 First node
+2 Second node
+#
+1 2 Edge between the two
+```
+- Breadth first search by Node() bfs(&some_graph, some_node)
 - Create interface like HashMap/HashSet/Vec
 - Verify Nodes and Graphs uniqueness (hashtable or matrix)
 For example
 ```rust
-struct Graph<T, E> {
-    nodes: HashMap<u64, T>,
-    edges: HashMap<u64, HashMap<u64, E>,
+struct Graph<N, E> {
+    nodes: HashMap<u64, N>,
+    edges: HashMap<u64, HashMap<u64, E>>,
 }
 ```
 - Serialization/Deserialization TGF using ToString/FromString
 - Use doc comments
 - User's path to file
 - Executable in separate crate
+
+
+[Graph Data Structure And Algorithms](https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/)

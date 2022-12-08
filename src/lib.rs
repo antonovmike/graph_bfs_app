@@ -1,25 +1,21 @@
-#![allow(unused)]
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::{BTreeMap, HashSet, VecDeque, HashMap},
+    collections::HashMap,
     fmt::{Debug, Display},
-    hash::Hash,
-    io::BufRead, sync::atomic::{AtomicUsize, Ordering},
+    sync::atomic::{AtomicUsize, Ordering},
 };
+use node::Node;
+// use edge::Edge;
 
+pub mod node;
+pub mod edge;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Graph<N> {
     pub nodes: HashMap<u64, N>,
     pub edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>,
+    // pub root: Option<u64>
 }
-
-#[derive(Serialize, Clone, PartialEq, Eq, Debug)]
-pub struct Node<N>(pub HashMap<u64, N>);
-
-#[derive(Serialize, Clone, PartialEq, Eq, Debug)]
-pub struct Edge<N>(pub HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>);
-
 
 static COUNTER: AtomicUsize = AtomicUsize::new(0);
 fn set_id() -> usize {
@@ -27,61 +23,12 @@ fn set_id() -> usize {
 }
 
 
-// 1. CREATE GRAPH
-impl<N> Node<N> where N: Copy {
-    pub fn new(list_of_nodes: &[N]) -> Self {
-        let mut hash_node: HashMap<u64, N> = HashMap::new();
-        let mut index = 0;
-        for _i in list_of_nodes.iter() {
-            let id = set_id() as u64;
-            hash_node.insert(id, list_of_nodes[index]);
-            index += 1;
-        }
-        let new_node: Node<N> = Node(hash_node);
-        new_node
-    }
-}
-
-impl<N> Edge<N> where N: Clone + Copy + Eq {
-    pub fn new(nodes: Node<N>, node_a: N, node_b: N) -> Self {
-        let mut index: u64 = 0;
-        let hashed = nodes.0;
-        
-        let a: HashMap<&u64, &N> = hashed.iter().map(|(key, value)| {
-            if value == &node_a { (key, value) }
-            else { (key, value) }
-        }).collect();
-        let b: HashMap<&u64, &N> = hashed.iter().map(|(key, value)| {
-            if value == &node_b { (key, value) }
-            else { (key, value) }
-        }).collect();
-        let a_id = hashed.iter()
-        .find_map(|(key, &val)| if val == node_a { Some(key) } else { None }).unwrap();
-        let b_id = hashed.iter()
-        .find_map(|(key, &val)| if val == node_b { Some(key) } else { None }).unwrap();
-
-        let edge_id = format!("1{}{}", a_id, b_id).parse::<u64>().unwrap();
-
-        let mut new_node_a: HashMap<u64, N> = HashMap::new();
-        new_node_a.insert(*a_id, node_a);
-        let mut new_node_b: HashMap<u64, N> = HashMap::new();
-        new_node_b.insert(*b_id, node_b);
-        let mut hash_nodes = (new_node_a, new_node_b);
-        let mut hash_edge: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)> = HashMap::new();
-        hash_edge.insert(edge_id, hash_nodes);
-        let new_edge: Edge<N> = Edge(hash_edge);
-        new_edge
-    }
-}
-
-impl<N> Graph<N> 
-where N: Debug + Copy
-{
+impl<N> Graph<N> where N: Debug + Copy {
     pub fn new(nodes: HashMap<u64, N>, edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>) -> Self {
         Graph { nodes, edges }
     }
     // Check if node exists in the graph
-    pub fn in_graph(&self, index: usize) -> bool {
+    pub fn in_graph(&self, _index: usize) -> bool {
         false
     }
     // Check if the node exists
@@ -91,14 +38,14 @@ where N: Debug + Copy
         if add_node.0.len() == 0 {
             b = 0
         } else {
-            for (k, v) in add_node.0 {
+            for (_k, v) in add_node.0 {
                 let map = self.nodes.clone();
-                let a = map.iter().find_map(|(key, &val)| if val == v { Some(v) } else { None }).unwrap();
+                let a = map.iter().find_map(|(_key, &val)| if val == v { Some(v) } else { None }).unwrap();
                 let x = Some(a);
 
-                if let Some(value) = x { b = 1 }
+                if let Some(_value) = x { b = 1 }
                 else { b = 0 }
-            }
+            }            
         }
         if b == 1 { true } else { false }
     }
@@ -107,7 +54,11 @@ where N: Debug + Copy
     where N: Copy + Eq
     {
         for (k, v) in add_node.0 {
-            self.nodes.insert(k, v);
+            if if_gr_contains(self, v) {
+                ();
+            } else {
+                self.nodes.insert(k, v);
+            }
         };
         self
     }
@@ -159,6 +110,17 @@ where N: Debug + Copy
     }
 }
 
+pub fn if_gr_contains<N>(graph: &Graph<N>, node: N) -> bool where N: Copy + Eq{
+    let mut indicator = true;
+    for i in graph.nodes.iter() {
+        let node_names = graph.nodes[i.0];
+        if node_names == node {
+            indicator= true;
+            break;
+        } else { indicator = false }
+    }
+    indicator
+}
 
 impl<N> std::fmt::Display for Graph<N> where N: Debug {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -167,17 +129,5 @@ impl<N> std::fmt::Display for Graph<N> where N: Debug {
             "\nGRAPH:\n nodes: {:?}\n edges: {:?}\n-----",
             self.nodes, self.edges,
         )
-    }
-}
-
-impl<N> std::fmt::Display for Node<N> where N: Debug {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "\n{:?}\n-----", self)
-    }
-}
-
-impl<N> std::fmt::Display for Edge<N> where N: Debug {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "\n{:?}\n-----", self)
     }
 }
