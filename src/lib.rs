@@ -14,6 +14,7 @@ pub mod edge;
 pub struct Graph<N> {
     pub nodes: HashMap<u64, N>,
     pub edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>,
+    pub root: Option<u64>
 }
 
 static COUNTER: AtomicUsize = AtomicUsize::new(0);
@@ -24,7 +25,7 @@ fn set_id() -> usize {
 
 impl<N> Graph<N> where N: Debug + Copy {
     pub fn new(nodes: HashMap<u64, N>, edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>) -> Self {
-        Graph { nodes, edges }
+        Graph { nodes, edges, root: None }
     }
 
     // Check if the node exists
@@ -69,6 +70,18 @@ impl<N> Graph<N> where N: Debug + Copy {
         }
         let new_node: Node<N> = Node(hash_node);
         new_node
+    }
+
+    pub fn set_root(&mut self, root: Option<u64>) -> Option<u64> {
+        let ids = &self.nodes;
+        let a = root.unwrap();
+        if ids.contains_key(&a) {
+            self.root = root;
+            root
+        } else {
+            self.root = None;
+            root
+        }
     }
 
     pub fn get_node(&self, index: &u64) -> Node<N> {
@@ -116,8 +129,8 @@ impl<N> std::fmt::Display for Graph<N> where N: Debug {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "\nGRAPH:\n nodes: {:?}\n edges: {:?}\n-----",
-            self.nodes, self.edges,
+            "\nGRAPH:\n nodes: {:?}\n edges: {:?}\n root: {:?}\n-----",
+            self.nodes, self.edges, self.root
         )
     }
 }
