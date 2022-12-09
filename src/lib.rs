@@ -72,6 +72,18 @@ impl<N> Graph<N> where N: Debug + Copy {
         new_node
     }
 
+    pub fn remove_node(&mut self, node_to_remove: N) -> Result<(), String> where N: Copy + PartialEq {
+        // let nodes = &self.nodes;
+        let nodes_id = self.get_id(node_to_remove).unwrap();
+        if !self.in_graph(&nodes_id) {
+            return Err(format!("Node doesn't exist"))
+        } else {
+            self.nodes.remove(&nodes_id);
+            return Ok(());
+        }
+        // Ok(())
+    }
+
     pub fn set_root(&mut self, root: Option<u64>) -> Option<u64> {
         let ids = &self.nodes;
         let a = root.unwrap();
@@ -82,6 +94,16 @@ impl<N> Graph<N> where N: Debug + Copy {
             self.root = None;
             root
         }
+    }
+
+    pub fn in_graph(&self, index: &u64) -> bool {
+        let mut result = false;
+        for node in self.nodes.iter() {
+            if node.0 == index {
+                result = true;
+            }
+        }
+        result
     }
 
     pub fn get_node(&self, index: &u64) -> Node<N> {

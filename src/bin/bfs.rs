@@ -33,6 +33,10 @@ fn main() {
     let getid = Graph::get_id(&gr_0, "C");
     println!("GET ID = {:?}", getid);
 
+    let removed_node = Graph::remove_node(&mut gr_0, "U");
+    println!("REMOVED NODE: {:?}", removed_node);
+    println!("REMOVED NODE: {}", gr_0);
+
     // let node_to_get: Node<&str> = Graph::get_node(&gr_0, &1);
     // println!("get node: {}", node_to_get);
 
