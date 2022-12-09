@@ -30,6 +30,9 @@ fn main() {
     println!("Root is set to {:?}", root);
     println!("{}", gr_0);
 
+    let getid = Graph::get_id(&gr_0, "C");
+    println!("GET ID = {:?}", getid);
+
     // let node_to_get: Node<&str> = Graph::get_node(&gr_0, &1);
     // println!("get node: {}", node_to_get);
 

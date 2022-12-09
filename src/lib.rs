@@ -32,7 +32,7 @@ impl<N> Graph<N> where N: Debug + Copy {
     pub fn check_node(&self, add_node: Node<N>) -> bool
     where N: Copy + Eq {
         let mut b = 0;
-        if add_node.0.len() == 0 {
+        if add_node.0.is_empty() {
             b = 0
         } else {
             for (_k, v) in add_node.0 {
@@ -52,7 +52,7 @@ impl<N> Graph<N> where N: Debug + Copy {
     {
         for (k, v) in add_node.0 {
             if if_gr_contains(self, v) {
-                ();
+                // implement a warning
             } else {
                 self.nodes.insert(k, v);
             }
@@ -92,6 +92,22 @@ impl<N> Graph<N> where N: Debug + Copy {
             }
         }
         Node(hash_node)
+    }
+
+    pub fn get_id(&self, node: N) -> Option<u64> where N: Copy + PartialEq {
+        let mut result_id = Some(0u64);
+        for id in self.nodes.iter() {
+            let existing_id = id.0;
+            let existing_node = id.1;
+            
+            if *existing_node == node {
+                result_id = Some(*existing_id);
+                break;
+            } else {
+                result_id = None
+            }
+        }
+        result_id
     }
 
 /* SERDE TRIVIAL GRAPH FORMAT:
