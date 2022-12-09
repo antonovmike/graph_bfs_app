@@ -94,6 +94,22 @@ impl<N> Graph<N> where N: Debug + Copy {
         Node(hash_node)
     }
 
+    pub fn get_id(&self, node: N) -> Option<u64> where N: Copy + PartialEq {
+        let mut result_id = Some(0u64);
+        for id in self.nodes.iter() {
+            let existing_id = id.0;
+            let existing_node = id.1;
+            
+            if *existing_node == node {
+                result_id = Some(*existing_id);
+                break;
+            } else {
+                result_id = None
+            }
+        }
+        result_id
+    }
+    
     pub fn serial_triv(graph: &Graph<N>) where
     N: Serialize + Copy + Display + ToString + std::fmt::Debug
     {
