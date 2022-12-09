@@ -27,10 +27,7 @@ impl<N> Graph<N> where N: Debug + Copy {
     pub fn new(nodes: HashMap<u64, N>, edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>) -> Self {
         Graph { nodes, edges, root: None }
     }
-    // Check if node exists in the graph
-    pub fn in_graph(&self, _index: usize) -> bool {
-        false
-    }
+
     // Check if the node exists
     pub fn check_node(&self, add_node: Node<N>) -> bool
     where N: Copy + Eq {
