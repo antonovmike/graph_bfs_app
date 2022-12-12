@@ -1,4 +1,5 @@
-use std::fmt::Debug;
+use super::Graph;
+use std::fmt::{Display, Debug};
 
 // Custom iterator
 #[derive(Clone, Debug)]
@@ -23,4 +24,11 @@ impl GraphIter {
             Err(String::from("Please set a root Node"))
         }
     }
+
+    // Breadth-first search
+    pub fn bfs<N>(&mut self, graph: &Graph<N>) -> Option<u64> {
+        return None
+    }
 }
+
+fn connected() -> Vec<usize> { vec![0] }
