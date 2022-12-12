@@ -27,8 +27,17 @@ impl GraphIter {
 
     // Breadth-first search
     pub fn bfs<N>(&mut self, graph: &Graph<N>) -> Option<u64> {
-        return None
+        while !self.stack.is_empty() {
+            // Get next index
+            let node_index = self.stack.remove(0);
+
+            // Process visited nodes
+            if self.visited.contains(&node_index) { continue; }
+            self.visited.push(node_index);
+        }
+        None
     }
 }
 
+// Ok here is another problem
 fn connected() -> Vec<usize> { vec![0] }

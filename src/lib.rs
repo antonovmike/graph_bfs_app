@@ -75,7 +75,7 @@ impl<N> Graph<N> where N: Debug + Copy {
 
     pub fn remove_node(&mut self, node_to_remove: N) -> String where N: Copy + PartialEq + Display {
         let nodes_id = self.get_id(node_to_remove);
-        let mut unwrapped = 0;
+        let unwrapped: u64;
         if nodes_id.is_some() { unwrapped = nodes_id.unwrap() }
         else { return format!("Node {} does not exist", node_to_remove) }
 
