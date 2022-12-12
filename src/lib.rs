@@ -9,6 +9,7 @@ use node::Node;
 
 pub mod node;
 pub mod edge;
+pub mod search;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Graph<N> {
@@ -104,7 +105,7 @@ impl<N> Graph<N> where N: Debug + Copy {
         result
     }
 
-    pub fn get_node(&self, index: &u64) -> Node<N> {
+    pub fn get_node(&self, index: &u64) -> Node<N> where N: Debug + Copy {
         let mut hash_node: HashMap<u64, N> = HashMap::new();
         for node in self.nodes.iter() {
             if node.0 == index {
