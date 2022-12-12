@@ -155,7 +155,7 @@ impl<N> Graph<N> where N: Debug + Copy {
     }
 }
 
-pub fn if_gr_contains<N>(graph: &Graph<N>, node: N) -> bool where N: Copy + Eq{
+pub fn if_gr_contains<N>(graph: &Graph<N>, node: N) -> bool where N: Copy + Eq {
     let mut indicator = true;
     for i in graph.nodes.iter() {
         let node_names = graph.nodes[i.0];

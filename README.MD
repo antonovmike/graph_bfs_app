@@ -17,13 +17,16 @@
 - Create a new graph Graph::new(some_nodes, some_edges)
 - Add and remove nodes add_node(some_graph, some_node)
 - Check Node's identity and avoid adding duplicates
+- Add and remove directed edges add_edge(some_graph, some_edge)
 
 
 [*] Structures of types String is used. Have to implement a deserializer for generic types 
 
+**FIX**
+- add_node - add warning in case Graph is already contins Node with this name
+
 **TODO:**
 
-- Add and remove directed edges add_edge(some_graph, some_edge)
 - Serialize/Deserialize graph serial_triv(&some_graph) [*]
 - Breadth first search by Node() bfs(&some_graph, some_node)
 - Create interface like HashMap/HashSet/Vec
