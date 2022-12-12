@@ -26,7 +26,7 @@ impl GraphIter {
     }
 
     // Breadth-first search
-    pub fn bfs<N>(&mut self, graph: &Graph<N>) -> Option<u64> {
+    pub fn bfs<N>(&mut self, graph: &Graph<N>) -> Option<u64> where N: Copy + Debug {
         while !self.stack.is_empty() {
             // Get next index
             let node_index = self.stack.remove(0);
@@ -34,6 +34,14 @@ impl GraphIter {
             // Process visited nodes
             if self.visited.contains(&node_index) { continue; }
             self.visited.push(node_index);
+
+            if let node = graph.get_node(&node_index) {
+                // Check neighbours ...
+                
+                return Some(node_index)
+            } else {
+                format!("Node {} does not exist", node_index);
+            }
         }
         None
     }
