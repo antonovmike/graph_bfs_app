@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
     fmt::{Debug, Display},
-    sync::atomic::{AtomicUsize, Ordering},
+    sync::atomic::{AtomicUsize, Ordering}, fs::File,
 };
 use node::Node;
 // use edge::Edge;
@@ -139,13 +139,18 @@ impl<N> Graph<N> where N: Debug + Copy {
 #
 1 2 Edge between the two */
 
-    pub fn serial_triv(graph: &Graph<N>) where
+    pub fn serial_triv(graph: &Graph<N>, path: &str) where
     N: Serialize + Copy + Display + ToString + std::fmt::Debug
     {
+        let path = format!("{}/serial_graph.yml", path);
+        let _file = match File::create(&path) {
+            Err(why) => panic!("couldn't create {}: {}", path, why),
+            Ok(file) => file,
+        };
         let file = std::fs::OpenOptions::new()
             .write(true)
             .create(true)
-            .open("serial_graph.yml")
+            .open(path)
             .expect("Couldn't open file");
         
         let serialized = serde_yaml::to_string(graph)

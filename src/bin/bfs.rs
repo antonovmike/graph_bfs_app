@@ -46,4 +46,6 @@ fn main() {
     // let node_f = Node::new(&["A"]);
     // let gr_1 = Graph::add_node(&mut gr_0, node_f.clone());
     // println!("{}", gr_1);
+
+    Graph::serial_triv(&gr_0, "serde");
 }
