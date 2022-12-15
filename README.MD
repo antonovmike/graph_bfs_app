@@ -19,6 +19,7 @@
 - Check Node's identity and avoid adding duplicates
 - Add and remove directed edges add_edge(some_graph, some_edge)
 - Verify Nodes and Graphs uniqueness (hashtable or matrix)
+- User's path to file
 
 
 [*] Structures of types String is used. Have to implement a deserializer for generic types 
@@ -34,7 +35,6 @@
 - Create interface like HashMap/HashSet/Vec
 - Serialization/Deserialization TGF using ToString/FromString
 - Use doc comments
-- User's path to file
 - Executable in separate crate
 
 
