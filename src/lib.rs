@@ -81,6 +81,8 @@ impl<N> Graph<N> where N: Debug + Copy {
 
         self.nodes.remove(&unwrapped);
         format!("Node {} has been removed", node_to_remove)
+
+        // Check and remove edges containing removed Node
     }
 
     pub fn set_root(&mut self, root: Option<u64>) -> Option<u64> {

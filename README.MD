@@ -25,7 +25,7 @@
 
 **FIX**
 - add_node - add warning in case Graph is already contins Node with this name
-- remove_node - if Node removed check adges and remove all the edges containing this Node
+- remove_node - if Node removed check edges and remove all the edges containing this Node
 
 **TODO:**
 
