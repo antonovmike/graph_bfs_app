@@ -47,5 +47,9 @@ fn main() {
     // let gr_1 = Graph::add_node(&mut gr_0, node_f.clone());
     // println!("{}", gr_1);
 
-    Graph::serial_triv(&gr_0, "serde");
+    // Graph::serial_triv(&gr_0, "serde");
+
+
+    let mut gr_1 = gr_0.clone();
+    Graph::deserial_triv(&gr_0, &mut gr_1, "serde/serial_graph.yml");
 }

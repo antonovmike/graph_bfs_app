@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
     fmt::{Debug, Display},
-    sync::atomic::{AtomicUsize, Ordering}, fs::File,
+    sync::atomic::{AtomicUsize, Ordering}, fs::File, io::{BufReader, BufRead},
 };
 use node::Node;
 // use edge::Edge;
@@ -161,6 +161,32 @@ impl<N> Graph<N> where N: Debug + Copy {
 
         serde_yaml::to_writer(file, &value_serialized).unwrap();
     }
+
+
+
+    pub fn deserial_triv(&self, graph: &mut Graph<N>, path: &str) -> Result<(), String> {
+        let input = File::open(path).expect("Could Not Open a File to Read From");
+        let buf = BufReader::new(input);
+        let mut edges = false;
+        // Iterate over lines
+        for line in buf.lines().map(|line| line.unwrap()) {
+            let parts: Vec<&str> = line.split(" ").collect();
+            
+            if !edges {
+                if parts.get(0).unwrap() == &"#" {
+                    edges = true;
+                    continue;
+                }
+                let label= parts[1..].join(" ");
+
+                println!("LABEL: {}", label);
+            } else {
+                // Edge::new()?;
+            }
+        }
+
+        Ok(())
+    }
 }
 
 pub fn if_gr_contains<N>(graph: &Graph<N>, node: N) -> bool where N: Copy + Eq {
@@ -183,14 +209,4 @@ impl<N> std::fmt::Display for Graph<N> where N: Debug {
             self.nodes, self.edges, self.root
         )
     }
-}
-
-
-pub fn deserial_triv() 
-// where N: Deserialize
-// where N: DeserializeOwned
-{
-    // let string = std::fs::read_to_string("serial_graph.yml").expect("Error in reading the file");
-    
-    // let deserialized: Graph<&'a str> = serde_yaml::from_str(&str[..]).unwrap();
 }
