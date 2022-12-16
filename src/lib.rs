@@ -177,9 +177,16 @@ impl<N> Graph<N> where N: Debug + Copy {
                     edges = true;
                     continue;
                 }
-                let label= parts[1..].join(" ");
-
-                println!("LABEL: {}", label);
+                let label = parts[1..].join(" ");
+                // let splitted = label.split("    0: ").collect::<Vec<&str>>();
+                let splitted = label.split(" ").collect::<Vec<&str>>();
+                if splitted.len() == 5 {
+                    println!("NODE: {}", splitted[4])
+                }
+                if splitted.len() == 6 {
+                    println!("EDGE: {}", splitted[5])
+                }
+                // println!("LABEL: {}", label);
             } else {
                 // Edge::new()?;
             }
