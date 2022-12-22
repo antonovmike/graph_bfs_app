@@ -1,8 +1,8 @@
 |
   nodes:
+    3: D
     0: A
     2: C
-    3: D
   edges:
     101:
     - 0: A

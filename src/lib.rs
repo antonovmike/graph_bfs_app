@@ -24,6 +24,17 @@ fn set_id() -> usize {
 }
 
 
+pub trait AnyType {
+    fn type_name(&self) -> &'static str;
+}
+
+impl<N> AnyType for N {
+    fn type_name(&self) -> &'static str {
+        std::any::type_name::<N>()
+    }
+}
+
+
 impl<N> Graph<N> where N: Debug + Copy {
     pub fn new(nodes: HashMap<u64, N>, edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>) -> Self {
         Graph { nodes, edges, root: None }
@@ -142,6 +153,10 @@ impl<N> Graph<N> where N: Debug + Copy {
     pub fn serial_triv(graph: &Graph<N>, path: &str) where
     N: Serialize + Copy + Display + ToString + std::fmt::Debug
     {
+        let first_node = graph.nodes[&0];
+        let type_of_node = first_node.type_name();
+        println!("serial_triv Node: {}", type_of_node);
+
         let path = format!("{}/serial_graph.yml", path);
         let _file = match File::create(&path) {
             Err(why) => panic!("couldn't create {}: {}", path, why),
@@ -180,10 +195,10 @@ impl<N> Graph<N> where N: Debug + Copy {
                 let label = parts[1..].join(" ");
                 let splitted = label.split(" ").collect::<Vec<&str>>();
                 if splitted.len() == 5 {
-                    println!("NODE: {}", splitted[4])
+                    println!("deserial NODE: {}", splitted[4])
                 }
                 if splitted.len() == 6 {
-                    println!("EDGE: {}", splitted[5])
+                    println!("deserial EDGE: {}", splitted[5])
                 }
                 // println!("LABEL: {}", label);
             } else {
