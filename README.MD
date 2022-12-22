@@ -17,13 +17,21 @@
 - Create a new graph Graph::new(some_nodes, some_edges)
 - Add and remove nodes add_node(some_graph, some_node)
 - Check Node's identity and avoid adding duplicates
+- Add and remove directed edges add_edge(some_graph, some_edge)
+- Verify Nodes and Graphs uniqueness (hashtable or matrix)
+- User's path to file
 
 
 [*] Structures of types String is used. Have to implement a deserializer for generic types 
 
+
+**FIX:**
+- add_node - add warning in case Graph is already contins Node with this name
+- remove_node - if Node removed check edges and remove all the edges containing this Node
+
+
 **TODO:**
 
-- Add and remove directed edges add_edge(some_graph, some_edge)
 - Serialize/Deserialize graph serial_triv(&some_graph) [*]
 ```bash
 TRIVIAL GRAPH FORMAT:
@@ -44,7 +52,6 @@ struct Graph<N, E> {
 ```
 - Serialization/Deserialization TGF using ToString/FromString
 - Use doc comments
-- User's path to file
 - Executable in separate crate
 
 
