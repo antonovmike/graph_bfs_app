@@ -190,9 +190,9 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
     let mut str = "".to_string();
 
     if graph.edges.is_empty() {
-        str = format!("Node type: {}\n{}", type_of_node, str_nodes);
+        str = format!("{}\n{}", type_of_node, str_nodes);
     } else {
-        str = format!("Node type: {}\n{}\n#\n{}", type_of_node, str_nodes, str_edges);
+        str = format!("{}\n{}\n#\n{}", type_of_node, str_nodes, str_edges);
     }
 
     serde_yaml::to_writer(file, &str).unwrap();
@@ -226,7 +226,6 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
         serde_yaml::to_writer(file, &additional_info).unwrap();
     }
 */
-
 
     pub fn deserial_triv(&self, graph: &mut Graph<N>, path: &str) -> Result<(), String> {
         let input = File::open(path).expect("Could Not Open a File to Read From");
@@ -279,4 +278,33 @@ impl<N> std::fmt::Display for Graph<N> where N: Debug {
             self.nodes, self.edges, self.root
         )
     }
+}
+
+
+pub fn type_finder() -> String {
+    let path = "serde/serial_graph.yml";
+    let input = File::open(path).expect("Could Not Open a File to Read From");
+    let buf = BufReader::new(input);
+
+    let mut result = "".to_string();
+    for (index, line) in buf.lines().enumerate() {
+        let line = line.unwrap();
+        if index == 1 {
+            let no_spaces = line
+            .trim()
+            .lines()
+            .map(|part| {
+                part
+                    .trim()
+                    .split_inclusive(char::is_whitespace)
+                    .filter(|part| !part.trim().is_empty())
+                    .collect()
+            })
+            .collect::<Vec<String>>()
+            .join("\n");
+
+            result = no_spaces;
+        }
+    }
+    result
 }
