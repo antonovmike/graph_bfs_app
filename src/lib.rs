@@ -287,23 +287,11 @@ pub fn type_finder() -> String {
     let buf = BufReader::new(input);
 
     let mut result = "".to_string();
+    
     for (index, line) in buf.lines().enumerate() {
-        let line = line.unwrap();
+        let line = line.unwrap(); // Ignore errors.
         if index == 1 {
-            let no_spaces = line
-            .trim()
-            .lines()
-            .map(|part| {
-                part
-                    .trim()
-                    .split_inclusive(char::is_whitespace)
-                    .filter(|part| !part.trim().is_empty())
-                    .collect()
-            })
-            .collect::<Vec<String>>()
-            .join("\n");
-
-            result = no_spaces;
+            result = line.trim().to_string();
         }
     }
     result
