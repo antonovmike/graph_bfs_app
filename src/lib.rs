@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
-    fmt::{Debug, Display},
+    fmt::{Debug, Display, format},
     sync::atomic::{AtomicUsize, Ordering}, fs::File, io::{BufReader, BufRead},
 };
 use node::Node;
@@ -153,8 +153,8 @@ impl<N> Graph<N> where N: Debug + Copy {
     pub fn serial_triv(graph: &Graph<N>, path: &str) where
     N: Serialize + Copy + Display + ToString + std::fmt::Debug
     {
-        let first_node = graph.nodes[&0];
-        let type_of_node = first_node.type_name();
+        let first_node: N = graph.nodes[&0];
+        let type_of_node: &str = first_node.type_name();
         println!("serial_triv Node: {}", type_of_node);
 
         let path = format!("{}/serial_graph.yml", path);
@@ -173,8 +173,9 @@ impl<N> Graph<N> where N: Debug + Copy {
             .into_bytes();
 
         let value_serialized = String::from_utf8(serialized).expect("Invalid utf8 message");
+        let additional_info = format!("Type: {}\n{}", type_of_node, value_serialized);
 
-        serde_yaml::to_writer(file, &value_serialized).unwrap();
+        serde_yaml::to_writer(file, &additional_info).unwrap();
     }
 
 

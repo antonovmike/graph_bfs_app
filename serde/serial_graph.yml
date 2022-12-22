@@ -1,8 +1,9 @@
 |
+  Type: &str
   nodes:
+    2: C
     3: D
     0: A
-    2: C
   edges:
     101:
     - 0: A
