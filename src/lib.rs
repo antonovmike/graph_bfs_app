@@ -281,13 +281,13 @@ impl<N> std::fmt::Display for Graph<N> where N: Debug {
 }
 
 
-pub fn type_finder() -> String {
+pub fn get_type() -> String {
     let path = "serde/serial_graph.yml";
     let input = File::open(path).expect("Could Not Open a File to Read From");
     let buf = BufReader::new(input);
 
     let mut result = "".to_string();
-    
+
     for (index, line) in buf.lines().enumerate() {
         let line = line.unwrap(); // Ignore errors.
         if index == 1 {

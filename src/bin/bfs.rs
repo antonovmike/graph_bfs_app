@@ -53,6 +53,6 @@ fn main() {
     let mut gr_1 = gr_0.clone();
     Graph::deserial_triv(&gr_0, &mut gr_1, "serde/serial_graph.yml");
 
-    let type_from_file = type_finder();
+    let type_from_file = get_type();
     println!("type_finder: {}", type_from_file);
 }
