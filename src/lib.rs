@@ -35,7 +35,7 @@ impl<N> AnyType for N {
 }
 
 
-impl<N> Graph<N> where N: Debug + Copy {
+impl<N> Graph<N> where N: Debug + Copy + std::cmp::PartialEq {
     pub fn new(nodes: HashMap<u64, N>, edges: HashMap<u64, (HashMap<u64, N>, HashMap<u64, N>)>) -> Self {
         Graph { nodes, edges, root: None }
     }
@@ -149,7 +149,36 @@ impl<N> Graph<N> where N: Debug + Copy {
 2 Second node
 #
 1 2 Edge between the two */
+pub fn serial_triv(graph: &Graph<N>, path: &str) where
+N: Serialize + Copy + Display + ToString + std::fmt::Debug
+{
+    let first_node: N = graph.nodes[&0];
+    let type_of_node: &str = first_node.type_name();
 
+    let path = format!("{}/serial_graph.yml", path);
+    let _file = match File::create(&path) {
+        Err(why) => panic!("couldn't create {}: {}", path, why),
+        Ok(file) => file,
+    };
+    let file = std::fs::OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open(path)
+        .expect("Couldn't open file");
+    
+    let mut str = "".to_string();
+    for i in 0..graph.nodes.len() {
+        let index = i as u64;
+        let temp_node = Graph::get_node(graph, &index);
+        let t_node = temp_node.0[&index];
+        let temp_id = Graph::get_id(graph, t_node).unwrap();
+        // let temp_node = format!("{}", graph.nodes[&index]);
+        let temp_node = format!("{}: {:?}\n", temp_id, temp_node.0[&index]);
+        str.push_str(&temp_node)
+    }
+    println!("STR: \n{}", str);
+}
+/* 
     pub fn serial_triv(graph: &Graph<N>, path: &str) where
     N: Serialize + Copy + Display + ToString + std::fmt::Debug
     {
@@ -177,7 +206,7 @@ impl<N> Graph<N> where N: Debug + Copy {
 
         serde_yaml::to_writer(file, &additional_info).unwrap();
     }
-
+*/
 
 
     pub fn deserial_triv(&self, graph: &mut Graph<N>, path: &str) -> Result<(), String> {

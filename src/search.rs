@@ -26,7 +26,7 @@ impl GraphIter {
     }
 
     // Breadth-first search
-    pub fn bfs<N>(&mut self, graph: &Graph<N>) -> Option<u64> where N: Copy + Debug {
+    pub fn bfs<N>(&mut self, graph: &Graph<N>) -> Option<u64> where N: Copy + Debug + std::cmp::PartialEq {
         while !self.stack.is_empty() {
             // Get next index
             let node_index = self.stack.remove(0);
