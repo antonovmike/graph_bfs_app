@@ -156,9 +156,8 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
 {
     let first_node: N = graph.nodes[&0];
     let mut str_nodes = "Nodes:\n".to_string();
-    let mut str_edged = "Edges:\n".to_string();
+    let mut str_edges = "Edges:\n".to_string();
     let type_of_node: &str = first_node.type_name();
-    let mut str = format!("Node type: {}\n{}", type_of_node, str_nodes);
 
     let path = format!("{}/serial_graph.yml", path);
     let _file = match File::create(&path) {
@@ -173,18 +172,27 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
     
     for i in 0..graph.nodes.len() {
         let index = i as u64;
-        let temp_node = Graph::get_node(graph, &index);
-        let t_node = temp_node.clone().unwrap().0[&index];
+
+        // if Graph::get_node(graph, &index).is_some() {
+
+        // } else {
+        //     continue;
+        // }
+        
+        let temp_node = Graph::get_node(graph, &index).unwrap();
+        let t_node = temp_node.clone().0[&index];
         let temp_id = Graph::get_id(graph, t_node).unwrap();
-        let temp_node = format!("{}: {:?}\n", temp_id, temp_node.unwrap().0[&index]);
+        // println!("temp_id: {}; temp_node: {}", temp_id, t_node);
+        let temp_node = format!("{}: {:?}\n", temp_id, temp_node.0[&index]);
         str_nodes.push_str(&temp_node)
     }
+
+    let mut str = "".to_string();
 
     if graph.edges.is_empty() {
         str = format!("Node type: {}\n{}", type_of_node, str_nodes);
     } else {
-        let string = "#\nEdges:\n";
-        str.push_str(string)
+        str = format!("Node type: {}\n{}\n#\n{}", type_of_node, str_nodes, str_edges);
     }
 
     serde_yaml::to_writer(file, &str).unwrap();

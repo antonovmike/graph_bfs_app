@@ -52,7 +52,4 @@ fn main() {
 
     let mut gr_1 = gr_0.clone();
     Graph::deserial_triv(&gr_0, &mut gr_1, "serde/serial_graph.yml");
-
-    let node_x = Graph::get_id(&gr_0, "X");
-    println!("node_x: {:?}", node_x);
 }
