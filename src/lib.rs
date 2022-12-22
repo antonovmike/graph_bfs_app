@@ -166,17 +166,30 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
         .open(path)
         .expect("Couldn't open file");
     
-    let mut str = "".to_string();
+    let mut str_nodes = "Nodes:\n".to_string();
     for i in 0..graph.nodes.len() {
         let index = i as u64;
         let temp_node = Graph::get_node(graph, &index);
         let t_node = temp_node.0[&index];
         let temp_id = Graph::get_id(graph, t_node).unwrap();
-        // let temp_node = format!("{}", graph.nodes[&index]);
         let temp_node = format!("{}: {:?}\n", temp_id, temp_node.0[&index]);
-        str.push_str(&temp_node)
+        str_nodes.push_str(&temp_node)
     }
-    println!("STR: \n{}", str);
+
+    // let mut str = "".to_string();
+    let mut str = format!("Node type: {}\n{}", type_of_node, str_nodes);
+
+    let mut str_edged = "Edges:\n".to_string();
+    if graph.edges.is_empty() {
+        str = format!("Node type: {}\n{}", type_of_node, str_nodes);
+    } else {
+        let string = "#\nEdges:\n";
+        str.push_str(string)
+    }
+
+    // let str = format!("Node type: {}\n{}", type_of_node, str_nodes);
+
+    serde_yaml::to_writer(file, &str).unwrap();
 }
 /* 
     pub fn serial_triv(graph: &Graph<N>, path: &str) where
