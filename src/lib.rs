@@ -178,7 +178,6 @@ impl<N> Graph<N> where N: Debug + Copy {
                     continue;
                 }
                 let label = parts[1..].join(" ");
-                // let splitted = label.split("    0: ").collect::<Vec<&str>>();
                 let splitted = label.split(" ").collect::<Vec<&str>>();
                 if splitted.len() == 5 {
                     println!("NODE: {}", splitted[4])
