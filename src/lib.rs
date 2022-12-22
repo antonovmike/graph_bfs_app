@@ -151,6 +151,8 @@ impl<N> Graph<N> where N: Debug + Copy + std::cmp::PartialEq {
 2 Second node
 #
 1 2 Edge between the two */
+
+
 pub fn serial_triv(graph: &Graph<N>, path: &str) where
 N: Serialize + Copy + Display + ToString + std::fmt::Debug
 {
@@ -182,7 +184,7 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
         let temp_node = Graph::get_node(graph, &index).unwrap();
         let t_node = temp_node.clone().0[&index];
         let temp_id = Graph::get_id(graph, t_node).unwrap();
-        // println!("temp_id: {}; temp_node: {}", temp_id, t_node);
+
         let temp_node = format!("{}: {:?}\n", temp_id, temp_node.0[&index]);
         str_nodes.push_str(&temp_node)
     }
@@ -197,6 +199,8 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
 
     serde_yaml::to_writer(file, &str).unwrap();
 }
+
+
 /* 
     pub fn serial_triv(graph: &Graph<N>, path: &str) where
     N: Serialize + Copy + Display + ToString + std::fmt::Debug
@@ -256,6 +260,7 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
 
         Ok(())
     }
+    
 }
 
 pub fn if_gr_contains<N>(graph: &Graph<N>, node: N) -> bool where N: Copy + Eq {
