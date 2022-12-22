@@ -153,7 +153,10 @@ pub fn serial_triv(graph: &Graph<N>, path: &str) where
 N: Serialize + Copy + Display + ToString + std::fmt::Debug
 {
     let first_node: N = graph.nodes[&0];
+    let mut str_nodes = "Nodes:\n".to_string();
+    let mut str_edged = "Edges:\n".to_string();
     let type_of_node: &str = first_node.type_name();
+    let mut str = format!("Node type: {}\n{}", type_of_node, str_nodes);
 
     let path = format!("{}/serial_graph.yml", path);
     let _file = match File::create(&path) {
@@ -166,7 +169,6 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
         .open(path)
         .expect("Couldn't open file");
     
-    let mut str_nodes = "Nodes:\n".to_string();
     for i in 0..graph.nodes.len() {
         let index = i as u64;
         let temp_node = Graph::get_node(graph, &index);
@@ -176,18 +178,12 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
         str_nodes.push_str(&temp_node)
     }
 
-    // let mut str = "".to_string();
-    let mut str = format!("Node type: {}\n{}", type_of_node, str_nodes);
-
-    let mut str_edged = "Edges:\n".to_string();
     if graph.edges.is_empty() {
         str = format!("Node type: {}\n{}", type_of_node, str_nodes);
     } else {
         let string = "#\nEdges:\n";
         str.push_str(string)
     }
-
-    // let str = format!("Node type: {}\n{}", type_of_node, str_nodes);
 
     serde_yaml::to_writer(file, &str).unwrap();
 }
