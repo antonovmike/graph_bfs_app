@@ -118,14 +118,16 @@ impl<N> Graph<N> where N: Debug + Copy + std::cmp::PartialEq {
         result
     }
 
-    pub fn get_node(&self, index: &u64) -> Node<N> where N: Debug + Copy {
+    pub fn get_edge() {}
+
+    pub fn get_node(&self, index: &u64) -> Option<Node<N>> where N: Debug + Copy {
         let mut hash_node: HashMap<u64, N> = HashMap::new();
         for node in self.nodes.iter() {
             if node.0 == index {
                 hash_node.insert(*node.0, *node.1);
             }
         }
-        Node(hash_node)
+        Some(Node(hash_node))
     }
 
     pub fn get_id(&self, node: N) -> Option<u64> where N: Copy + PartialEq {
@@ -172,9 +174,9 @@ N: Serialize + Copy + Display + ToString + std::fmt::Debug
     for i in 0..graph.nodes.len() {
         let index = i as u64;
         let temp_node = Graph::get_node(graph, &index);
-        let t_node = temp_node.0[&index];
+        let t_node = temp_node.clone().unwrap().0[&index];
         let temp_id = Graph::get_id(graph, t_node).unwrap();
-        let temp_node = format!("{}: {:?}\n", temp_id, temp_node.0[&index]);
+        let temp_node = format!("{}: {:?}\n", temp_id, temp_node.unwrap().0[&index]);
         str_nodes.push_str(&temp_node)
     }
 
